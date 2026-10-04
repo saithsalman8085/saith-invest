@@ -95,7 +95,7 @@ export async function GET() {
     id: investment.id,
     nextCollectionAt: String(investment.nextCollectionAt),
     nextISO: investment.nextCollectionAt
-      ? new Date(String(investment.nextCollectionAt)).toISOString()
+      ? new Date(`${String(investment.nextCollectionAt)}+05:00`).toISOString()
       : null,
   }))
 );
