@@ -154,11 +154,11 @@ export async function GET() {
             String(investment.endsAt)
           ).toISOString(),
           nextCollectionAt:
-            investment.nextCollectionAt
-              ? new Date(
-                  String(investment.nextCollectionAt)
-                ).toISOString()
-              : null,
+  investment.nextCollectionAt
+    ? new Date(
+        `${String(investment.nextCollectionAt)}+05:00`
+      ).toISOString()
+    : null,
           status: investment.status,
         })
       ),
