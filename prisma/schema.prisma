@@ -1,0 +1,572 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// =========================
+// ENUMS
+// =========================
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  BLOCKED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PlanStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum InvestmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum DepositStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TransactionType {
+  DEPOSIT
+  INVESTMENT
+  DAILY_EARNING
+  REFERRAL_COMMISSION
+  ACTIVE_USER_REWARD
+  WITHDRAWAL
+  WITHDRAWAL_FEE
+  ADMIN_ADJUSTMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  REVERSED
+}
+
+enum ReferralLevel {
+  LEVEL_1
+  LEVEL_2
+  LEVEL_3
+}
+
+enum RewardPeriod {
+  DAYS_7
+  MONTHLY
+}
+
+enum AuditAction {
+  PASSWORD_RESET
+  KYC_LOCK
+  KYC_UNLOCK
+  KYC_CHANGE
+  USER_SUSPEND
+  USER_ACTIVATE
+  DEPOSIT_APPROVE
+  DEPOSIT_REJECT
+  WITHDRAWAL_APPROVE
+  WITHDRAWAL_REJECT
+  ADMIN_ADJUSTMENT
+  PLAN_CREATE
+  PLAN_UPDATE
+  PLAN_DELETE
+  PLAN_PUBLISH
+  PLAN_UNPUBLISH
+  SETTINGS_UPDATE
+}
+
+
+// =========================
+// USER
+// =========================
+
+model User {
+  premiumBadge Boolean    @default(false)
+  id           String     @id @default(cuid())
+  publicUserId String     @unique
+
+  fullName     String
+  email        String?    @unique
+  phone        String?    @unique
+  passwordHash String
+
+  referralCode String     @unique
+
+  referredById String?
+  referredBy   User?      @relation("UserReferrals", fields: [referredById], references: [id])
+  referrals    User[]     @relation("UserReferrals")
+
+  status       UserStatus @default(ACTIVE)
+  role         UserRole   @default(USER)
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // KYC
+  withdrawalProfile WithdrawalProfile?
+
+  // Investments
+  investments Investment[]
+
+  // Deposits / withdrawals
+  deposits    Deposit[]
+  withdrawals Withdrawal[]
+
+  // Wallet
+  walletTransactions Transaction[]
+
+  // Earnings
+  earningCollections EarningCollection[]
+
+  // Referrals
+  referralCommissions ReferralCommission[]
+
+  // Rewards
+  receivedRewards ActiveUserReward[]
+
+  // Audit logs
+  auditLogs      AuditLog[] @relation("AuditTarget")
+  adminAuditLogs AuditLog[] @relation("AuditAdmin")
+
+  @@index([referredById])
+  @@index([status])
+  @@index([phone])
+}
+
+
+// =========================
+// WITHDRAWAL KYC
+// =========================
+
+model WithdrawalProfile {
+  id String @id @default(cuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  cnicNumber      String
+  easypaisaNumber String
+  accountName     String
+
+  isLocked Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+// =========================
+// INVESTMENT PLANS
+// =========================
+
+model InvestmentPlan {
+  id String @id @default(cuid())
+
+  name String
+
+  depositAmount Decimal @db.Decimal(18, 2)
+  profitAmount Decimal @db.Decimal(18, 2)
+
+  durationDays Int
+
+  dailyEarning Decimal @db.Decimal(18, 4)
+  totalReturn Decimal @db.Decimal(18, 2)
+
+  level1Percent Decimal @db.Decimal(10, 4)
+  level2Percent Decimal @db.Decimal(10, 4)
+  level3Percent Decimal @db.Decimal(10, 4)
+
+  isSpecial Boolean @default(false)
+
+  referralBonusUSD Decimal @db.Decimal(18, 2) @default(0)
+
+  maxPurchasesPerUser Int @default(1)
+
+  status PlanStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  investments Investment[]
+
+  @@index([status])
+  @@index([isSpecial])
+}
+
+// =========================
+// INVESTMENTS
+// =========================
+
+model Investment {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  planId String
+  plan   InvestmentPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
+
+  amount Decimal @db.Decimal(18, 2)
+
+  // Snapshot of plan settings at purchase time
+  durationDays Int
+
+  dailyReturn Decimal @db.Decimal(10, 4)
+
+  level1Percent Decimal @db.Decimal(10, 4)
+  level2Percent Decimal @db.Decimal(10, 4)
+  level3Percent Decimal @db.Decimal(10, 4)
+
+  startedAt DateTime @default(now())
+  endsAt    DateTime
+
+  // 24-hour earnings collection
+  lastCollectedAt  DateTime?
+  nextCollectionAt DateTime?
+
+  status InvestmentStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  earnings EarningCollection[]
+
+  referralCommissions ReferralCommission[]
+
+  @@index([userId])
+  @@index([planId])
+  @@index([status])
+  @@index([userId, status])
+  @@index([nextCollectionAt])
+}
+
+
+// =========================
+// DAILY EARNINGS
+// =========================
+
+model EarningCollection {
+  id String @id @default(cuid())
+
+  investmentId String
+  investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Restrict)
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  amount Decimal @db.Decimal(18, 2)
+
+  collectedAt DateTime @default(now())
+
+  transactionId String? @unique
+
+  createdAt DateTime @default(now())
+
+  @@index([investmentId])
+  @@index([userId])
+  @@index([collectedAt])
+}
+
+
+// =========================
+// DEPOSITS
+// =========================
+
+model Deposit {
+  id String @id @default(cuid())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  amountPKR       Decimal @db.Decimal(18, 2)
+  exchangeRate    Decimal @db.Decimal(18, 4)
+  creditAmountUSD Decimal @db.Decimal(18, 2)
+
+  paymentMethod String @default("Easypaisa")
+  transactionId String
+
+  status DepositStatus @default(PENDING)
+
+  submittedAt DateTime @default(now())
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
+
+  reviewedById    String?
+  rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([submittedAt])
+  @@unique([paymentMethod, transactionId])
+}
+
+
+// =========================
+// WITHDRAWALS
+// =========================
+
+model Withdrawal {
+  id String @id @default(cuid())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  amountUSD Decimal @db.Decimal(18, 2)
+
+  feePercent Decimal @db.Decimal(10, 4)
+  feeUSD     Decimal @db.Decimal(18, 2)
+
+  netAmountUSD Decimal @db.Decimal(18, 2)
+
+  exchangeRate Decimal @db.Decimal(18, 4)
+  payoutPKR    Decimal @db.Decimal(18, 2)
+
+  // Snapshot of KYC details at withdrawal request time
+  cnicNumber      String
+  easypaisaNumber String
+  accountName     String
+
+  status WithdrawalStatus @default(PENDING)
+
+  requestedAt DateTime @default(now())
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
+
+  reviewedById    String?
+  rejectionReason String?
+
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([requestedAt])
+}
+
+
+// =========================
+// WALLET / FINANCIAL LEDGER
+// =========================
+
+model Transaction {
+  id String @id @default(cuid())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  type   TransactionType
+  status TransactionStatus @default(COMPLETED)
+
+  amountUSD Decimal @db.Decimal(18, 2)
+
+  balanceBefore Decimal @db.Decimal(18, 2)
+  balanceAfter  Decimal @db.Decimal(18, 2)
+
+  referenceId String?
+  description String?
+
+  depositId String?
+  deposit   Deposit? @relation(fields: [depositId], references: [id], onDelete: Restrict)
+
+  withdrawalId String?
+  withdrawal   Withdrawal? @relation(fields: [withdrawalId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([referenceId])
+}
+
+
+// =========================
+// REFERRAL COMMISSIONS
+// =========================
+
+model ReferralCommission {
+  id String @id @default(cuid())
+
+  beneficiaryId String
+  beneficiary   User @relation(fields: [beneficiaryId], references: [id], onDelete: Restrict)
+
+  sourceUserId String
+
+  investmentId String
+  investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Restrict)
+
+  level ReferralLevel
+
+  // Snapshot of referral percentage
+  percent Decimal @db.Decimal(10, 4)
+
+  investmentAmount Decimal @db.Decimal(18, 2)
+  commissionAmount Decimal @db.Decimal(18, 2)
+
+  createdAt DateTime @default(now())
+
+  @@index([beneficiaryId])
+  @@index([sourceUserId])
+  @@index([investmentId])
+  @@index([level])
+}
+
+
+// =========================
+// ACTIVE USER REWARDS
+// =========================
+
+model ActiveUserReward {
+  id String @id @default(cuid())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  activeUserCount Int
+
+  rewardAmount Decimal @db.Decimal(18, 2)
+
+  period RewardPeriod
+
+  periodStart DateTime
+  periodEnd   DateTime
+
+  claimedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([activeUserCount])
+  @@index([periodStart, periodEnd])
+}
+
+
+// =========================
+// PLATFORM SETTINGS
+// =========================
+
+model PlatformSettings {
+id String @id @default(cuid())
+
+platformName String @default("ClaudeInvest")
+
+supportEmail String?
+
+platformCurrency   String @default("USD")
+depositCurrency    String @default("PKR")
+withdrawalCurrency String @default("PKR")
+
+exchangeRate Decimal @default(300) @db.Decimal(18, 4)
+
+withdrawalFeePercent Decimal @default(12) @db.Decimal(10, 4)
+
+// =========================
+// DEPOSIT PAYMENT DETAILS
+// =========================
+
+depositPaymentMethod String @default("Easypaisa")
+
+depositAccountName String @default("ClaudeInvest")
+
+depositAccountNumber String @default("")
+
+depositInstructions String @default(
+"Send payment to the account above and enter your transaction ID."
+)
+
+depositApprovalMinHours Int @default(1)
+depositApprovalMaxHours Int @default(3)
+
+// =========================
+// WITHDRAWAL SETTINGS
+// =========================
+
+withdrawalApprovalMaxHours Int @default(2)
+
+withdrawalMonday    Boolean @default(true)
+withdrawalTuesday   Boolean @default(true)
+withdrawalWednesday Boolean @default(true)
+withdrawalThursday  Boolean @default(true)
+withdrawalFriday    Boolean @default(true)
+withdrawalSaturday  Boolean @default(false)
+withdrawalSunday    Boolean @default(false)
+
+withdrawalOpeningHour Int @default(9)
+withdrawalClosingHour Int @default(23)
+
+// =========================
+// PLATFORM SETTINGS
+// =========================
+
+maintenanceMode Boolean @default(false)
+
+adminTwoFactor Boolean @default(false)
+
+updatedAt DateTime @updatedAt
+}
+
+
+
+// =========================
+// AUDIT LOGS
+// =========================
+
+model AuditLog {
+  id String @id @default(cuid())
+
+  action AuditAction
+
+  // Admin who performed the action
+  adminId String?
+  admin   User? @relation(
+    "AuditAdmin",
+    fields: [adminId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  // User affected by the action
+  targetUserId String?
+  targetUser   User? @relation(
+    "AuditTarget",
+    fields: [targetUserId],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  description String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([action])
+  @@index([adminId])
+  @@index([targetUserId])
+  @@index([createdAt])
+}
