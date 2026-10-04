@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const MESSENGER_LINK = "https://www.facebook.com/share/1VD1Picnnp/";
+const MESSENGER_LINK = "https://www.facebook.com/share/1MQySnw6AS/?mibextid=wwXIfr";
 
 const DEFAULT_POSITION = {
   right: 18,
