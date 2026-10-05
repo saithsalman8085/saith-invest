@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { db } from "@/lib/prisma";
+
 import { requireAdmin } from "@/lib/admin";
 
 export async function GET(request: NextRequest) {
@@ -261,6 +263,132 @@ export async function PATCH(request: NextRequest) {
     }
 
     /*
+     * ADMIN BONUS
+     */
+    if (action === "BONUS") {
+      const amount = Number(body.amount);
+      const message = String(
+        body.message || ""
+      ).trim();
+
+      if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+      ) {
+        return NextResponse.json(
+          { error: "Bonus amount must be greater than 0." },
+          { status: 400 }
+        );
+      }
+
+      const bonusAmount = Number(
+        amount.toFixed(2)
+      );
+
+      if (bonusAmount <= 0) {
+        return NextResponse.json(
+          { error: "Invalid bonus amount." },
+          { status: 400 }
+        );
+      }
+
+      const transactions =
+        await db.orm.public.Transaction
+          .where((transaction) =>
+            transaction.userId.eq(userId)
+          )
+          .all();
+
+      let balance = 0;
+
+      const creditTypes = [
+        "DEPOSIT",
+        "DAILY_EARNING",
+        "REFERRAL_COMMISSION",
+        "ACTIVE_USER_REWARD",
+        "ADMIN_ADJUSTMENT",
+      ];
+
+      const debitTypes = [
+        "INVESTMENT",
+        "WITHDRAWAL",
+        "WITHDRAWAL_FEE",
+      ];
+
+      for (const transaction of transactions) {
+        if (transaction.status !== "COMPLETED") {
+          continue;
+        }
+
+        const transactionAmount =
+          Number(transaction.amountUSD);
+
+        if (
+          creditTypes.includes(
+            transaction.type
+          )
+        ) {
+          balance += transactionAmount;
+        }
+
+        if (
+          debitTypes.includes(
+            transaction.type
+          )
+        ) {
+          balance -= transactionAmount;
+        }
+      }
+
+      const balanceBefore = Number(
+        balance.toFixed(2)
+      );
+
+      const balanceAfter = Number(
+        (balanceBefore + bonusAmount).toFixed(2)
+      );
+
+      const transaction =
+        await db.orm.public.Transaction.create({
+          userId,
+          type: "ADMIN_ADJUSTMENT",
+          status: "COMPLETED",
+          amountUSD: bonusAmount,
+          balanceBefore,
+          balanceAfter,
+          referenceId: `ADMIN_BONUS_${Date.now()}_${userId}`,
+          description:
+            message ||
+            "ClaudeInvest ki taraf se apko bonus mila hai.",
+        } as any);
+
+      await db.orm.public.AuditLog.create({
+        action: "ADMIN_ADJUSTMENT",
+        adminId: admin.id,
+        targetUserId: userId,
+        description:
+          "Bonus sent to user by administrator.",
+        metadata: {
+          type: "BONUS",
+          amountUSD: bonusAmount,
+          message:
+            message ||
+            "ClaudeInvest ki taraf se apko bonus mila hai.",
+          balanceBefore,
+          balanceAfter,
+          transactionId: transaction.id,
+        },
+      } as any);
+
+      return NextResponse.json({
+        success: true,
+        message: "Bonus sent successfully.",
+        transactionId: transaction.id,
+        amountUSD: bonusAmount,
+      });
+    }
+
+    /*
      * USER STATUS ACTION
      */
     if (
@@ -317,7 +445,10 @@ export async function PATCH(request: NextRequest) {
       message: description,
     });
   } catch (error) {
-    console.error("ADMIN_USERS_PATCH_ERROR:", error);
+    console.error(
+      "ADMIN_USERS_PATCH_ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {

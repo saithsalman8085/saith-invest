@@ -53,12 +53,14 @@ function ActionButtons({
   onStatusChange,
   onResetPassword,
   onEdit,
+  onBonus,
 }: {
   user: User;
   loading: string | null;
   onStatusChange: (user: User, action: string) => void;
   onResetPassword: (user: User) => void;
   onEdit: (user: User) => void;
+  onBonus: (user: User) => void;
 }) {
   if (user.role === "ADMIN") {
     return (
@@ -76,6 +78,14 @@ function ActionButtons({
         className="rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-semibold text-blue-400 transition hover:bg-blue-500/20 disabled:opacity-50"
       >
         Edit
+      </button>
+
+      <button
+        onClick={() => onBonus(user)}
+        disabled={loading === user.id}
+        className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
+      >
+        Bonus
       </button>
 
       {user.status === "ACTIVE" && (
@@ -396,6 +406,80 @@ export default function AdminUsersPage() {
     );
   }
 
+  async function onBonus(user: User) {
+    const amountInput = window.prompt(
+      `Bonus amount for ${user.fullName}:`
+    );
+
+    if (amountInput === null) {
+      return;
+    }
+
+    const amount = Number(amountInput);
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      setError(
+        "Please enter a valid bonus amount."
+      );
+      return;
+    }
+
+    const messageInput = window.prompt(
+      "Optional bonus message (Cancel to use default message):"
+    );
+
+    const message =
+      messageInput === null
+        ? ""
+        : messageInput.trim();
+
+    try {
+      setLoading(user.id);
+      setMessage("");
+      setError("");
+
+      const response = await fetch(
+        "/api/admin/users",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.id,
+            action: "BONUS",
+            amount,
+            message,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            "Unable to send bonus."
+        );
+      }
+
+      setMessage(
+        data.message ||
+          "Bonus sent successfully."
+      );
+
+      await loadUsers();
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to send bonus."
+      );
+    } finally {
+      setLoading(null);
+    }
+  }
+
   const filteredUsers = useMemo(() => {
     const value = search
       .trim()
@@ -436,7 +520,7 @@ export default function AdminUsersPage() {
 
           <p className="mt-2 text-sm text-slate-400">
             Search users, manage account status,
-            edit details, and reset passwords.
+            edit details, reset passwords, and send bonuses.
           </p>
         </div>
 
@@ -714,6 +798,7 @@ export default function AdminUsersPage() {
                                 onResetPassword
                               }
                               onEdit={onEdit}
+                              onBonus={onBonus}
                             />
                           </td>
                         </tr>
@@ -782,6 +867,7 @@ export default function AdminUsersPage() {
                           onResetPassword
                         }
                         onEdit={onEdit}
+                        onBonus={onBonus}
                       />
                     </div>
                   </div>

@@ -33,11 +33,12 @@ export async function GET() {
     let totalEarnings = 0;
 
     const creditTypes = [
-      "DEPOSIT",
-      "DAILY_EARNING",
-      "REFERRAL_COMMISSION",
-      "ACTIVE_USER_REWARD",
-    ];
+  "DEPOSIT",
+  "DAILY_EARNING",
+  "REFERRAL_COMMISSION",
+  "ACTIVE_USER_REWARD",
+  "ADMIN_ADJUSTMENT",
+];
 
     const debitTypes = [
       "INVESTMENT",
