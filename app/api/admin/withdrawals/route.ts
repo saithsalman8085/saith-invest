@@ -12,7 +12,6 @@ const CREDIT_TYPES = [
 const DEBIT_TYPES = [
   "INVESTMENT",
   "WITHDRAWAL",
-  "WITHDRAWAL_FEE",
 ];
 
 function calculateBalance(transactions: any[]) {
@@ -219,9 +218,6 @@ export async function PATCH(
       withdrawal.feeUSD
     );
 
-    const totalDeduction =
-      requestedAmount + feeAmount;
-
     if (
       !Number.isFinite(requestedAmount) ||
       requestedAmount <= 0
@@ -248,7 +244,7 @@ export async function PATCH(
       );
     }
 
-    if (balance < totalDeduction) {
+    if (balance < requestedAmount) {
       return NextResponse.json(
         {
           error:
@@ -296,10 +292,10 @@ export async function PATCH(
     }
 
     const balanceAfterWithdrawal =
-      balance - requestedAmount;
+  balance - requestedAmount;
 
-    const balanceAfterFee =
-      balanceAfterWithdrawal - feeAmount;
+const balanceAfterFee =
+  balanceAfterWithdrawal;
 
     await db.orm.public.Transaction.create({
       userId: withdrawal.userId,
