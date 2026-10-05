@@ -746,7 +746,8 @@ export default function WithdrawPage() {
                     <input
                       type="number"
                       min="1"
-                      step="0.01"
+                       max="2000"
+                       step="0.01"
                       value={amount}
                       onChange={(e) => {
                         setAmount(

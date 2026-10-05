@@ -244,7 +244,7 @@ export default function DepositPage() {
 
           <Link
             href="/withdraw"
-            className="rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-center text-xs font-semibold transition hover:border-cyan-500 sm:rounded-xl sm:px-5 sm:py-3 sm:text-sm"
+            className="rounded-lg border border-blue-500/40 bg-blue-500/10 px-4 py-2.5 text-center text-xs font-semibold text-blue-400 transition hover:border-blue-400 hover:bg-blue-500/20 hover:text-blue-300 sm:rounded-xl sm:px-5 sm:py-3 sm:text-sm"
           >
             Go to Withdrawal
           </Link>

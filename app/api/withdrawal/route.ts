@@ -25,6 +25,22 @@ function isWithdrawalTimeAllowed(
   return hours >= openingHour && hours < closingHour;
 }
 
+function getPakistanDayRange() {
+  const now = new Date();
+
+  const pakistanDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Karachi",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now);
+
+  const start = new Date(`${pakistanDate}T00:00:00+05:00`);
+  const end = new Date(`${pakistanDate}T23:59:59.999+05:00`);
+
+  return { start, end };
+}
+
 export async function POST(request: NextRequest) {
   try {
     const userId = await getCurrentUserId();
@@ -148,12 +164,50 @@ export async function POST(request: NextRequest) {
 
     const amountUSD = Number(body.amountUSD);
 
+    // Minimum $1 and maximum $2,000 per withdrawal
     if (
       !Number.isFinite(amountUSD) ||
-      amountUSD <= 0
+      amountUSD < 1 ||
+      amountUSD > 2000
     ) {
       return NextResponse.json(
-        { error: "Enter a valid withdrawal amount." },
+        {
+          error:
+            "Withdrawal amount must be between $1 and $2,000.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Only 1 withdrawal per user per Pakistan calendar day
+    const { start, end } = getPakistanDayRange();
+
+    const withdrawals =
+      await db.orm.public.Withdrawal
+        .where((withdrawal) =>
+          withdrawal.userId.eq(userId)
+        )
+        .all();
+
+    const alreadyWithdrawnToday =
+  withdrawals.some((withdrawal) => {
+    const requestedAt = new Date(
+      String(withdrawal.requestedAt)
+    );
+
+    return (
+      requestedAt >= start &&
+      requestedAt <= end &&
+      String(withdrawal.status) !== "CANCELLED"
+    );
+  });
+
+    if (alreadyWithdrawnToday) {
+      return NextResponse.json(
+        {
+          error:
+            "You can make only 1 withdrawal per day. Please try again tomorrow.",
+        },
         { status: 400 }
       );
     }
