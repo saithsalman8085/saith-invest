@@ -1,6 +1,12 @@
+import "temporal-polyfill/full/global";
+
+const Temporal = (globalThis as any).Temporal;
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
+
+const now = () => Temporal.Now.plainDateTimeISO();
 
 const CREDIT_TYPES = [
   "DEPOSIT",
@@ -176,7 +182,7 @@ export async function PATCH(
         )
         .update({
           status: "REJECTED",
-          rejectedAt: new Date(),
+          rejectedAt: Temporal.Now.plainDateTimeISO(),
           reviewedById: admin.id,
           rejectionReason,
         } as any);
@@ -334,7 +340,7 @@ const balanceAfterFee =
       )
       .update({
         status: "APPROVED",
-        approvedAt: new Date(),
+        approvedAt: Temporal.Now.plainDateTimeISO(),
         reviewedById: admin.id,
       } as any);
 
