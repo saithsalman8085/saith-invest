@@ -40,6 +40,87 @@ function getPakistanDayRange() {
 
   return { start, end };
 }
+export async function GET() {
+  try {
+    const userId = await getCurrentUserId();
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "Unauthorized." },
+        { status: 401 }
+      );
+    }
+
+    const withdrawals =
+      await db.orm.public.Withdrawal
+        .where((withdrawal) =>
+          withdrawal.userId.eq(userId)
+        )
+        .all();
+
+    const history = withdrawals
+      .sort((a, b) => {
+        const dateA = new Date(
+          String(a.requestedAt)
+        ).getTime();
+
+        const dateB = new Date(
+          String(b.requestedAt)
+        ).getTime();
+
+        return dateB - dateA;
+      })
+      .map((withdrawal) => ({
+        id: withdrawal.id,
+        amountUSD: Number(withdrawal.amountUSD),
+        feePercent: Number(withdrawal.feePercent),
+        feeUSD: Number(withdrawal.feeUSD),
+        netAmountUSD: Number(
+          withdrawal.netAmountUSD
+        ),
+        exchangeRate: Number(
+          withdrawal.exchangeRate
+        ),
+        payoutPKR: Number(
+          withdrawal.payoutPKR
+        ),
+        status: String(withdrawal.status),
+        requestedAt: String(
+          withdrawal.requestedAt
+        ),
+        approvedAt: withdrawal.approvedAt
+          ? String(withdrawal.approvedAt)
+          : null,
+        rejectedAt: withdrawal.rejectedAt
+          ? String(withdrawal.rejectedAt)
+          : null,
+        rejectionReason:
+          withdrawal.rejectionReason
+            ? String(
+                withdrawal.rejectionReason
+              )
+            : null,
+      }));
+
+    return NextResponse.json({
+      success: true,
+      withdrawals: history,
+    });
+  } catch (error) {
+    console.error(
+      "WITHDRAWAL_GET_ERROR:",
+      error
+    );
+
+    return NextResponse.json(
+      {
+        error:
+          "Unable to load withdrawal history.",
+      },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -198,7 +279,8 @@ export async function POST(request: NextRequest) {
     return (
       requestedAt >= start &&
       requestedAt <= end &&
-      String(withdrawal.status) !== "CANCELLED"
+      String(withdrawal.status) !== "CANCELLED" &&
+String(withdrawal.status) !== "REJECTED"
     );
   });
 
@@ -282,10 +364,9 @@ export async function POST(request: NextRequest) {
     ];
 
     const debitTypes = [
-      "WITHDRAWAL",
-      "WITHDRAWAL_FEE",
-      "INVESTMENT",
-    ];
+  "WITHDRAWAL",
+  "INVESTMENT",
+];
 
     for (const transaction of transactions) {
       if (

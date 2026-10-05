@@ -32,6 +32,21 @@ type PlatformSettings = {
   maintenanceMode: boolean;
 };
 
+type WithdrawalHistoryItem = {
+  id: string;
+  amountUSD: number;
+  feePercent: number;
+  feeUSD: number;
+  netAmountUSD: number;
+  exchangeRate: number;
+  payoutPKR: number;
+  status: string;
+  requestedAt: string;
+  approvedAt: string | null;
+  rejectedAt: string | null;
+  rejectionReason: string | null;
+};
+
 const DEFAULT_SETTINGS: PlatformSettings = {
   exchangeRate: 300,
   withdrawalFee: 8,
@@ -69,6 +84,9 @@ export default function WithdrawPage() {
   const [kycProfile, setKycProfile] =
     useState<KycProfile | null>(null);
 
+  const [withdrawalHistory, setWithdrawalHistory] =
+    useState<WithdrawalHistoryItem[]>([]);
+
   const [loadingBalance, setLoadingBalance] =
     useState(true);
 
@@ -76,6 +94,9 @@ export default function WithdrawPage() {
     useState(true);
 
   const [loadingSettings, setLoadingSettings] =
+    useState(true);
+
+  const [loadingHistory, setLoadingHistory] =
     useState(true);
 
   const [savingKyc, setSavingKyc] =
@@ -120,6 +141,32 @@ export default function WithdrawPage() {
     settings.exchangeRate,
   ]);
 
+  async function loadWithdrawalHistory() {
+    try {
+      setLoadingHistory(true);
+
+      const response = await fetch(
+        "/api/withdrawal",
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setWithdrawalHistory(
+          data.withdrawals || []
+        );
+      }
+    } catch {
+      // History failure should not break withdrawal page.
+    } finally {
+      setLoadingHistory(false);
+    }
+  }
+
   useEffect(() => {
     async function loadData() {
       try {
@@ -131,6 +178,7 @@ export default function WithdrawPage() {
           walletResponse,
           kycResponse,
           settingsResponse,
+          withdrawalResponse,
         ] = await Promise.all([
           fetch("/api/wallet", {
             method: "GET",
@@ -146,6 +194,11 @@ export default function WithdrawPage() {
             method: "GET",
             cache: "no-store",
           }),
+
+          fetch("/api/withdrawal", {
+            method: "GET",
+            cache: "no-store",
+          }),
         ]);
 
         const walletData =
@@ -156,6 +209,9 @@ export default function WithdrawPage() {
 
         const settingsData =
           await settingsResponse.json();
+
+        const withdrawalData =
+          await withdrawalResponse.json();
 
         if (!walletResponse.ok) {
           setError(
@@ -280,6 +336,12 @@ export default function WithdrawPage() {
               ),
           });
         }
+
+        if (withdrawalResponse.ok) {
+          setWithdrawalHistory(
+            withdrawalData.withdrawals || []
+          );
+        }
       } catch {
         setError(
           "Unable to load withdrawal information."
@@ -288,6 +350,7 @@ export default function WithdrawPage() {
         setLoadingBalance(false);
         setLoadingKyc(false);
         setLoadingSettings(false);
+        setLoadingHistory(false);
       }
     }
 
@@ -460,6 +523,8 @@ export default function WithdrawPage() {
           )
         );
       }
+
+      await loadWithdrawalHistory();
     } catch {
       setError(
         "Unable to submit withdrawal request."
@@ -489,6 +554,40 @@ export default function WithdrawPage() {
     settings.withdrawalSunday &&
       "Sunday",
   ].filter(Boolean) as string[];
+
+  function getStatusClass(status: string) {
+    const normalized =
+      status.toUpperCase();
+
+    if (normalized === "APPROVED") {
+      return "border-emerald-500/20 bg-emerald-500/10 text-emerald-400";
+    }
+
+    if (normalized === "REJECTED") {
+      return "border-red-500/20 bg-red-500/10 text-red-400";
+    }
+
+    return "border-amber-500/20 bg-amber-500/10 text-amber-400";
+  }
+
+  function formatStatus(status: string) {
+    return status
+      .toLowerCase()
+      .replace(
+        /^./,
+        (letter) => letter.toUpperCase()
+      );
+  }
+
+  function formatDate(date: string) {
+    try {
+      return new Date(
+        date
+      ).toLocaleString();
+    } catch {
+      return date;
+    }
+  }
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-slate-950 pb-24 text-white">
@@ -746,8 +845,8 @@ export default function WithdrawPage() {
                     <input
                       type="number"
                       min="1"
-                       max="2000"
-                       step="0.01"
+                      max="2000"
+                      step="0.01"
                       value={amount}
                       onChange={(e) => {
                         setAmount(
@@ -850,6 +949,173 @@ export default function WithdrawPage() {
             </section>
 
             <aside className="space-y-4 lg:col-span-2">
+
+              {/* Withdrawal History */}
+
+              <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 sm:p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] text-slate-500">
+                      Wallet
+                    </p>
+
+                    <h2 className="mt-1 text-lg font-semibold">
+                      Withdrawal History
+                    </h2>
+                  </div>
+
+                  <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 text-[10px] text-cyan-400">
+                    {withdrawalHistory.length} Requests
+                  </span>
+                </div>
+
+                <div className="mt-5">
+                  {loadingHistory ? (
+                    <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 text-center text-xs text-slate-500">
+                      Loading withdrawal history...
+                    </div>
+                  ) : withdrawalHistory.length === 0 ? (
+                    <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-center">
+                      <p className="text-sm font-medium text-slate-400">
+                        No withdrawal history yet.
+                      </p>
+
+                      <p className="mt-1 text-[11px] text-slate-600">
+                        Your withdrawal requests will appear here.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="max-h-[600px] space-y-3 overflow-y-auto pr-1">
+                      {withdrawalHistory.map(
+                        (withdrawal) => {
+                          const status =
+                            String(
+                              withdrawal.status
+                            ).toUpperCase();
+
+                          return (
+                            <div
+                              key={
+                                withdrawal.id
+                              }
+                              className="rounded-xl border border-slate-800 bg-slate-950 p-4"
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div>
+                                  <p className="text-sm font-semibold">
+                                    $
+                                    {Number(
+                                      withdrawal.amountUSD
+                                    ).toFixed(2)}
+                                  </p>
+
+                                  <p className="mt-1 text-[10px] text-slate-600">
+                                    {formatDate(
+                                      withdrawal.requestedAt
+                                    )}
+                                  </p>
+                                </div>
+
+                                <span
+                                  className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold ${getStatusClass(
+                                    status
+                                  )}`}
+                                >
+                                  {formatStatus(
+                                    status
+                                  )}
+                                </span>
+                              </div>
+
+                              <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
+
+                                <div>
+                                  <p className="text-slate-600">
+                                    Fee
+                                  </p>
+
+                                  <p className="mt-1 text-red-400">
+                                    -$
+                                    {Number(
+                                      withdrawal.feeUSD
+                                    ).toFixed(2)}
+                                  </p>
+                                </div>
+
+                                <div>
+                                  <p className="text-slate-600">
+                                    Net Amount
+                                  </p>
+
+                                  <p className="mt-1 text-cyan-400">
+                                    $
+                                    {Number(
+                                      withdrawal.netAmountUSD
+                                    ).toFixed(2)}
+                                  </p>
+                                </div>
+
+                                <div>
+                                  <p className="text-slate-600">
+                                    Exchange Rate
+                                  </p>
+
+                                  <p className="mt-1">
+                                    {Number(
+                                      withdrawal.exchangeRate
+                                    )}{" "}
+                                    PKR
+                                  </p>
+                                </div>
+
+                                <div>
+                                  <p className="text-slate-600">
+                                    PKR Payout
+                                  </p>
+
+                                  <p className="mt-1 font-semibold text-emerald-400">
+                                    PKR{" "}
+                                    {Number(
+                                      withdrawal.payoutPKR
+                                    ).toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {status ===
+                                "REJECTED" &&
+                                withdrawal.rejectionReason && (
+                                  <div className="mt-4 rounded-lg border border-red-900/40 bg-red-950/20 p-3">
+                                    <p className="text-[10px] font-semibold text-red-400">
+                                      Rejection Reason
+                                    </p>
+
+                                    <p className="mt-1 text-[11px] text-red-300/80">
+                                      {
+                                        withdrawal.rejectionReason
+                                      }
+                                    </p>
+                                  </div>
+                                )}
+
+                              {status ===
+                                "APPROVED" &&
+                                withdrawal.approvedAt && (
+                                  <p className="mt-3 text-[10px] text-emerald-500/70">
+                                    Approved:{" "}
+                                    {formatDate(
+                                      withdrawal.approvedAt
+                                    )}
+                                  </p>
+                                )}
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {/* Schedule */}
 
@@ -964,6 +1230,7 @@ export default function WithdrawPage() {
                   details are locked for security.
                 </p>
               </div>
+
             </aside>
           </div>
 
