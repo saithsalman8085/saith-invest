@@ -361,6 +361,7 @@ String(withdrawal.status) !== "REJECTED"
       "DAILY_EARNING",
       "REFERRAL_COMMISSION",
       "ACTIVE_USER_REWARD",
+      "ADMIN_ADJUSTMENT",
     ];
 
     const debitTypes = [
