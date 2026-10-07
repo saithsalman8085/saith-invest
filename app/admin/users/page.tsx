@@ -878,7 +878,7 @@ export default function AdminUsersPage() {
         )}
 
         <footer className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-slate-600">
-          ClaudeInvest Admin • 2026
+          ClaudeInvest Admin • 2025
         </footer>
       </div>
     </main>

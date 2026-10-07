@@ -1,18 +1,76 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
 
+type ReferralData = {
+  success: boolean;
+  user: {
+    referralCode: string;
+  };
+  stats: {
+    totalInvites: number;
+    activeUsers: number;
+    referralEarnings: number;
+    totalNetwork: number;
+  };
+  levels: {
+    level1: number;
+    level2: number;
+    level3: number;
+  };
+};
+
 export default function InvitePage() {
   const [copied, setCopied] = useState(false);
 
-  const inviteCode = "SAITH-USER";
-  const inviteLink = `https://claudeinvest.com/register?ref=${inviteCode}`;
+  const [data, setData] = useState<ReferralData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadReferralData() {
+      try {
+        const response = await fetch("/api/referrals", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          setData(result);
+        }
+      } catch (error) {
+        console.error("REFERRAL_PAGE_ERROR:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadReferralData();
+  }, []);
+
+  const inviteCode = data?.user?.referralCode || "...";
+
+  const inviteLink = data?.user?.referralCode
+    ? `https://claude-invest-nine.vercel.app/register?ref=${data.user.referralCode}`
+    : "...";
+
+  const totalInvites = data?.stats?.totalInvites ?? 0;
+  const activeUsers = data?.stats?.activeUsers ?? 0;
+  const referralEarnings = data?.stats?.referralEarnings ?? 0;
+  const totalNetwork = data?.stats?.totalNetwork ?? 0;
+
+  const level1 = data?.levels?.level1 ?? 0;
+  const level2 = data?.levels?.level2 ?? 0;
+  const level3 = data?.levels?.level3 ?? 0;
 
   async function copyText(text: string) {
+    if (!text || text === "...") return;
+
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -84,14 +142,15 @@ export default function InvitePage() {
                 <div className="mt-1.5 flex items-center gap-1.5 sm:mt-2 sm:gap-2">
                   <div className="min-w-0 flex-1 rounded-md border border-slate-800 bg-slate-900 px-2.5 py-2 sm:rounded-lg sm:px-3 sm:py-2.5">
                     <p className="truncate text-center text-[11px] font-bold tracking-wider text-cyan-400 sm:text-sm">
-                      {inviteCode}
+                      {loading ? "Loading..." : inviteCode}
                     </p>
                   </div>
 
                   <button
                     type="button"
                     onClick={() => copyText(inviteCode)}
-                    className="rounded-md bg-cyan-500 px-2.5 py-2 text-[10px] font-semibold text-slate-950 transition hover:bg-cyan-400 sm:rounded-lg sm:px-3 sm:py-2.5 sm:text-xs"
+                    disabled={loading || inviteCode === "..."}
+                    className="rounded-md bg-cyan-500 px-2.5 py-2 text-[10px] font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-lg sm:px-3 sm:py-2.5 sm:text-xs"
                   >
                     Copy
                   </button>
@@ -110,7 +169,7 @@ export default function InvitePage() {
 
                 <div className="mt-1.5 rounded-md border border-slate-800 bg-slate-950 px-2.5 py-2 sm:mt-2 sm:rounded-lg sm:px-3 sm:py-2.5">
                   <p className="truncate text-[9px] text-slate-400 sm:text-[11px]">
-                    {inviteLink}
+                    {loading ? "Loading..." : inviteLink}
                   </p>
                 </div>
               </div>
@@ -118,7 +177,8 @@ export default function InvitePage() {
               <button
                 type="button"
                 onClick={() => copyText(inviteLink)}
-                className="rounded-md border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-[10px] font-semibold text-cyan-400 transition hover:bg-cyan-400/20 sm:rounded-lg sm:px-4 sm:py-2.5 sm:text-xs"
+                disabled={loading || inviteLink === "..."}
+                className="rounded-md border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-[10px] font-semibold text-cyan-400 transition hover:bg-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-lg sm:px-4 sm:py-2.5 sm:text-xs"
               >
                 Copy Link
               </button>
@@ -139,7 +199,7 @@ export default function InvitePage() {
               </p>
 
               <p className="mt-0.5 text-base font-bold sm:mt-1 sm:text-xl">
-                0
+                {loading ? "..." : totalInvites}
               </p>
             </div>
 
@@ -149,7 +209,7 @@ export default function InvitePage() {
               </p>
 
               <p className="mt-0.5 text-base font-bold text-cyan-400 sm:mt-1 sm:text-xl">
-                0
+                {loading ? "..." : activeUsers}
               </p>
             </div>
 
@@ -159,7 +219,7 @@ export default function InvitePage() {
               </p>
 
               <p className="mt-0.5 text-base font-bold text-emerald-400 sm:mt-1 sm:text-xl">
-                $0.00
+                {loading ? "..." : `$${referralEarnings.toFixed(2)}`}
               </p>
             </div>
           </div>
@@ -249,7 +309,7 @@ export default function InvitePage() {
                 </p>
 
                 <span className="mt-1 rounded-full border border-slate-800 bg-slate-950 px-1.5 py-0.5 text-[7px] text-slate-500 sm:mt-2 sm:px-2.5 sm:py-1 sm:text-[10px]">
-                  0 Members
+                  {loading ? "..." : `${totalNetwork} Members`}
                 </span>
               </div>
 
@@ -260,7 +320,7 @@ export default function InvitePage() {
                   </p>
 
                   <p className="mt-0.5 text-base font-bold sm:mt-1 sm:text-lg">
-                    0
+                    {loading ? "..." : level1}
                   </p>
                 </div>
 
@@ -270,7 +330,7 @@ export default function InvitePage() {
                   </p>
 
                   <p className="mt-0.5 text-base font-bold sm:mt-1 sm:text-lg">
-                    0
+                    {loading ? "..." : level2}
                   </p>
                 </div>
 
@@ -280,7 +340,7 @@ export default function InvitePage() {
                   </p>
 
                   <p className="mt-0.5 text-base font-bold sm:mt-1 sm:text-lg">
-                    0
+                    {loading ? "..." : level3}
                   </p>
                 </div>
               </div>
