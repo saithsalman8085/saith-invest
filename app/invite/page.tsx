@@ -33,7 +33,7 @@ export default function InvitePage() {
   useEffect(() => {
     async function loadReferralData() {
       try {
-        const response = await fetch("/api/referrals", {
+        const response = await fetch("/api/invite", {
           method: "GET",
           cache: "no-store",
         });
