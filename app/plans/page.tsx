@@ -208,7 +208,7 @@ export default function PlansPage() {
                       </div>
 
                       {/* Content */}
-                      <div className="px-4 pb-6 pt-20 sm:px-8 sm:pb-8 sm:pt-24">
+                      <div className="px-4 pb-4 pt-16 sm:px-8 sm:pb-6 sm:pt-20">
                         {/* Plan name */}
                         <h2 className="pr-12 text-[27px] font-bold leading-tight text-[#171717] sm:pr-16 sm:text-4xl">
                           {plan.name}
@@ -290,11 +290,6 @@ export default function PlansPage() {
                           {/* Plan name */}
                           <span className="rounded-xl bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-3.5 py-2.5 text-base font-bold text-[#68451b] shadow-sm sm:px-5 sm:py-3 sm:text-2xl">
                             {plan.name}
-                          </span>
-
-                          {/* Profit */}
-                          <span className="text-[40px] font-medium leading-none text-[#d71919] sm:text-[52px]">
-                            ${profit.toLocaleString()}
                           </span>
                         </div>
 
