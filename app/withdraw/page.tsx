@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -72,9 +71,7 @@ export default function WithdrawPage() {
   const [balance, setBalance] = useState(0);
 
   const [settings, setSettings] =
-    useState<PlatformSettings>(
-      DEFAULT_SETTINGS
-    );
+    useState<PlatformSettings>(DEFAULT_SETTINGS);
 
   const [cnicNumber, setCnicNumber] = useState("");
   const [easypaisaNumber, setEasypaisaNumber] =
@@ -591,55 +588,60 @@ export default function WithdrawPage() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
+    <main className="min-h-screen overflow-x-hidden bg-[#fffdf9] pb-24 text-black">
       <section className="px-3 py-4 sm:px-5 sm:py-6">
         <div className="mx-auto max-w-6xl">
 
-          <header className="mb-5 rounded-2xl border border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-5">
-            <div className="flex items-center justify-between gap-4">
-              <div className="min-w-0">
-                <Link
-                  href="/"
-                  className="text-lg font-bold text-yellow-600 sm:text-xl"
-                >
-                  ClaudeInvest
-                </Link>
+          {/* HEADER */}
+          <header className="mb-5 overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-sm">
+            <div className="border-b border-yellow-100 bg-gradient-to-r from-yellow-50 to-orange-50 px-4 py-4 sm:px-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <Link
+                    href="/"
+                    className="text-lg font-bold text-yellow-600 sm:text-xl"
+                  >
+                    ClaudeInvest
+                  </Link>
 
-                <p className="mt-2 text-xs text-yellow-600">
-                  Wallet
-                </p>
+                  <p className="mt-2 text-xs font-medium text-yellow-600">
+                    Wallet
+                  </p>
 
-                <h1 className="mt-1 text-xl font-bold sm:text-2xl">
-                  Withdraw Funds
-                </h1>
+                  <h1 className="mt-1 text-xl font-bold sm:text-2xl">
+                    Withdraw Funds
+                  </h1>
 
-                <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-                  Withdraw your available USD balance to Easypaisa in PKR.
-                </p>
+                  <p className="mt-1 text-xs text-gray-500 sm:text-sm">
+                    Withdraw your available USD balance to Easypaisa in PKR.
+                  </p>
+                </div>
+
+                <MainNav />
               </div>
-
-              <MainNav />
             </div>
           </header>
 
-          <div className="mb-3 grid grid-cols-2 gap-2.5">
+          {/* WALLET TABS */}
+          <div className="mb-4 grid grid-cols-2 gap-2.5">
             <Link
               href="/deposit"
-              className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-center text-xs font-semibold text-gray-600 transition hover:border-yellow-400 hover:bg-yellow-50 hover:text-black"
+              className="rounded-xl border border-yellow-200 bg-white px-4 py-3 text-center text-xs font-semibold text-gray-600 transition hover:border-yellow-400 hover:bg-yellow-50 hover:text-black"
             >
               Deposit
             </Link>
 
             <Link
               href="/withdraw"
-              className="rounded-xl border border-yellow-400 bg-yellow-50 px-4 py-3 text-center text-xs font-semibold text-yellow-700"
+              className="rounded-xl border border-yellow-400 bg-yellow-400 px-4 py-3 text-center text-xs font-bold text-black shadow-sm"
             >
               Withdraw
             </Link>
           </div>
 
+          {/* MAINTENANCE */}
           {settings.maintenanceMode && (
-            <div className="mb-4 rounded-2xl border border-yellow-200 bg-yellow-50 px-4 py-4 text-sm text-yellow-800">
+            <div className="mb-4 rounded-2xl border border-yellow-300 bg-yellow-50 px-4 py-4 text-sm text-yellow-800 shadow-sm">
               <p className="font-semibold">
                 Maintenance Mode
               </p>
@@ -653,36 +655,47 @@ export default function WithdrawPage() {
 
           <div className="grid gap-4 lg:grid-cols-5">
 
-            <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6 lg:col-span-3">
+            {/* WITHDRAWAL FORM */}
+            <section className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_5px_25px_rgba(234,179,8,0.10)] lg:col-span-3">
 
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-[11px] text-gray-500">
-                    Withdrawal
-                  </p>
+              {/* FORM HEADER */}
+              <div className="border-b border-yellow-200 bg-gradient-to-r from-yellow-100 via-yellow-50 to-orange-50 p-4 sm:p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-medium text-yellow-700">
+                      Withdrawal
+                    </p>
 
-                  <h2 className="mt-1 text-lg font-semibold sm:text-xl">
-                    Withdrawal Request
-                  </h2>
+                    <h2 className="mt-1 text-lg font-bold sm:text-xl">
+                      Withdrawal Request
+                    </h2>
+                  </div>
+
+                  <span className="rounded-full border border-yellow-300 bg-white px-2.5 py-1 text-[10px] font-bold text-yellow-700">
+                    USD → PKR
+                  </span>
                 </div>
-
-                <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2.5 py-1 text-[10px] text-yellow-700">
-                  USD → PKR
-                </span>
               </div>
 
               <form
                 onSubmit={handleSubmit}
-                className="mt-6 space-y-5"
+                className="space-y-5 p-4 sm:p-6"
               >
 
-                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                {/* BALANCE */}
+                <div className="rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-xs text-gray-500">
-                      Available Balance
-                    </span>
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-wide text-yellow-700 sm:text-xs">
+                        Available Balance
+                      </p>
 
-                    <span className="text-xl font-bold text-yellow-600">
+                      <p className="mt-1 text-[9px] text-gray-500 sm:text-xs">
+                        Amount available for withdrawal
+                      </p>
+                    </div>
+
+                    <span className="text-xl font-extrabold text-yellow-600 sm:text-2xl">
                       {loadingBalance
                         ? "Loading..."
                         : `$${balance.toFixed(2)}`}
@@ -690,12 +703,14 @@ export default function WithdrawPage() {
                   </div>
                 </div>
 
+                {/* ERROR */}
                 {error && (
                   <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-600">
                     {error}
                   </div>
                 )}
 
+                {/* SUCCESS */}
                 {message && (
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-600">
                     {message}
@@ -703,29 +718,28 @@ export default function WithdrawPage() {
                 )}
 
                 {/* KYC */}
-
-                <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
+                <div className="rounded-2xl border border-yellow-200 bg-yellow-50/40 p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <p className="text-[11px] text-gray-500">
+                      <p className="text-[11px] font-medium text-yellow-700">
                         Withdrawal Verification
                       </p>
 
-                      <h3 className="mt-1 text-sm font-semibold">
+                      <h3 className="mt-1 text-sm font-bold">
                         KYC / Payout Details
                       </h3>
                     </div>
 
                     {loadingKyc ? (
-                      <span className="rounded-full border border-gray-300 px-2.5 py-1 text-[10px] text-gray-500">
+                      <span className="rounded-full border border-gray-300 bg-white px-2.5 py-1 text-[10px] text-gray-500">
                         Loading...
                       </span>
                     ) : kycLocked ? (
-                      <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-600">
+                      <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600">
                         LOCKED
                       </span>
                     ) : (
-                      <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2.5 py-1 text-[10px] font-semibold text-yellow-700">
+                      <span className="rounded-full border border-yellow-300 bg-yellow-100 px-2.5 py-1 text-[10px] font-bold text-yellow-700">
                         REQUIRED
                       </span>
                     )}
@@ -752,7 +766,7 @@ export default function WithdrawPage() {
                           savingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
+                        className={inputClass}
                       />
                     </div>
 
@@ -775,7 +789,7 @@ export default function WithdrawPage() {
                           savingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
+                        className={inputClass}
                       />
                     </div>
 
@@ -798,22 +812,20 @@ export default function WithdrawPage() {
                           savingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
+                        className={inputClass}
                       />
                     </div>
 
                     {!kycLocked && (
                       <button
                         type="button"
-                        onClick={
-                          handleSaveKyc
-                        }
+                        onClick={handleSaveKyc}
                         disabled={
                           savingKyc ||
                           loadingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl bg-yellow-400 px-5 py-3 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="w-full rounded-xl bg-yellow-400 px-5 py-3 text-sm font-bold text-black shadow-sm transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {savingKyc
                           ? "Saving..."
@@ -831,82 +843,86 @@ export default function WithdrawPage() {
                   </div>
                 </div>
 
-                {/* Amount */}
+                {/* AMOUNT */}
+                <div className="rounded-2xl border border-gray-200 bg-white">
+                  <div className="border-b border-yellow-100 bg-yellow-50/70 px-4 py-3">
+                    <label className="text-sm font-bold text-gray-800">
+                      Withdrawal Amount (USD)
+                    </label>
+                  </div>
 
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
-                    Withdrawal Amount (USD)
-                  </label>
+                  <div className="p-4">
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold text-yellow-600">
+                        $
+                      </span>
 
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                      $
-                    </span>
-
-                    <input
-                      type="number"
-                      min="1"
-                      max="2000"
-                      step="0.01"
-                      value={amount}
-                      onChange={(e) => {
-                        setAmount(
-                          e.target.value
-                        );
-                        setError("");
-                        setMessage("");
-                      }}
-                      placeholder="Enter amount"
-                      disabled={
-                        submitting ||
-                        loadingBalance ||
-                        loadingSettings ||
-                        !kycLocked ||
-                        settings.maintenanceMode
-                      }
-                      className="w-full rounded-xl border border-gray-300 bg-white py-3 pl-9 pr-4 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
-                    />
+                      <input
+                        type="number"
+                        min="1"
+                        max="2000"
+                        step="0.01"
+                        value={amount}
+                        onChange={(e) => {
+                          setAmount(
+                            e.target.value
+                          );
+                          setError("");
+                          setMessage("");
+                        }}
+                        placeholder="Enter amount"
+                        disabled={
+                          submitting ||
+                          loadingBalance ||
+                          loadingSettings ||
+                          !kycLocked ||
+                          settings.maintenanceMode
+                        }
+                        className="w-full rounded-xl border-2 border-gray-200 bg-white py-3.5 pl-9 pr-4 text-sm font-medium text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:ring-4 focus:ring-yellow-100 disabled:cursor-not-allowed disabled:opacity-60"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Calculation */}
+                {/* CALCULATION */}
+                <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-yellow-50">
+                  <div className="border-b border-yellow-200 bg-yellow-100/70 px-4 py-3 sm:px-5">
+                    <h3 className="text-sm font-bold">
+                      Withdrawal Summary
+                    </h3>
+                  </div>
 
-                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
-                  <h3 className="text-sm font-semibold">
-                    Withdrawal Summary
-                  </h3>
-
-                  <div className="mt-4 space-y-3 text-xs sm:text-sm">
+                  <div className="space-y-3 p-4 text-xs sm:p-5 sm:text-sm">
 
                     <div className="flex justify-between gap-4">
-                      <span className="text-gray-500">
+                      <span className="text-gray-600">
                         Requested Amount
                       </span>
 
-                      <span>
+                      <span className="font-semibold">
                         ${calculation.usd.toFixed(2)}
                       </span>
                     </div>
 
                     <div className="flex justify-between gap-4">
-                      <span className="text-gray-500">
+                      <span className="text-gray-600">
                         Withdrawal Fee (
                         {settings.withdrawalFee}%)
                       </span>
 
-                      <span className="text-red-600">
+                      <span className="font-semibold text-red-600">
                         -$
                         {calculation.fee.toFixed(2)}
                       </span>
                     </div>
 
-                    <div className="border-t border-gray-200 pt-3">
-                      <div className="flex justify-between gap-4 font-semibold">
+                    <div className="border-t border-yellow-200 pt-3">
+                      <div className="flex justify-between gap-4 font-bold">
                         <span>
                           Net Amount
                         </span>
 
-                        <span className="text-yellow-600">
+                        <span className="text-yellow-700">
                           $
                           {calculation.netUsd.toFixed(
                             2
@@ -915,19 +931,22 @@ export default function WithdrawPage() {
                       </div>
                     </div>
 
-                    <div className="flex justify-between gap-4 pt-1">
-                      <span className="text-gray-500">
-                        Estimated PKR Payout
-                      </span>
+                    <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-3">
+                      <div className="flex justify-between gap-4">
+                        <span className="font-medium text-gray-600">
+                          Estimated PKR Payout
+                        </span>
 
-                      <span className="font-semibold text-emerald-600">
-                        PKR{" "}
-                        {calculation.pkr.toLocaleString()}
-                      </span>
+                        <span className="font-bold text-emerald-600">
+                          PKR{" "}
+                          {calculation.pkr.toLocaleString()}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
+                {/* SUBMIT */}
                 <button
                   type="submit"
                   disabled={
@@ -938,7 +957,7 @@ export default function WithdrawPage() {
                     !kycLocked ||
                     settings.maintenanceMode
                   }
-                  className="w-full rounded-xl bg-yellow-400 px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-xl bg-yellow-400 px-5 py-4 text-sm font-bold text-black shadow-md shadow-yellow-200 transition hover:bg-yellow-300 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {settings.maintenanceMode
                     ? "Withdrawals Temporarily Unavailable"
@@ -949,28 +968,28 @@ export default function WithdrawPage() {
               </form>
             </section>
 
+            {/* RIGHT SIDE */}
             <aside className="space-y-4 lg:col-span-2">
 
-              {/* Withdrawal History */}
-
-              <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                <div className="flex items-center justify-between gap-3">
+              {/* WITHDRAWAL HISTORY */}
+              <div className="overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm">
+                <div className="flex items-center justify-between gap-3 border-b border-yellow-100 bg-yellow-50/70 p-4 sm:p-6">
                   <div>
-                    <p className="text-[11px] text-gray-500">
+                    <p className="text-[11px] font-medium text-yellow-700">
                       Wallet
                     </p>
 
-                    <h2 className="mt-1 text-lg font-semibold">
+                    <h2 className="mt-1 text-lg font-bold">
                       Withdrawal History
                     </h2>
                   </div>
 
-                  <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2.5 py-1 text-[10px] text-yellow-700">
+                  <span className="rounded-full border border-yellow-200 bg-white px-2.5 py-1 text-[10px] font-bold text-yellow-700">
                     {withdrawalHistory.length} Requests
                   </span>
                 </div>
 
-                <div className="mt-5">
+                <div className="p-4 sm:p-6">
                   {loadingHistory ? (
                     <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-center text-xs text-gray-500">
                       Loading withdrawal history...
@@ -1003,7 +1022,7 @@ export default function WithdrawPage() {
                             >
                               <div className="flex items-start justify-between gap-3">
                                 <div>
-                                  <p className="text-sm font-semibold">
+                                  <p className="text-sm font-bold">
                                     $
                                     {Number(
                                       withdrawal.amountUSD
@@ -1018,7 +1037,7 @@ export default function WithdrawPage() {
                                 </div>
 
                                 <span
-                                  className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold ${getStatusClass(
+                                  className={`rounded-full border px-2.5 py-1 text-[10px] font-bold ${getStatusClass(
                                     status
                                   )}`}
                                 >
@@ -1030,12 +1049,12 @@ export default function WithdrawPage() {
 
                               <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
 
-                                <div>
+                                <div className="rounded-lg bg-white p-2.5">
                                   <p className="text-gray-400">
                                     Fee
                                   </p>
 
-                                  <p className="mt-1 text-red-600">
+                                  <p className="mt-1 font-semibold text-red-600">
                                     -$
                                     {Number(
                                       withdrawal.feeUSD
@@ -1043,12 +1062,12 @@ export default function WithdrawPage() {
                                   </p>
                                 </div>
 
-                                <div>
+                                <div className="rounded-lg bg-white p-2.5">
                                   <p className="text-gray-400">
                                     Net Amount
                                   </p>
 
-                                  <p className="mt-1 text-yellow-600">
+                                  <p className="mt-1 font-semibold text-yellow-600">
                                     $
                                     {Number(
                                       withdrawal.netAmountUSD
@@ -1056,7 +1075,7 @@ export default function WithdrawPage() {
                                   </p>
                                 </div>
 
-                                <div>
+                                <div className="rounded-lg bg-white p-2.5">
                                   <p className="text-gray-400">
                                     Exchange Rate
                                   </p>
@@ -1069,7 +1088,7 @@ export default function WithdrawPage() {
                                   </p>
                                 </div>
 
-                                <div>
+                                <div className="rounded-lg bg-white p-2.5">
                                   <p className="text-gray-400">
                                     PKR Payout
                                   </p>
@@ -1118,21 +1137,22 @@ export default function WithdrawPage() {
                 </div>
               </div>
 
-              {/* Schedule */}
+              {/* SCHEDULE */}
+              <div className="overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm">
+                <div className="border-b border-yellow-100 bg-yellow-50/70 p-4 sm:p-6">
+                  <h2 className="text-lg font-bold">
+                    Withdrawal Schedule
+                  </h2>
+                </div>
 
-              <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                <h2 className="text-lg font-semibold">
-                  Withdrawal Schedule
-                </h2>
-
-                <div className="mt-5 space-y-3 text-xs sm:text-sm">
+                <div className="space-y-3 p-4 text-xs sm:p-6 sm:text-sm">
 
                   <div className="flex justify-between gap-4">
                     <span className="text-gray-500">
                       Days
                     </span>
 
-                    <span className="text-right">
+                    <span className="text-right font-medium">
                       {activeDays.length > 0
                         ? activeDays.join(
                             ", "
@@ -1146,7 +1166,7 @@ export default function WithdrawPage() {
                       Opening
                     </span>
 
-                    <span>
+                    <span className="font-medium">
                       {settings.withdrawalStartTime}
                     </span>
                   </div>
@@ -1156,7 +1176,7 @@ export default function WithdrawPage() {
                       Closing
                     </span>
 
-                    <span>
+                    <span className="font-medium">
                       {settings.withdrawalEndTime}
                     </span>
                   </div>
@@ -1166,7 +1186,7 @@ export default function WithdrawPage() {
                       Approval
                     </span>
 
-                    <span>
+                    <span className="font-medium">
                       Within{" "}
                       {
                         settings.withdrawalApprovalTime
@@ -1174,54 +1194,55 @@ export default function WithdrawPage() {
                       hours
                     </span>
                   </div>
-                </div>
 
-                <div className="mt-5 rounded-xl border border-gray-200 bg-gray-50 p-4 text-[11px] leading-5 text-gray-500">
-                  Withdrawal requests follow the schedule
-                  configured by the platform administrator.
-                </div>
-              </div>
-
-              {/* Conversion */}
-
-              <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
-                <h2 className="text-lg font-semibold">
-                  Conversion
-                </h2>
-
-                <div className="mt-4 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-center">
-                  <p className="text-xs text-gray-500">
-                    Exchange Rate
-                  </p>
-
-                  <p className="mt-2 text-xl font-bold text-yellow-700 sm:text-2xl">
-                    1 USD ={" "}
-                    {settings.exchangeRate}{" "}
-                    PKR
-                  </p>
-                </div>
-
-                <div className="mt-4 space-y-2 text-xs text-gray-500">
-
-                  <p>
-                    Withdrawal fee:{" "}
-                    {settings.withdrawalFee}%
-                  </p>
-
-                  <p>
-                    Payout currency: PKR
-                  </p>
-
-                  <p>
-                    Account balance: USD
-                  </p>
+                  <div className="mt-4 rounded-xl border border-yellow-200 bg-yellow-50 p-3 text-[11px] leading-5 text-yellow-800">
+                    Withdrawal requests follow the schedule
+                    configured by the platform administrator.
+                  </div>
                 </div>
               </div>
 
-              {/* Verification */}
+              {/* CONVERSION */}
+              <div className="overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm">
+                <div className="border-b border-yellow-100 bg-yellow-50/70 p-4 sm:p-6">
+                  <h2 className="text-lg font-bold">
+                    Conversion
+                  </h2>
+                </div>
 
-              <div className="rounded-2xl border border-yellow-200 bg-yellow-50 p-4">
-                <p className="text-sm font-semibold text-yellow-700">
+                <div className="p-4 sm:p-6">
+                  <div className="rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 text-center">
+                    <p className="text-xs text-gray-500">
+                      Exchange Rate
+                    </p>
+
+                    <p className="mt-2 text-xl font-extrabold text-yellow-700 sm:text-2xl">
+                      1 USD ={" "}
+                      {settings.exchangeRate}{" "}
+                      PKR
+                    </p>
+                  </div>
+
+                  <div className="mt-4 space-y-2 text-xs text-gray-500">
+                    <p>
+                      Withdrawal fee:{" "}
+                      {settings.withdrawalFee}%
+                    </p>
+
+                    <p>
+                      Payout currency: PKR
+                    </p>
+
+                    <p>
+                      Account balance: USD
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* VERIFICATION */}
+              <div className="rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 shadow-sm">
+                <p className="text-sm font-bold text-yellow-700">
                   Withdrawal Verification
                 </p>
 
@@ -1231,7 +1252,6 @@ export default function WithdrawPage() {
                   details are locked for security.
                 </p>
               </div>
-
             </aside>
           </div>
 
@@ -1245,3 +1265,6 @@ export default function WithdrawPage() {
     </main>
   );
 }
+
+const inputClass =
+  "w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:ring-4 focus:ring-yellow-100 disabled:cursor-not-allowed disabled:opacity-60";

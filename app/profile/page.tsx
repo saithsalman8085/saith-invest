@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -49,11 +48,11 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white text-black">
+      <main className="flex min-h-screen items-center justify-center bg-[#fffdf9] text-black">
         <div className="text-center">
-          <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-gray-200 border-t-yellow-400" />
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-yellow-100 border-t-yellow-400" />
 
-          <p className="mt-4 text-sm text-gray-500">
+          <p className="mt-4 text-sm font-medium text-gray-500">
             Loading profile...
           </p>
         </div>
@@ -62,10 +61,10 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
+    <main className="min-h-screen overflow-x-hidden bg-[#fffdf9] pb-24 text-black">
 
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white/95 backdrop-blur-xl">
+      <header className="border-b border-yellow-100 bg-white/95 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-3 sm:gap-4 sm:px-5 sm:py-5">
           <Link
             href="/"
@@ -83,7 +82,7 @@ export default function ProfilePage() {
 
           {/* Page Intro */}
           <div className="text-center">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-yellow-700 sm:px-3 sm:py-1.5 sm:text-[10px]">
+            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-yellow-300 bg-yellow-50 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-yellow-700 shadow-sm sm:px-3 sm:py-1.5 sm:text-[10px]">
               Account Center
             </div>
 
@@ -98,20 +97,21 @@ export default function ProfilePage() {
 
           {/* Error */}
           {error && (
-            <div className="mt-3 rounded-xl border border-red-500/30 bg-red-50 p-3 text-center text-xs text-red-600 sm:mt-6 sm:rounded-2xl sm:p-4 sm:text-sm">
+            <div className="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-center text-xs font-medium text-red-600 sm:mt-6 sm:rounded-2xl sm:p-4 sm:text-sm">
               {error}
             </div>
           )}
 
           {/* Profile Hero */}
-          <div className="relative mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 sm:mt-7 sm:rounded-3xl">
-            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-r from-yellow-400/20 via-yellow-300/10 to-transparent sm:h-24" />
+          <div className="relative mt-4 overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_8px_30px_rgba(234,179,8,0.08)] sm:mt-7 sm:rounded-3xl">
+            
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-r from-yellow-300/30 via-yellow-100/50 to-orange-100/20 sm:h-24" />
 
             <div className="relative p-3.5 sm:p-7">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
 
                 <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-yellow-400 text-lg font-bold text-black shadow-[0_0_30px_rgba(250,204,21,0.15)] sm:h-20 sm:w-20 sm:rounded-2xl sm:text-3xl">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-yellow-400 text-lg font-bold text-black shadow-[0_6px_20px_rgba(250,204,21,0.25)] sm:h-20 sm:w-20 sm:rounded-2xl sm:text-3xl">
                     {user?.fullName?.charAt(0).toUpperCase() || "U"}
                   </div>
 
@@ -121,11 +121,11 @@ export default function ProfilePage() {
                     </h2>
 
                     <div className="mt-1 flex flex-wrap items-center gap-1.5 sm:gap-2">
-                      <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[8px] font-semibold text-emerald-600 sm:px-2.5 sm:py-1 sm:text-[10px]">
+                      <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[8px] font-semibold text-emerald-600 sm:px-2.5 sm:py-1 sm:text-[10px]">
                         Active Account
                       </span>
 
-                      <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[8px] font-semibold text-gray-600 sm:px-2.5 sm:py-1 sm:text-[10px]">
+                      <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2 py-0.5 text-[8px] font-semibold text-yellow-700 sm:px-2.5 sm:py-1 sm:text-[10px]">
                         {user?.role || "USER"}
                       </span>
                     </div>
@@ -133,12 +133,12 @@ export default function ProfilePage() {
                 </div>
 
                 {/* USER ID — KEEP */}
-                <div className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 sm:rounded-2xl sm:px-4 sm:py-3">
+                <div className="rounded-xl border border-yellow-200 bg-yellow-50/70 px-3 py-2.5 sm:rounded-2xl sm:px-4 sm:py-3">
                   <p className="text-[8px] uppercase tracking-wider text-gray-500 sm:text-[10px]">
                     User ID
                   </p>
 
-                  <p className="mt-0.5 font-mono text-xs font-semibold text-yellow-600 sm:mt-1 sm:text-sm">
+                  <p className="mt-0.5 font-mono text-xs font-semibold text-yellow-700 sm:mt-1 sm:text-sm">
                     {user?.publicUserId || "—"}
                   </p>
                 </div>
@@ -147,9 +147,9 @@ export default function ProfilePage() {
           </div>
 
           {/* Account Information */}
-          <section className="mt-3 rounded-2xl border border-gray-200 bg-gray-50 p-3.5 sm:mt-4 sm:rounded-3xl sm:p-7">
+          <section className="mt-3 rounded-2xl border border-yellow-200 bg-white p-3.5 shadow-sm sm:mt-4 sm:rounded-3xl sm:p-7">
             <div>
-              <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-yellow-600 sm:text-[10px]">
+              <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-600 sm:text-[10px]">
                 Personal Details
               </p>
 
@@ -185,7 +185,7 @@ export default function ProfilePage() {
           {/* Account Options */}
           <section className="mt-4 sm:mt-5">
             <div className="mb-2.5 sm:mb-3">
-              <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-yellow-600 sm:text-[10px]">
+              <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-600 sm:text-[10px]">
                 Account Tools
               </p>
 
@@ -243,7 +243,7 @@ export default function ProfilePage() {
           <div className="mt-5 text-center sm:mt-7">
             <Link
               href="/login"
-              className="inline-flex rounded-lg border border-red-500/30 px-4 py-2 text-[10px] font-semibold text-red-500 transition hover:border-red-500/50 hover:bg-red-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-xs"
+              className="inline-flex rounded-lg border border-red-200 bg-white px-4 py-2 text-[10px] font-semibold text-red-500 transition hover:border-red-300 hover:bg-red-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-xs"
             >
               Logout
             </Link>
@@ -271,15 +271,15 @@ function InfoCard({
   highlight?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-3 sm:rounded-2xl sm:p-4">
-      <p className="text-[8px] uppercase tracking-wider text-gray-500 sm:text-[10px]">
+    <div className="rounded-xl border border-yellow-100 bg-[#fffdf9] p-3 transition hover:border-yellow-300 hover:bg-yellow-50/50 sm:rounded-2xl sm:p-4">
+      <p className="text-[8px] font-medium uppercase tracking-wider text-gray-500 sm:text-[10px]">
         {label}
       </p>
 
       <p
         className={`mt-1.5 truncate text-xs font-semibold sm:mt-2 sm:text-sm ${
           highlight
-            ? "font-mono text-yellow-600"
+            ? "font-mono text-yellow-700"
             : "text-gray-800"
         }`}
       >
@@ -303,10 +303,10 @@ function OptionCard({
   return (
     <Link
       href={href}
-      className="group rounded-xl border border-gray-200 bg-gray-50 p-3 transition duration-200 hover:-translate-y-0.5 hover:border-yellow-400 hover:bg-yellow-50 sm:rounded-2xl sm:p-4"
+      className="group rounded-xl border border-yellow-100 bg-white p-3 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-yellow-400 hover:bg-yellow-50 hover:shadow-md sm:rounded-2xl sm:p-4"
     >
       <div className="flex items-center gap-2.5 sm:gap-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-yellow-600 transition group-hover:bg-yellow-100 sm:h-10 sm:w-10 sm:rounded-xl">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-yellow-200 bg-yellow-50 text-yellow-600 transition group-hover:border-yellow-300 group-hover:bg-yellow-400 group-hover:text-black sm:h-10 sm:w-10 sm:rounded-xl">
           {icon === "wallet" && "◈"}
           {icon === "users" && "♧"}
           {icon === "activity" && "⌁"}
