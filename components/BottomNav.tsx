@@ -199,7 +199,7 @@ export default function BottomNav() {
                 purple:
                   "bg-purple-50 text-purple-600 shadow-[0_4px_16px_rgba(168,85,247,0.18)]",
                 yellow:
-                  "bg-yellow-50 text-yellow-600 shadow-[0_4px_16px_rgba(234,179,8,0.18)]",
+                  "border-yellow-200 text-yellow-600 shadow-[0_4px_16px_rgba(234,179,8,0.18)]",
                 emerald:
                   "bg-emerald-50 text-emerald-600 shadow-[0_4px_16px_rgba(16,185,129,0.18)]",
                 pink:
