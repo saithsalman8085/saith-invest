@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -245,17 +246,17 @@ export default function DashboardPage() {
   const investments = data?.activeInvestments || [];
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-slate-950 pb-24 text-white">
+    <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
       <section className="w-full px-2.5 py-3 sm:px-5 sm:py-6">
         <div className="mx-auto max-w-6xl">
 
           {/* Header */}
-          <header className="mb-3 rounded-xl border border-slate-800 bg-slate-900/70 px-3 py-3 backdrop-blur-xl sm:mb-5 sm:rounded-2xl sm:px-5 sm:py-4">
+          <header className="mb-3 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm backdrop-blur-xl sm:mb-5 sm:rounded-2xl sm:px-5 sm:py-4">
             <div className="flex items-center justify-between gap-3 sm:gap-4">
               <div className="min-w-0">
                 <Link
                   href="/"
-                  className="text-base font-bold text-cyan-400 sm:text-xl"
+                  className="text-base font-bold text-yellow-500 sm:text-xl"
                 >
                   ClaudeInvest
                 </Link>
@@ -272,7 +273,7 @@ export default function DashboardPage() {
                   </h1>
 
                   {data?.user.premiumBadge && (
-                    <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2 py-0.5 text-[9px] font-semibold text-cyan-300 sm:text-[10px]">
+                    <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-2 py-0.5 text-[9px] font-semibold text-yellow-600 sm:text-[10px]">
                       PREMIUM
                     </span>
                   )}
@@ -289,13 +290,13 @@ export default function DashboardPage() {
 
           {/* Messages */}
           {error && (
-            <div className="mb-2.5 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-[11px] text-red-300 sm:mb-3 sm:rounded-xl sm:px-4 sm:py-3 sm:text-xs">
+            <div className="mb-2.5 rounded-lg border border-red-500/30 bg-red-50 px-3 py-2.5 text-[11px] text-red-600 sm:mb-3 sm:rounded-xl sm:px-4 sm:py-3 sm:text-xs">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="mb-2.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-[11px] text-emerald-300 sm:mb-3 sm:rounded-xl sm:px-4 sm:py-3 sm:text-xs">
+            <div className="mb-2.5 rounded-lg border border-emerald-500/30 bg-emerald-50 px-3 py-2.5 text-[11px] text-emerald-600 sm:mb-3 sm:rounded-xl sm:px-4 sm:py-3 sm:text-xs">
               {success}
             </div>
           )}
@@ -314,19 +315,19 @@ export default function DashboardPage() {
           {/* Stats */}
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
 
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-2.5 sm:rounded-xl sm:p-4">
+            <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm sm:rounded-xl sm:p-4">
               <p className="text-[10px] text-slate-500 sm:text-[11px]">
                 Available Balance
               </p>
 
-              <h2 className="mt-1 text-base font-bold text-cyan-400 sm:mt-1.5 sm:text-xl">
+              <h2 className="mt-1 text-base font-bold text-yellow-500 sm:mt-1.5 sm:text-xl">
                 {loading
                   ? "$0.00"
                   : formatMoney(data?.stats.balance || 0)}
               </h2>
             </div>
 
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-2.5 sm:rounded-xl sm:p-4">
+            <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm sm:rounded-xl sm:p-4">
               <p className="text-[10px] text-slate-500 sm:text-[11px]">
                 Total Invested
               </p>
@@ -340,12 +341,12 @@ export default function DashboardPage() {
               </h2>
             </div>
 
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-2.5 sm:rounded-xl sm:p-4">
+            <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm sm:rounded-xl sm:p-4">
               <p className="text-[10px] text-slate-500 sm:text-[11px]">
                 Total Earnings
               </p>
 
-              <h2 className="mt-1 text-base font-bold text-emerald-400 sm:mt-1.5 sm:text-xl">
+              <h2 className="mt-1 text-base font-bold text-emerald-500 sm:mt-1.5 sm:text-xl">
                 {loading
                   ? "$0.00"
                   : formatMoney(
@@ -354,7 +355,7 @@ export default function DashboardPage() {
               </h2>
             </div>
 
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-2.5 sm:rounded-xl sm:p-4">
+            <div className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm sm:rounded-xl sm:p-4">
               <p className="text-[10px] text-slate-500 sm:text-[11px]">
                 Referrals
               </p>
@@ -370,7 +371,7 @@ export default function DashboardPage() {
           {/* Active Investments */}
           <div className="mt-2.5 sm:mt-3">
             {!loading && investments.length === 0 ? (
-              <div className="rounded-lg border border-slate-800 bg-slate-900 p-3 sm:rounded-xl sm:p-5">
+              <div className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm sm:rounded-xl sm:p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] text-slate-500 sm:text-xs">
@@ -382,7 +383,7 @@ export default function DashboardPage() {
                     </h2>
                   </div>
 
-                  <span className="rounded-full border border-slate-700 bg-slate-800 px-2 py-1 text-[9px] text-slate-500 sm:px-2.5 sm:text-[10px]">
+                  <span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-1 text-[9px] text-slate-500 sm:px-2.5 sm:text-[10px]">
                     Inactive
                   </span>
                 </div>
@@ -390,7 +391,7 @@ export default function DashboardPage() {
                 <div className="mt-4 sm:mt-5">
                   <Link
                     href="/plans"
-                    className="inline-block rounded-lg bg-cyan-500 px-3.5 py-2 text-[11px] font-semibold text-slate-950 transition hover:bg-cyan-400 sm:px-4 sm:py-2.5 sm:text-xs"
+                    className="inline-block rounded-lg bg-yellow-400 px-3.5 py-2 text-[11px] font-semibold text-black transition hover:bg-yellow-300 sm:px-4 sm:py-2.5 sm:text-xs"
                   >
                     View Investment Plans
                   </Link>
@@ -416,7 +417,7 @@ export default function DashboardPage() {
                   return (
                     <div
                       key={investment.id}
-                      className="rounded-lg border border-slate-800 bg-slate-900 p-2.5 sm:rounded-xl sm:p-5"
+                      className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm sm:rounded-xl sm:p-5"
                     >
                       {/* Investment Header */}
                       <div className="flex items-center justify-between gap-2.5">
@@ -430,7 +431,7 @@ export default function DashboardPage() {
                           </h2>
                         </div>
 
-                        <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] text-emerald-400 sm:px-2.5 sm:py-1 sm:text-[10px]">
+                        <span className="rounded-full border border-emerald-500/30 bg-emerald-50 px-2 py-0.5 text-[9px] text-emerald-600 sm:px-2.5 sm:py-1 sm:text-[10px]">
                           {investment.status}
                         </span>
                       </div>
@@ -443,7 +444,7 @@ export default function DashboardPage() {
                             Daily Earning
                           </p>
 
-                          <p className="mt-0.5 text-xs font-semibold text-emerald-400 sm:mt-1 sm:text-sm">
+                          <p className="mt-0.5 text-xs font-semibold text-emerald-500 sm:mt-1 sm:text-sm">
                             {formatMoney(
                               investment.dailyReturn
                             )}
@@ -465,7 +466,7 @@ export default function DashboardPage() {
                             Status
                           </p>
 
-                          <p className="mt-0.5 text-xs font-semibold text-emerald-400 sm:mt-1 sm:text-sm">
+                          <p className="mt-0.5 text-xs font-semibold text-emerald-500 sm:mt-1 sm:text-sm">
                             Active
                           </p>
                         </div>
@@ -493,9 +494,9 @@ export default function DashboardPage() {
                           </span>
                         </div>
 
-                        <div className="h-1 overflow-hidden rounded-full bg-slate-800 sm:h-1.5">
+                        <div className="h-1 overflow-hidden rounded-full bg-slate-200 sm:h-1.5">
                           <div
-                            className="h-full rounded-full bg-cyan-500 transition-all"
+                            className="h-full rounded-full bg-yellow-400 transition-all"
                             style={{
                               width: `${progress}%`,
                             }}
@@ -504,7 +505,7 @@ export default function DashboardPage() {
                       </div>
 
                       {/* Earnings */}
-                      <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950/60 p-2.5 sm:mt-5 sm:rounded-xl sm:p-4">
+                      <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-2.5 sm:mt-5 sm:rounded-xl sm:p-4">
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
 
                           <div>
@@ -512,7 +513,7 @@ export default function DashboardPage() {
                               Daily Earnings
                             </p>
 
-                            <p className="mt-0.5 text-base font-bold text-emerald-400 sm:mt-1 sm:text-lg">
+                            <p className="mt-0.5 text-base font-bold text-emerald-500 sm:mt-1 sm:text-lg">
                               {formatMoney(
                                 investment.dailyReturn
                               )}
@@ -524,7 +525,7 @@ export default function DashboardPage() {
                                 : "Your earning is ready to collect"}
                             </p>
 
-                            <p className="mt-0.5 text-xs font-semibold text-white sm:mt-1 sm:text-sm">
+                            <p className="mt-0.5 text-xs font-semibold text-black sm:mt-1 sm:text-sm">
                               {formatRemaining(
                                 remaining
                               )}
@@ -541,8 +542,8 @@ export default function DashboardPage() {
                             disabled={!canCollect}
                             className={`rounded-lg px-4 py-2 text-xs font-bold transition sm:px-5 sm:py-3 ${
                               canCollect
-                                ? "bg-emerald-500 text-slate-950 hover:bg-emerald-400"
-                                : "cursor-not-allowed bg-slate-800 text-slate-500"
+                                ? "bg-yellow-400 text-black hover:bg-yellow-300"
+                                : "cursor-not-allowed bg-slate-200 text-slate-500"
                             }`}
                           >
                             {collecting
@@ -561,9 +562,9 @@ export default function DashboardPage() {
           </div>
 
           {/* Recent Transactions */}
-          <div className="mt-2.5 overflow-hidden rounded-lg border border-slate-800 bg-slate-900 sm:mt-3 sm:rounded-xl">
+          <div className="mt-2.5 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm sm:mt-3 sm:rounded-xl">
 
-            <div className="border-b border-slate-800 px-3 py-2.5 sm:px-5 sm:py-3">
+            <div className="border-b border-slate-200 px-3 py-2.5 sm:px-5 sm:py-3">
               <h2 className="text-sm font-bold sm:text-lg">
                 Recent Transactions
               </h2>
@@ -576,7 +577,7 @@ export default function DashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[480px] text-[11px] sm:text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800 text-left text-[10px] text-slate-500 sm:text-[11px]">
+                  <tr className="border-b border-slate-200 text-left text-[10px] text-slate-500 sm:text-[11px]">
                     <th className="px-3 py-2 sm:px-4 sm:py-2.5">
                       Type
                     </th>
@@ -610,9 +611,9 @@ export default function DashboardPage() {
                       (transaction) => (
                         <tr
                           key={transaction.id}
-                          className="border-b border-slate-800 last:border-0"
+                          className="border-b border-slate-200 last:border-0"
                         >
-                          <td className="px-3 py-2 text-slate-400 sm:px-4 sm:py-2.5">
+                          <td className="px-3 py-2 text-slate-700 sm:px-4 sm:py-2.5">
                             {getTransactionName(
                               transaction.type
                             )}
@@ -629,8 +630,8 @@ export default function DashboardPage() {
                               className={
                                 transaction.status ===
                                 "COMPLETED"
-                                  ? "text-emerald-400"
-                                  : "text-yellow-400"
+                                  ? "text-emerald-500"
+                                  : "text-yellow-500"
                               }
                             >
                               {transaction.status}
@@ -661,7 +662,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Footer */}
-          <div className="py-4 text-center text-[10px] text-slate-600 sm:py-5 sm:text-xs">
+          <div className="py-4 text-center text-[10px] text-slate-400 sm:py-5 sm:text-xs">
             ClaudeInvest © 2025
           </div>
         </div>

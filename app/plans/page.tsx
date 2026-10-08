@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -82,14 +83,10 @@ export default function PlansPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.error || "Unable to create investment."
-        );
+        throw new Error(data.error || "Unable to create investment.");
       }
 
-      setMessage(
-        data.message || "Investment created successfully."
-      );
+      setMessage(data.message || "Investment created successfully.");
     } catch (error) {
       setMessage(
         error instanceof Error
@@ -102,12 +99,12 @@ export default function PlansPage() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-slate-950 pb-24 text-white">
-      <header className="border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl">
+    <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
+      <header className="border-b border-slate-200 bg-white/95 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-3 sm:gap-4 sm:px-5 sm:py-5">
           <Link
             href="/"
-            className="text-base font-bold tracking-tight text-cyan-400 sm:text-2xl"
+            className="text-base font-bold tracking-tight text-yellow-600 sm:text-2xl"
           >
             ClaudeInvest
           </Link>
@@ -117,7 +114,7 @@ export default function PlansPage() {
           <div className="flex items-center gap-2 sm:gap-3 md:hidden">
             <Link
               href="/login"
-              className="rounded-lg bg-cyan-500 px-3 py-2 text-[11px] font-semibold text-slate-950 transition hover:bg-cyan-400 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm"
+              className="rounded-lg bg-yellow-400 px-3 py-2 text-[11px] font-semibold text-black transition hover:bg-yellow-300 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm"
             >
               Login
             </Link>
@@ -126,7 +123,7 @@ export default function PlansPage() {
           <div className="hidden items-center gap-3 md:flex">
             <Link
               href="/login"
-              className="rounded-xl border border-slate-700 px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:border-cyan-500/40 hover:bg-slate-900 hover:text-white"
+              className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-yellow-400 hover:bg-yellow-50 hover:text-black"
             >
               Login
             </Link>
@@ -138,33 +135,33 @@ export default function PlansPage() {
         <div className="mx-auto max-w-7xl">
           <Link
             href="/dashboard"
-            className="hidden items-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-4 py-2.5 text-xs font-medium text-slate-400 transition hover:border-cyan-500/40 hover:text-cyan-300 sm:inline-flex sm:text-sm"
+            className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-medium text-slate-600 transition hover:border-yellow-400 hover:text-yellow-700 sm:inline-flex sm:text-sm"
           >
             ← Back to Dashboard
           </Link>
 
           <div className="mx-auto mt-2 max-w-3xl text-center sm:mt-10">
-            <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-cyan-400 sm:gap-2 sm:px-3 sm:py-1.5 sm:text-xs">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+            <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-yellow-700 sm:gap-2 sm:px-3 sm:py-1.5 sm:text-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-yellow-500" />
               Investment Plans
             </div>
 
             <h1 className="mt-3 text-2xl font-bold tracking-tight sm:mt-5 sm:text-4xl md:text-5xl">
               Choose Your
-              <span className="text-cyan-400">
+              <span className="text-yellow-600">
                 {" "}
                 Investment Plan
               </span>
             </h1>
 
-            <p className="mx-auto mt-2 max-w-2xl text-xs leading-5 text-slate-400 sm:mt-4 sm:text-base sm:leading-6">
+            <p className="mx-auto mt-2 max-w-2xl text-xs leading-5 text-slate-600 sm:mt-4 sm:text-base sm:leading-6">
               Explore the available plans and choose an option that fits
               your investment goals.
             </p>
           </div>
 
           {message && (
-            <div className="mx-auto mt-4 max-w-2xl rounded-xl border border-cyan-400/20 bg-cyan-400/5 px-3 py-2.5 text-center text-xs text-cyan-300 sm:mt-6 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm">
+            <div className="mx-auto mt-4 max-w-2xl rounded-xl border border-yellow-300 bg-yellow-50 px-3 py-2.5 text-center text-xs text-yellow-800 sm:mt-6 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm">
               {message}
             </div>
           )}
@@ -174,8 +171,8 @@ export default function PlansPage() {
               Loading investment plans...
             </div>
           ) : plans.length === 0 ? (
-            <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-slate-800 bg-slate-900 p-6 text-center sm:mt-12 sm:rounded-3xl sm:p-8">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-slate-950 text-lg sm:h-12 sm:w-12 sm:rounded-2xl sm:text-xl">
+            <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center sm:mt-12 sm:rounded-3xl sm:p-8">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-white text-lg shadow-sm sm:h-12 sm:w-12 sm:rounded-2xl sm:text-xl">
                 📋
               </div>
 
@@ -200,22 +197,22 @@ export default function PlansPage() {
                 return (
                   <div
                     key={plan.id}
-                    className={`relative flex flex-col overflow-hidden rounded-xl border bg-slate-900 transition duration-300 hover:-translate-y-1 sm:rounded-3xl ${
+                    className={`relative flex flex-col overflow-hidden rounded-xl border bg-white transition duration-300 hover:-translate-y-1 sm:rounded-3xl ${
                       plan.isSpecial
-                        ? "border-cyan-400/50 shadow-[0_0_45px_rgba(34,211,238,0.08)]"
-                        : "border-slate-800 hover:border-cyan-500/40"
+                        ? "border-yellow-400 shadow-[0_0_45px_rgba(234,179,8,0.12)]"
+                        : "border-slate-200 hover:border-yellow-400"
                     }`}
                   >
                     <div
                       className={`h-0.5 w-full sm:h-1 ${
                         plan.isSpecial
-                          ? "bg-cyan-400"
-                          : "bg-slate-800"
+                          ? "bg-yellow-400"
+                          : "bg-slate-200"
                       }`}
                     />
 
                     {plan.isSpecial && (
-                      <div className="absolute right-2 top-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-wider text-amber-300 sm:right-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[10px]">
+                      <div className="absolute right-2 top-2 rounded-full border border-yellow-400/40 bg-yellow-100 px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-wider text-yellow-800 sm:right-4 sm:top-4 sm:px-3 sm:py-1 sm:text-[10px]">
                         ★ Premium
                       </div>
                     )}
@@ -231,28 +228,28 @@ export default function PlansPage() {
                         </h2>
                       </div>
 
-                      <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950 p-2.5 sm:mt-6 sm:rounded-2xl sm:p-4">
+                      <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-2.5 sm:mt-6 sm:rounded-2xl sm:p-4">
                         <p className="text-[8px] text-slate-500 sm:text-[11px]">
                           Investment
                         </p>
 
-                        <p className="mt-0.5 text-lg font-bold text-white sm:mt-1 sm:text-3xl">
+                        <p className="mt-0.5 text-lg font-bold text-black sm:mt-1 sm:text-3xl">
                           ${deposit.toLocaleString()}
                         </p>
                       </div>
 
                       <div className="mt-2 grid grid-cols-2 gap-1.5 sm:mt-4 sm:gap-2">
-                        <div className="rounded-lg border border-slate-800 bg-slate-950 p-2 sm:rounded-xl sm:p-3">
+                        <div className="rounded-lg border border-slate-200 bg-slate-50 p-2 sm:rounded-xl sm:p-3">
                           <p className="text-[8px] text-slate-500 sm:text-[10px]">
                             Profit
                           </p>
 
-                          <p className="mt-0.5 text-sm font-bold text-emerald-400 sm:mt-1 sm:text-lg">
+                          <p className="mt-0.5 text-sm font-bold text-emerald-600 sm:mt-1 sm:text-lg">
                             ${profit.toLocaleString()}
                           </p>
                         </div>
 
-                        <div className="rounded-lg border border-slate-800 bg-slate-950 p-2 sm:rounded-xl sm:p-3">
+                        <div className="rounded-lg border border-slate-200 bg-slate-50 p-2 sm:rounded-xl sm:p-3">
                           <p className="text-[8px] text-slate-500 sm:text-[10px]">
                             Duration
                           </p>
@@ -266,28 +263,28 @@ export default function PlansPage() {
                         </div>
                       </div>
 
-                      <div className="mt-2 rounded-lg border border-slate-800 bg-slate-950/70 sm:mt-4 sm:rounded-xl">
-                        <div className="flex items-center justify-between border-b border-slate-800 px-2.5 py-2 sm:px-4 sm:py-3">
+                      <div className="mt-2 rounded-lg border border-slate-200 bg-slate-50 sm:mt-4 sm:rounded-xl">
+                        <div className="flex items-center justify-between border-b border-slate-200 px-2.5 py-2 sm:px-4 sm:py-3">
                           <span className="text-[8px] text-slate-500 sm:text-xs">
                             Daily Earning
                           </span>
 
-                          <span className="text-[8px] font-semibold text-emerald-400 sm:text-xs">
+                          <span className="text-[8px] font-semibold text-emerald-600 sm:text-xs">
                             ${daily.toLocaleString()}
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between border-b border-slate-800 px-2.5 py-2 sm:px-4 sm:py-3">
+                        <div className="flex items-center justify-between border-b border-slate-200 px-2.5 py-2 sm:px-4 sm:py-3">
                           <span className="text-[8px] text-slate-500 sm:text-xs">
                             Total Return
                           </span>
 
-                          <span className="text-[8px] font-semibold text-cyan-400 sm:text-xs">
+                          <span className="text-[8px] font-semibold text-yellow-600 sm:text-xs">
                             ${total.toLocaleString()}
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between border-b border-slate-800 px-2.5 py-2 sm:px-4 sm:py-3">
+                        <div className="flex items-center justify-between border-b border-slate-200 px-2.5 py-2 sm:px-4 sm:py-3">
                           <span className="text-[8px] text-slate-500 sm:text-xs">
                             Level 1 Referral
                           </span>
@@ -297,22 +294,22 @@ export default function PlansPage() {
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between border-b border-slate-800 px-2.5 py-2 sm:px-4 sm:py-3">
+                        <div className="flex items-center justify-between border-b border-slate-200 px-2.5 py-2 sm:px-4 sm:py-3">
                           <span className="text-[8px] text-slate-500 sm:text-xs">
                             Instant Referral Bonus
                           </span>
 
-                          <span className="text-[8px] font-semibold text-amber-300 sm:text-xs">
+                          <span className="text-[8px] font-semibold text-yellow-700 sm:text-xs">
                             ${referralBonus.toLocaleString()}
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between border-b border-slate-800 px-2.5 py-2 sm:px-4 sm:py-3">
+                        <div className="flex items-center justify-between border-b border-slate-200 px-2.5 py-2 sm:px-4 sm:py-3">
                           <span className="text-[8px] text-slate-500 sm:text-xs">
                             Active Purchases
                           </span>
 
-                          <span className="text-[8px] font-semibold text-white sm:text-xs">
+                          <span className="text-[8px] font-semibold text-black sm:text-xs">
                             Up to {maxPurchases}
                           </span>
                         </div>
@@ -322,8 +319,8 @@ export default function PlansPage() {
                             Status
                           </span>
 
-                          <span className="flex items-center gap-1 text-[8px] font-semibold text-emerald-400 sm:gap-1.5 sm:text-xs">
-                            <span className="h-1 w-1 rounded-full bg-emerald-400 sm:h-1.5 sm:w-1.5" />
+                          <span className="flex items-center gap-1 text-[8px] font-semibold text-emerald-600 sm:gap-1.5 sm:text-xs">
+                            <span className="h-1 w-1 rounded-full bg-emerald-500 sm:h-1.5 sm:w-1.5" />
                             Available
                           </span>
                         </div>
@@ -335,8 +332,8 @@ export default function PlansPage() {
                         disabled={investing === plan.id}
                         className={`mt-3 rounded-lg px-2.5 py-2 text-center text-[10px] font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 sm:mt-5 sm:rounded-xl sm:px-5 sm:py-3 sm:text-sm ${
                           plan.isSpecial
-                            ? "bg-cyan-500 text-slate-950 hover:bg-cyan-400"
-                            : "border border-slate-700 bg-slate-950 text-slate-200 hover:border-cyan-500/50 hover:text-cyan-400"
+                            ? "bg-yellow-400 text-black shadow-sm hover:bg-yellow-300"
+                            : "border border-yellow-400 bg-yellow-50 text-yellow-800 hover:bg-yellow-400 hover:text-black"
                         }`}
                       >
                         {investing === plan.id
@@ -350,7 +347,7 @@ export default function PlansPage() {
             </div>
           )}
 
-          <div className="py-5 text-center text-[9px] text-slate-600 sm:py-6 sm:text-xs">
+          <div className="py-5 text-center text-[9px] text-slate-500 sm:py-6 sm:text-xs">
             ClaudeInvest © 2025
           </div>
         </div>

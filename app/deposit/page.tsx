@@ -209,18 +209,18 @@ export default function DepositPage() {
   function statusClass(status: string) {
     switch (status.toUpperCase()) {
       case "APPROVED":
-        return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+        return "bg-emerald-50 text-emerald-600 border-emerald-200";
 
       case "REJECTED":
-        return "bg-red-500/10 text-red-400 border-red-500/20";
+        return "bg-red-50 text-red-600 border-red-200";
 
       default:
-        return "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
+        return "bg-yellow-50 text-yellow-700 border-yellow-200";
     }
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-slate-950 text-white">
+    <main className="min-h-screen overflow-x-hidden bg-white text-black">
       <div className="mx-auto max-w-6xl px-2.5 py-4 pb-24 sm:px-6 sm:py-8 lg:px-8">
 
         {/* HEADER */}
@@ -228,7 +228,7 @@ export default function DepositPage() {
           <div>
             <Link
               href="/dashboard"
-              className="hidden text-sm text-cyan-400 hover:text-cyan-300 md:inline-block"
+              className="hidden text-sm text-yellow-600 hover:text-yellow-700 md:inline-block"
             >
               ← Back to Dashboard
             </Link>
@@ -237,14 +237,14 @@ export default function DepositPage() {
               Wallet
             </h1>
 
-            <p className="mt-1 text-xs text-slate-400 sm:mt-2 sm:text-sm">
+            <p className="mt-1 text-xs text-gray-500 sm:mt-2 sm:text-sm">
               Add funds to your ClaudeInvest wallet.
             </p>
           </div>
 
           <Link
             href="/withdraw"
-            className="rounded-lg border border-blue-500/40 bg-blue-500/10 px-4 py-2.5 text-center text-xs font-semibold text-blue-400 transition hover:border-blue-400 hover:bg-blue-500/20 hover:text-blue-300 sm:rounded-xl sm:px-5 sm:py-3 sm:text-sm"
+            className="rounded-lg border border-yellow-400 bg-yellow-50 px-4 py-2.5 text-center text-xs font-semibold text-yellow-800 transition hover:border-yellow-500 hover:bg-yellow-400 hover:text-black sm:rounded-xl sm:px-5 sm:py-3 sm:text-sm"
           >
             Go to Withdrawal
           </Link>
@@ -252,13 +252,13 @@ export default function DepositPage() {
 
         {/* MESSAGES */}
         {message && (
-          <div className="mb-3 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-2.5 text-xs text-emerald-400 sm:mb-6 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">
+          <div className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-xs text-emerald-600 sm:mb-6 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">
             {message}
           </div>
         )}
 
         {error && (
-          <div className="mb-3 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2.5 text-xs text-red-400 sm:mb-6 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">
+          <div className="mb-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-xs text-red-600 sm:mb-6 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">
             {error}
           </div>
         )}
@@ -267,17 +267,17 @@ export default function DepositPage() {
         <div className="grid gap-3 sm:gap-6 lg:grid-cols-2">
 
           {/* PAYMENT DETAILS */}
-          <section className="rounded-xl border border-slate-800 bg-slate-900 p-3 shadow-xl sm:rounded-2xl sm:p-6">
+          <section className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-6">
             <h2 className="text-base font-semibold sm:text-xl">
               Payment Details
             </h2>
 
-            <p className="mt-1 text-[10px] text-slate-400 sm:mt-2 sm:text-sm">
+            <p className="mt-1 text-[10px] text-gray-500 sm:mt-2 sm:text-sm">
               Send your payment using the details below.
             </p>
 
             {loadingSettings ? (
-              <div className="mt-5 text-xs text-slate-500 sm:mt-8 sm:text-sm">
+              <div className="mt-5 text-xs text-gray-400 sm:mt-8 sm:text-sm">
                 Loading payment details...
               </div>
             ) : (
@@ -302,23 +302,23 @@ export default function DepositPage() {
                   copyable={Boolean(settings.accountNumber)}
                 />
 
-                <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-3 sm:rounded-xl sm:p-4">
-                  <p className="text-[9px] font-medium uppercase tracking-wide text-cyan-400 sm:text-xs">
+                <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 sm:rounded-xl sm:p-4">
+                  <p className="text-[9px] font-medium uppercase tracking-wide text-yellow-700 sm:text-xs">
                     Instructions
                   </p>
 
-                  <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-5 text-slate-300 sm:mt-2 sm:text-sm sm:leading-6">
+                  <p className="mt-1.5 whitespace-pre-wrap text-[11px] leading-5 text-gray-600 sm:mt-2 sm:text-sm sm:leading-6">
                     {settings.instructions}
                   </p>
                 </div>
 
-                <div className="rounded-lg border border-slate-800 bg-slate-950 p-3 sm:rounded-xl sm:p-4">
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:rounded-xl sm:p-4">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-[11px] text-slate-400 sm:text-sm">
+                    <span className="text-[11px] text-gray-500 sm:text-sm">
                       Exchange Rate
                     </span>
 
-                    <span className="text-xs font-semibold text-white sm:text-sm">
+                    <span className="text-xs font-semibold text-black sm:text-sm">
                       1 USD = {rate} PKR
                     </span>
                   </div>
@@ -328,19 +328,19 @@ export default function DepositPage() {
           </section>
 
           {/* DEPOSIT FORM */}
-          <section className="rounded-xl border border-slate-800 bg-slate-900 p-3 shadow-xl sm:rounded-2xl sm:p-6">
+          <section className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-6">
             <h2 className="text-base font-semibold sm:text-xl">
               Submit Deposit
             </h2>
 
-            <p className="mt-1 text-[10px] text-slate-400 sm:mt-2 sm:text-sm">
+            <p className="mt-1 text-[10px] text-gray-500 sm:mt-2 sm:text-sm">
               Enter the amount you sent and your transaction ID.
             </p>
 
             <div className="mt-4 space-y-3.5 sm:mt-6 sm:space-y-5">
 
               <div>
-                <label className="mb-1.5 block text-[11px] font-medium text-slate-300 sm:mb-2 sm:text-sm">
+                <label className="mb-1.5 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                   Deposit Amount (PKR)
                 </label>
 
@@ -355,24 +355,24 @@ export default function DepositPage() {
                 />
               </div>
 
-              <div className="rounded-lg border border-slate-800 bg-slate-950 p-3 sm:rounded-xl sm:p-4">
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:rounded-xl sm:p-4">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-[11px] text-slate-400 sm:text-sm">
+                  <span className="text-[11px] text-gray-500 sm:text-sm">
                     Wallet Credit
                   </span>
 
-                  <span className="text-lg font-bold text-cyan-400 sm:text-xl">
+                  <span className="text-lg font-bold text-yellow-600 sm:text-xl">
                     ${usdAmount}
                   </span>
                 </div>
 
-                <p className="mt-1 text-[9px] text-slate-500 sm:mt-2 sm:text-xs">
+                <p className="mt-1 text-[9px] text-gray-400 sm:mt-2 sm:text-xs">
                   Based on 1 USD = {rate} PKR
                 </p>
               </div>
 
               <div>
-                <label className="mb-1.5 block text-[11px] font-medium text-slate-300 sm:mb-2 sm:text-sm">
+                <label className="mb-1.5 block text-[11px] font-medium text-gray-700 sm:mb-2 sm:text-sm">
                   Transaction ID
                 </label>
 
@@ -384,12 +384,12 @@ export default function DepositPage() {
                 />
               </div>
 
-              <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/5 p-3 sm:rounded-xl sm:p-4">
-                <p className="text-xs font-medium text-yellow-400 sm:text-sm">
+              <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 sm:rounded-xl sm:p-4">
+                <p className="text-xs font-medium text-yellow-700 sm:text-sm">
                   Important
                 </p>
 
-                <p className="mt-1 text-[10px] leading-4 text-slate-400 sm:text-xs sm:leading-5">
+                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-xs sm:leading-5">
                   Make the payment first, then submit the exact transaction ID
                   here. Your wallet is credited after admin approval.
                 </p>
@@ -399,7 +399,7 @@ export default function DepositPage() {
                 type="button"
                 onClick={submitDeposit}
                 disabled={submitting}
-                className="w-full rounded-lg bg-cyan-500 px-5 py-3 text-xs font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-xl sm:px-6 sm:py-3.5 sm:text-sm"
+                className="w-full rounded-lg bg-yellow-400 px-5 py-3 text-xs font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-xl sm:px-6 sm:py-3.5 sm:text-sm"
               >
                 {submitting ? "Submitting..." : "Submit Deposit"}
               </button>
@@ -408,14 +408,14 @@ export default function DepositPage() {
         </div>
 
         {/* DEPOSIT HISTORY */}
-        <section className="mt-2 rounded-lg border border-slate-800 bg-slate-900 p-2.5 shadow-xl sm:mt-6 sm:rounded-2xl sm:p-6">
+        <section className="mt-2 rounded-lg border border-gray-200 bg-white p-2.5 shadow-sm sm:mt-6 sm:rounded-2xl sm:p-6">
           <div className="flex items-center justify-between gap-2">
             <div>
               <h2 className="text-sm font-semibold sm:text-xl">
                 Deposit History
               </h2>
 
-              <p className="mt-0.5 text-[9px] text-slate-400 sm:mt-1 sm:text-sm">
+              <p className="mt-0.5 text-[9px] text-gray-500 sm:mt-1 sm:text-sm">
                 Track your submitted deposits and approval status.
               </p>
             </div>
@@ -423,18 +423,18 @@ export default function DepositPage() {
             <button
               type="button"
               onClick={loadDeposits}
-              className="shrink-0 rounded-md border border-slate-700 px-2.5 py-1.5 text-[9px] text-slate-300 hover:border-cyan-500 hover:text-white sm:rounded-lg sm:px-4 sm:py-2 sm:text-sm"
+              className="shrink-0 rounded-md border border-gray-300 px-2.5 py-1.5 text-[9px] text-gray-600 hover:border-yellow-400 hover:bg-yellow-50 hover:text-black sm:rounded-lg sm:px-4 sm:py-2 sm:text-sm"
             >
               Refresh
             </button>
           </div>
 
           {loadingDeposits ? (
-            <div className="py-4 text-center text-[10px] text-slate-500 sm:py-10 sm:text-sm">
+            <div className="py-4 text-center text-[10px] text-gray-400 sm:py-10 sm:text-sm">
               Loading deposit history...
             </div>
           ) : deposits.length === 0 ? (
-            <div className="py-4 text-center text-[10px] text-slate-500 sm:py-10 sm:text-sm">
+            <div className="py-4 text-center text-[10px] text-gray-400 sm:py-10 sm:text-sm">
               No deposits submitted yet.
             </div>
           ) : (
@@ -444,21 +444,21 @@ export default function DepositPage() {
                 {deposits.map((deposit) => (
                   <div
                     key={deposit.id}
-                    className="rounded-md border border-slate-800 bg-slate-950 px-2.5 py-2"
+                    className="rounded-md border border-gray-200 bg-gray-50 px-2.5 py-2"
                   >
                     <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
                       <div>
-                        <p className="text-[7px] uppercase text-slate-600">
+                        <p className="text-[7px] uppercase text-gray-400">
                           Date
                         </p>
 
-                        <p className="mt-0.5 text-[9px] text-slate-400">
+                        <p className="mt-0.5 text-[9px] text-gray-600">
                           {formatDate(deposit.submittedAt)}
                         </p>
                       </div>
 
                       <div className="text-right">
-                        <p className="text-[7px] uppercase text-slate-600">
+                        <p className="text-[7px] uppercase text-gray-400">
                           Status
                         </p>
 
@@ -472,11 +472,11 @@ export default function DepositPage() {
                       </div>
 
                       <div>
-                        <p className="text-[7px] uppercase text-slate-600">
+                        <p className="text-[7px] uppercase text-gray-400">
                           Amount
                         </p>
 
-                        <p className="mt-0.5 text-[9px] font-semibold text-white">
+                        <p className="mt-0.5 text-[9px] font-semibold text-black">
                           {Number(
                             deposit.amountPKR
                           ).toLocaleString()}{" "}
@@ -485,11 +485,11 @@ export default function DepositPage() {
                       </div>
 
                       <div className="text-right">
-                        <p className="text-[7px] uppercase text-slate-600">
+                        <p className="text-[7px] uppercase text-gray-400">
                           USD Credit
                         </p>
 
-                        <p className="mt-0.5 text-[9px] font-semibold text-cyan-400">
+                        <p className="mt-0.5 text-[9px] font-semibold text-yellow-600">
                           $
                           {Number(
                             deposit.creditAmountUSD
@@ -498,23 +498,23 @@ export default function DepositPage() {
                       </div>
 
                       <div className="col-span-2">
-                        <p className="text-[7px] uppercase text-slate-600">
+                        <p className="text-[7px] uppercase text-gray-400">
                           Transaction ID
                         </p>
 
-                        <p className="mt-0.5 truncate text-[9px] text-slate-400">
+                        <p className="mt-0.5 truncate text-[9px] text-gray-600">
                           {deposit.transactionId}
                         </p>
                       </div>
 
                       {deposit.status.toUpperCase() === "REJECTED" &&
                         deposit.rejectionReason && (
-                          <div className="col-span-2 rounded-md border border-red-500/20 bg-red-500/5 px-2 py-1.5">
-                            <p className="text-[7px] font-semibold uppercase text-red-400">
+                          <div className="col-span-2 rounded-md border border-red-200 bg-red-50 px-2 py-1.5">
+                            <p className="text-[7px] font-semibold uppercase text-red-600">
                               Rejection Reason
                             </p>
 
-                            <p className="mt-0.5 text-[9px] leading-3 text-slate-300">
+                            <p className="mt-0.5 text-[9px] leading-3 text-gray-600">
                               {deposit.rejectionReason}
                             </p>
                           </div>
@@ -528,7 +528,7 @@ export default function DepositPage() {
               <div className="mt-6 hidden overflow-x-auto sm:block">
                 <table className="w-full min-w-[650px] text-left">
                   <thead>
-                    <tr className="border-b border-slate-800 text-xs uppercase tracking-wide text-slate-500">
+                    <tr className="border-b border-gray-200 text-xs uppercase tracking-wide text-gray-400">
                       <th className="px-4 py-3">
                         Date
                       </th>
@@ -555,27 +555,27 @@ export default function DepositPage() {
                     {deposits.map((deposit) => (
                       <tr
                         key={deposit.id}
-                        className="border-b border-slate-800/70"
+                        className="border-b border-gray-200"
                       >
-                        <td className="px-4 py-4 text-sm text-slate-400">
+                        <td className="px-4 py-4 text-sm text-gray-600">
                           {formatDate(deposit.submittedAt)}
                         </td>
 
-                        <td className="px-4 py-4 font-medium">
+                        <td className="px-4 py-4 font-medium text-black">
                           {Number(
                             deposit.amountPKR
                           ).toLocaleString()}{" "}
                           PKR
                         </td>
 
-                        <td className="px-4 py-4 font-semibold text-cyan-400">
+                        <td className="px-4 py-4 font-semibold text-yellow-600">
                           $
                           {Number(
                             deposit.creditAmountUSD
                           ).toFixed(2)}
                         </td>
 
-                        <td className="px-4 py-4 text-sm text-slate-400">
+                        <td className="px-4 py-4 text-sm text-gray-600">
                           {deposit.transactionId}
                         </td>
 
@@ -592,12 +592,12 @@ export default function DepositPage() {
                             {deposit.status.toUpperCase() ===
                               "REJECTED" &&
                               deposit.rejectionReason && (
-                                <div className="max-w-xs rounded-lg border border-red-500/20 bg-red-500/5 px-3 py-2">
-                                  <p className="text-[11px] font-semibold uppercase tracking-wide text-red-400">
+                                <div className="max-w-xs rounded-lg border border-red-200 bg-red-50 px-3 py-2">
+                                  <p className="text-[11px] font-semibold uppercase tracking-wide text-red-600">
                                     Rejection Reason
                                   </p>
 
-                                  <p className="mt-1 text-xs leading-5 text-slate-300">
+                                  <p className="mt-1 text-xs leading-5 text-gray-600">
                                     {deposit.rejectionReason}
                                   </p>
                                 </div>
@@ -620,7 +620,7 @@ export default function DepositPage() {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-xs text-white outline-none transition focus:border-cyan-500 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm";
+  "w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-xs text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm";
 
 function InfoBox({
   label,
@@ -642,9 +642,9 @@ function InfoBox({
   }
 
   return (
-    <div className="rounded-lg border border-slate-800 bg-slate-950 p-3 sm:rounded-xl sm:p-4">
+    <div className="rounded-lg border border-gray-200 bg-gray-50 p-3 sm:rounded-xl sm:p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[9px] font-medium uppercase tracking-wide text-slate-500 sm:text-xs">
+        <p className="text-[9px] font-medium uppercase tracking-wide text-gray-400 sm:text-xs">
           {label}
         </p>
 
@@ -652,14 +652,14 @@ function InfoBox({
           <button
             type="button"
             onClick={copyValue}
-            className="text-[10px] font-medium text-cyan-400 hover:text-cyan-300 sm:text-xs"
+            className="text-[10px] font-medium text-yellow-600 hover:text-yellow-700 sm:text-xs"
           >
             Copy
           </button>
         )}
       </div>
 
-      <p className="mt-1.5 break-all text-xs font-semibold text-white sm:mt-2 sm:text-sm">
+      <p className="mt-1.5 break-all text-xs font-semibold text-black sm:mt-2 sm:text-sm">
         {value}
       </p>
     </div>

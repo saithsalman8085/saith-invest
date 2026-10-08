@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -560,14 +561,14 @@ export default function WithdrawPage() {
       status.toUpperCase();
 
     if (normalized === "APPROVED") {
-      return "border-emerald-500/20 bg-emerald-500/10 text-emerald-400";
+      return "border-emerald-200 bg-emerald-50 text-emerald-600";
     }
 
     if (normalized === "REJECTED") {
-      return "border-red-500/20 bg-red-500/10 text-red-400";
+      return "border-red-200 bg-red-50 text-red-600";
     }
 
-    return "border-amber-500/20 bg-amber-500/10 text-amber-400";
+    return "border-yellow-200 bg-yellow-50 text-yellow-700";
   }
 
   function formatStatus(status: string) {
@@ -590,21 +591,21 @@ export default function WithdrawPage() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-slate-950 pb-24 text-white">
+    <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
       <section className="px-3 py-4 sm:px-5 sm:py-6">
         <div className="mx-auto max-w-6xl">
 
-          <header className="mb-5 rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-4 backdrop-blur-xl sm:px-5">
+          <header className="mb-5 rounded-2xl border border-gray-200 bg-white px-4 py-4 shadow-sm sm:px-5">
             <div className="flex items-center justify-between gap-4">
               <div className="min-w-0">
                 <Link
                   href="/"
-                  className="text-lg font-bold text-cyan-400 sm:text-xl"
+                  className="text-lg font-bold text-yellow-600 sm:text-xl"
                 >
                   ClaudeInvest
                 </Link>
 
-                <p className="mt-2 text-xs text-cyan-400">
+                <p className="mt-2 text-xs text-yellow-600">
                   Wallet
                 </p>
 
@@ -612,7 +613,7 @@ export default function WithdrawPage() {
                   Withdraw Funds
                 </h1>
 
-                <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+                <p className="mt-1 text-xs text-gray-500 sm:text-sm">
                   Withdraw your available USD balance to Easypaisa in PKR.
                 </p>
               </div>
@@ -624,26 +625,26 @@ export default function WithdrawPage() {
           <div className="mb-3 grid grid-cols-2 gap-2.5">
             <Link
               href="/deposit"
-              className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-center text-xs font-semibold text-slate-400 transition hover:border-slate-700 hover:text-white"
+              className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-center text-xs font-semibold text-gray-600 transition hover:border-yellow-400 hover:bg-yellow-50 hover:text-black"
             >
               Deposit
             </Link>
 
             <Link
               href="/withdraw"
-              className="rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-center text-xs font-semibold text-cyan-400"
+              className="rounded-xl border border-yellow-400 bg-yellow-50 px-4 py-3 text-center text-xs font-semibold text-yellow-700"
             >
               Withdraw
             </Link>
           </div>
 
           {settings.maintenanceMode && (
-            <div className="mb-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-4 text-sm text-amber-300">
+            <div className="mb-4 rounded-2xl border border-yellow-200 bg-yellow-50 px-4 py-4 text-sm text-yellow-800">
               <p className="font-semibold">
                 Maintenance Mode
               </p>
 
-              <p className="mt-1 text-xs leading-5 text-amber-200/70">
+              <p className="mt-1 text-xs leading-5 text-yellow-700">
                 Withdrawals are temporarily unavailable.
                 Deposits and existing investments continue normally.
               </p>
@@ -652,11 +653,11 @@ export default function WithdrawPage() {
 
           <div className="grid gap-4 lg:grid-cols-5">
 
-            <section className="rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-xl sm:p-6 lg:col-span-3">
+            <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6 lg:col-span-3">
 
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-gray-500">
                     Withdrawal
                   </p>
 
@@ -665,7 +666,7 @@ export default function WithdrawPage() {
                   </h2>
                 </div>
 
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 text-[10px] text-cyan-400">
+                <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2.5 py-1 text-[10px] text-yellow-700">
                   USD → PKR
                 </span>
               </div>
@@ -675,13 +676,13 @@ export default function WithdrawPage() {
                 className="mt-6 space-y-5"
               >
 
-                <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-gray-500">
                       Available Balance
                     </span>
 
-                    <span className="text-xl font-bold text-cyan-400">
+                    <span className="text-xl font-bold text-yellow-600">
                       {loadingBalance
                         ? "Loading..."
                         : `$${balance.toFixed(2)}`}
@@ -690,23 +691,23 @@ export default function WithdrawPage() {
                 </div>
 
                 {error && (
-                  <div className="rounded-xl border border-red-900/50 bg-red-950/30 px-4 py-3 text-xs text-red-400">
+                  <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-600">
                     {error}
                   </div>
                 )}
 
                 {message && (
-                  <div className="rounded-xl border border-emerald-900/50 bg-emerald-950/30 px-4 py-3 text-xs text-emerald-400">
+                  <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-600">
                     {message}
                   </div>
                 )}
 
                 {/* KYC */}
 
-                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 sm:p-5">
+                <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <p className="text-[11px] text-slate-500">
+                      <p className="text-[11px] text-gray-500">
                         Withdrawal Verification
                       </p>
 
@@ -716,15 +717,15 @@ export default function WithdrawPage() {
                     </div>
 
                     {loadingKyc ? (
-                      <span className="rounded-full border border-slate-700 px-2.5 py-1 text-[10px] text-slate-500">
+                      <span className="rounded-full border border-gray-300 px-2.5 py-1 text-[10px] text-gray-500">
                         Loading...
                       </span>
                     ) : kycLocked ? (
-                      <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold text-emerald-400">
+                      <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-600">
                         LOCKED
                       </span>
                     ) : (
-                      <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold text-amber-400">
+                      <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2.5 py-1 text-[10px] font-semibold text-yellow-700">
                         REQUIRED
                       </span>
                     )}
@@ -733,7 +734,7 @@ export default function WithdrawPage() {
                   <div className="mt-5 space-y-4">
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-300">
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
                         CNIC Number
                       </label>
 
@@ -751,12 +752,12 @@ export default function WithdrawPage() {
                           savingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-500 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-300">
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
                         Easypaisa Number
                       </label>
 
@@ -774,12 +775,12 @@ export default function WithdrawPage() {
                           savingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-500 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-300">
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
                         Account Name
                       </label>
 
@@ -797,7 +798,7 @@ export default function WithdrawPage() {
                           savingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-500 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
                       />
                     </div>
 
@@ -812,7 +813,7 @@ export default function WithdrawPage() {
                           loadingKyc ||
                           submitting
                         }
-                        className="w-full rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="w-full rounded-xl bg-yellow-400 px-5 py-3 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {savingKyc
                           ? "Saving..."
@@ -821,7 +822,7 @@ export default function WithdrawPage() {
                     )}
 
                     {kycLocked && (
-                      <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-3 text-[11px] leading-5 text-emerald-400">
+                      <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-[11px] leading-5 text-emerald-600">
                         Your withdrawal details are locked.
                         Contact support if you need to change
                         them.
@@ -833,12 +834,12 @@ export default function WithdrawPage() {
                 {/* Amount */}
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
                     Withdrawal Amount (USD)
                   </label>
 
                   <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                       $
                     </span>
 
@@ -863,14 +864,14 @@ export default function WithdrawPage() {
                         !kycLocked ||
                         settings.maintenanceMode
                       }
-                      className="w-full rounded-xl border border-slate-700 bg-slate-950 py-3 pl-9 pr-4 text-sm text-white outline-none transition focus:border-cyan-500 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="w-full rounded-xl border border-gray-300 bg-white py-3 pl-9 pr-4 text-sm text-black outline-none transition focus:border-yellow-400 focus:ring-1 focus:ring-yellow-200 disabled:cursor-not-allowed disabled:opacity-60"
                     />
                   </div>
                 </div>
 
                 {/* Calculation */}
 
-                <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 sm:p-5">
+                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
                   <h3 className="text-sm font-semibold">
                     Withdrawal Summary
                   </h3>
@@ -878,7 +879,7 @@ export default function WithdrawPage() {
                   <div className="mt-4 space-y-3 text-xs sm:text-sm">
 
                     <div className="flex justify-between gap-4">
-                      <span className="text-slate-500">
+                      <span className="text-gray-500">
                         Requested Amount
                       </span>
 
@@ -888,24 +889,24 @@ export default function WithdrawPage() {
                     </div>
 
                     <div className="flex justify-between gap-4">
-                      <span className="text-slate-500">
+                      <span className="text-gray-500">
                         Withdrawal Fee (
                         {settings.withdrawalFee}%)
                       </span>
 
-                      <span className="text-red-400">
+                      <span className="text-red-600">
                         -$
                         {calculation.fee.toFixed(2)}
                       </span>
                     </div>
 
-                    <div className="border-t border-slate-800 pt-3">
+                    <div className="border-t border-gray-200 pt-3">
                       <div className="flex justify-between gap-4 font-semibold">
                         <span>
                           Net Amount
                         </span>
 
-                        <span className="text-cyan-400">
+                        <span className="text-yellow-600">
                           $
                           {calculation.netUsd.toFixed(
                             2
@@ -915,11 +916,11 @@ export default function WithdrawPage() {
                     </div>
 
                     <div className="flex justify-between gap-4 pt-1">
-                      <span className="text-slate-500">
+                      <span className="text-gray-500">
                         Estimated PKR Payout
                       </span>
 
-                      <span className="font-semibold text-emerald-400">
+                      <span className="font-semibold text-emerald-600">
                         PKR{" "}
                         {calculation.pkr.toLocaleString()}
                       </span>
@@ -937,7 +938,7 @@ export default function WithdrawPage() {
                     !kycLocked ||
                     settings.maintenanceMode
                   }
-                  className="w-full rounded-xl bg-cyan-500 px-5 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-xl bg-yellow-400 px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {settings.maintenanceMode
                     ? "Withdrawals Temporarily Unavailable"
@@ -952,10 +953,10 @@ export default function WithdrawPage() {
 
               {/* Withdrawal History */}
 
-              <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 sm:p-6">
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-gray-500">
                       Wallet
                     </p>
 
@@ -964,23 +965,23 @@ export default function WithdrawPage() {
                     </h2>
                   </div>
 
-                  <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 text-[10px] text-cyan-400">
+                  <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2.5 py-1 text-[10px] text-yellow-700">
                     {withdrawalHistory.length} Requests
                   </span>
                 </div>
 
                 <div className="mt-5">
                   {loadingHistory ? (
-                    <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 text-center text-xs text-slate-500">
+                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-center text-xs text-gray-500">
                       Loading withdrawal history...
                     </div>
                   ) : withdrawalHistory.length === 0 ? (
-                    <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-center">
-                      <p className="text-sm font-medium text-slate-400">
+                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 text-center">
+                      <p className="text-sm font-medium text-gray-600">
                         No withdrawal history yet.
                       </p>
 
-                      <p className="mt-1 text-[11px] text-slate-600">
+                      <p className="mt-1 text-[11px] text-gray-400">
                         Your withdrawal requests will appear here.
                       </p>
                     </div>
@@ -998,7 +999,7 @@ export default function WithdrawPage() {
                               key={
                                 withdrawal.id
                               }
-                              className="rounded-xl border border-slate-800 bg-slate-950 p-4"
+                              className="rounded-xl border border-gray-200 bg-gray-50 p-4"
                             >
                               <div className="flex items-start justify-between gap-3">
                                 <div>
@@ -1009,7 +1010,7 @@ export default function WithdrawPage() {
                                     ).toFixed(2)}
                                   </p>
 
-                                  <p className="mt-1 text-[10px] text-slate-600">
+                                  <p className="mt-1 text-[10px] text-gray-400">
                                     {formatDate(
                                       withdrawal.requestedAt
                                     )}
@@ -1030,11 +1031,11 @@ export default function WithdrawPage() {
                               <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
 
                                 <div>
-                                  <p className="text-slate-600">
+                                  <p className="text-gray-400">
                                     Fee
                                   </p>
 
-                                  <p className="mt-1 text-red-400">
+                                  <p className="mt-1 text-red-600">
                                     -$
                                     {Number(
                                       withdrawal.feeUSD
@@ -1043,11 +1044,11 @@ export default function WithdrawPage() {
                                 </div>
 
                                 <div>
-                                  <p className="text-slate-600">
+                                  <p className="text-gray-400">
                                     Net Amount
                                   </p>
 
-                                  <p className="mt-1 text-cyan-400">
+                                  <p className="mt-1 text-yellow-600">
                                     $
                                     {Number(
                                       withdrawal.netAmountUSD
@@ -1056,7 +1057,7 @@ export default function WithdrawPage() {
                                 </div>
 
                                 <div>
-                                  <p className="text-slate-600">
+                                  <p className="text-gray-400">
                                     Exchange Rate
                                   </p>
 
@@ -1069,11 +1070,11 @@ export default function WithdrawPage() {
                                 </div>
 
                                 <div>
-                                  <p className="text-slate-600">
+                                  <p className="text-gray-400">
                                     PKR Payout
                                   </p>
 
-                                  <p className="mt-1 font-semibold text-emerald-400">
+                                  <p className="mt-1 font-semibold text-emerald-600">
                                     PKR{" "}
                                     {Number(
                                       withdrawal.payoutPKR
@@ -1085,12 +1086,12 @@ export default function WithdrawPage() {
                               {status ===
                                 "REJECTED" &&
                                 withdrawal.rejectionReason && (
-                                  <div className="mt-4 rounded-lg border border-red-900/40 bg-red-950/20 p-3">
-                                    <p className="text-[10px] font-semibold text-red-400">
+                                  <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
+                                    <p className="text-[10px] font-semibold text-red-600">
                                       Rejection Reason
                                     </p>
 
-                                    <p className="mt-1 text-[11px] text-red-300/80">
+                                    <p className="mt-1 text-[11px] text-red-500">
                                       {
                                         withdrawal.rejectionReason
                                       }
@@ -1101,7 +1102,7 @@ export default function WithdrawPage() {
                               {status ===
                                 "APPROVED" &&
                                 withdrawal.approvedAt && (
-                                  <p className="mt-3 text-[10px] text-emerald-500/70">
+                                  <p className="mt-3 text-[10px] text-emerald-600">
                                     Approved:{" "}
                                     {formatDate(
                                       withdrawal.approvedAt
@@ -1119,7 +1120,7 @@ export default function WithdrawPage() {
 
               {/* Schedule */}
 
-              <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 sm:p-6">
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
                 <h2 className="text-lg font-semibold">
                   Withdrawal Schedule
                 </h2>
@@ -1127,7 +1128,7 @@ export default function WithdrawPage() {
                 <div className="mt-5 space-y-3 text-xs sm:text-sm">
 
                   <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">
+                    <span className="text-gray-500">
                       Days
                     </span>
 
@@ -1141,7 +1142,7 @@ export default function WithdrawPage() {
                   </div>
 
                   <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">
+                    <span className="text-gray-500">
                       Opening
                     </span>
 
@@ -1151,7 +1152,7 @@ export default function WithdrawPage() {
                   </div>
 
                   <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">
+                    <span className="text-gray-500">
                       Closing
                     </span>
 
@@ -1161,7 +1162,7 @@ export default function WithdrawPage() {
                   </div>
 
                   <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">
+                    <span className="text-gray-500">
                       Approval
                     </span>
 
@@ -1175,7 +1176,7 @@ export default function WithdrawPage() {
                   </div>
                 </div>
 
-                <div className="mt-5 rounded-xl border border-slate-800 bg-slate-950 p-4 text-[11px] leading-5 text-slate-500">
+                <div className="mt-5 rounded-xl border border-gray-200 bg-gray-50 p-4 text-[11px] leading-5 text-gray-500">
                   Withdrawal requests follow the schedule
                   configured by the platform administrator.
                 </div>
@@ -1183,24 +1184,24 @@ export default function WithdrawPage() {
 
               {/* Conversion */}
 
-              <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 sm:p-6">
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
                 <h2 className="text-lg font-semibold">
                   Conversion
                 </h2>
 
-                <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950 p-4 text-center">
-                  <p className="text-xs text-slate-500">
+                <div className="mt-4 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-center">
+                  <p className="text-xs text-gray-500">
                     Exchange Rate
                   </p>
 
-                  <p className="mt-2 text-xl font-bold text-cyan-400 sm:text-2xl">
+                  <p className="mt-2 text-xl font-bold text-yellow-700 sm:text-2xl">
                     1 USD ={" "}
                     {settings.exchangeRate}{" "}
                     PKR
                   </p>
                 </div>
 
-                <div className="mt-4 space-y-2 text-xs text-slate-500">
+                <div className="mt-4 space-y-2 text-xs text-gray-500">
 
                   <p>
                     Withdrawal fee:{" "}
@@ -1219,12 +1220,12 @@ export default function WithdrawPage() {
 
               {/* Verification */}
 
-              <div className="rounded-2xl border border-amber-900/40 bg-amber-950/20 p-4">
-                <p className="text-sm font-semibold text-amber-400">
+              <div className="rounded-2xl border border-yellow-200 bg-yellow-50 p-4">
+                <p className="text-sm font-semibold text-yellow-700">
                   Withdrawal Verification
                 </p>
 
-                <p className="mt-2 text-[11px] leading-5 text-slate-500">
+                <p className="mt-2 text-[11px] leading-5 text-gray-600">
                   Your CNIC and payout details are required
                   before withdrawal. Once submitted, these
                   details are locked for security.
@@ -1234,7 +1235,7 @@ export default function WithdrawPage() {
             </aside>
           </div>
 
-          <div className="py-5 text-center text-[10px] text-slate-600 sm:text-xs">
+          <div className="py-5 text-center text-[10px] text-gray-400 sm:text-xs">
             ClaudeInvest © 2025
           </div>
         </div>
