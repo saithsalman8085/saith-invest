@@ -560,7 +560,7 @@ export default function DepositPage() {
                   {deposits.map((deposit) => (
                     <div
                       key={deposit.id}
-                      className="rounded-xl border border-gray-200 bg-gray-50 p-2.5"
+                      className="rounded-xl border border-yellow-200 bg-yellow-50/60 p-2.5 sm:border-gray-200 sm:bg-gray-50"
                     >
                       <div className="grid grid-cols-2 gap-x-3 gap-y-2">
                         <div>

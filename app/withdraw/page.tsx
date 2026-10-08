@@ -969,10 +969,10 @@ export default function WithdrawPage() {
             </section>
 
             {/* RIGHT SIDE */}
-            <aside className="space-y-4 lg:col-span-2">
+            <aside className="flex flex-col gap-4 lg:col-span-2">
 
               {/* WITHDRAWAL HISTORY */}
-              <div className="overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm">
+              <div className="order-2 overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm sm:order-1">
                 <div className="flex items-center justify-between gap-3 border-b border-yellow-100 bg-yellow-50/70 p-4 sm:p-6">
                   <div>
                     <p className="text-[11px] font-medium text-yellow-700">
@@ -1018,7 +1018,7 @@ export default function WithdrawPage() {
                               key={
                                 withdrawal.id
                               }
-                              className="rounded-xl border border-gray-200 bg-gray-50 p-4"
+                              className="rounded-xl border border-yellow-200 bg-yellow-50/60 p-4 sm:border-gray-200 sm:bg-gray-50"
                             >
                               <div className="flex items-start justify-between gap-3">
                                 <div>
@@ -1138,7 +1138,7 @@ export default function WithdrawPage() {
               </div>
 
               {/* SCHEDULE */}
-              <div className="overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm">
+              <div className="order-1 overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm sm:order-2">
                 <div className="border-b border-yellow-100 bg-yellow-50/70 p-4 sm:p-6">
                   <h2 className="text-lg font-bold">
                     Withdrawal Schedule
@@ -1203,7 +1203,7 @@ export default function WithdrawPage() {
               </div>
 
               {/* CONVERSION */}
-              <div className="overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm">
+              <div className="hidden overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-sm sm:block">
                 <div className="border-b border-yellow-100 bg-yellow-50/70 p-4 sm:p-6">
                   <h2 className="text-lg font-bold">
                     Conversion
@@ -1241,7 +1241,7 @@ export default function WithdrawPage() {
               </div>
 
               {/* VERIFICATION */}
-              <div className="rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 shadow-sm">
+              <div className="hidden rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 shadow-sm sm:block">
                 <p className="text-sm font-bold text-yellow-700">
                   Withdrawal Verification
                 </p>
