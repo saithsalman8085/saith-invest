@@ -1,10 +1,8 @@
-
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
 
 const items = [
   { label: "Plans", href: "/plans", icon: "plans" },
@@ -131,7 +129,12 @@ function Icon({ type, active }: { type: string; active: boolean }) {
           strokeWidth="1.8"
           strokeLinecap="round"
         />
-        <circle cx="15" cy="13" r="1" fill="currentColor" />
+        <circle
+          cx="15"
+          cy="13"
+          r="1"
+          fill="currentColor"
+        />
       </svg>
     );
   }
@@ -170,10 +173,10 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 md:hidden">
       <div className="mx-auto max-w-md">
-        <div className="relative overflow-visible rounded-2xl border border-slate-700/80 bg-slate-950/95 p-1.5 shadow-2xl shadow-black/60 backdrop-blur-xl">
+        <div className="relative overflow-visible rounded-2xl border border-yellow-200 bg-white/95 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
 
           {/* Top light */}
-          <div className="pointer-events-none absolute left-[12%] right-[12%] top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent" />
+          <div className="pointer-events-none absolute left-[12%] right-[12%] top-0 h-px bg-gradient-to-r from-transparent via-yellow-400/80 to-transparent" />
 
           <div className="grid grid-cols-5 items-end">
             {items.map((item) => {
@@ -195,15 +198,15 @@ export default function BottomNav() {
                 >
                   {/* Click ripple */}
                   {isClicked && (
-                    <span className="pointer-events-none absolute inset-2 animate-ping rounded-2xl bg-cyan-400/10" />
+                    <span className="pointer-events-none absolute inset-2 animate-ping rounded-2xl bg-yellow-400/10" />
                   )}
 
                   {isDashboard ? (
                     <div
                       className={`absolute -top-7 flex h-14 w-14 items-center justify-center rounded-full border transition-all duration-200 ${
                         active
-                          ? "border-cyan-300 bg-cyan-400 text-slate-950 shadow-[0_0_25px_rgba(34,211,238,0.5)]"
-                          : "border-slate-600 bg-slate-900 text-slate-400 shadow-xl"
+                          ? "border-yellow-400 bg-yellow-400 text-black shadow-[0_0_25px_rgba(250,204,21,0.45)]"
+                          : "border-yellow-200 bg-white text-gray-500 shadow-lg"
                       } ${
                         isClicked
                           ? "scale-75 rotate-12"
@@ -224,15 +227,15 @@ export default function BottomNav() {
                       </div>
 
                       {isClicked && (
-                        <span className="pointer-events-none absolute inset-0 rounded-full border-2 border-cyan-300/60 animate-ping" />
+                        <span className="pointer-events-none absolute inset-0 animate-ping rounded-full border-2 border-yellow-400/60" />
                       )}
                     </div>
                   ) : (
                     <div
                       className={`relative flex h-8 w-10 items-center justify-center rounded-xl transition-all duration-200 ${
                         active
-                          ? "bg-cyan-400/10 text-cyan-400"
-                          : "text-slate-500"
+                          ? "bg-yellow-100 text-yellow-600"
+                          : "text-gray-400"
                       } ${
                         isClicked
                           ? "scale-75 -translate-y-1 rotate-6"
@@ -245,7 +248,7 @@ export default function BottomNav() {
                       />
 
                       {isClicked && (
-                        <span className="pointer-events-none absolute inset-0 rounded-xl border border-cyan-400/50 animate-ping" />
+                        <span className="pointer-events-none absolute inset-0 animate-ping rounded-xl border border-yellow-400/50" />
                       )}
                     </div>
                   )}
@@ -253,11 +256,11 @@ export default function BottomNav() {
                   <span
                     className={`mt-1 text-[10px] font-medium transition-all duration-200 ${
                       active
-                        ? "text-cyan-400"
-                        : "text-slate-500"
+                        ? "text-yellow-600"
+                        : "text-gray-500"
                     } ${
                       isClicked
-                        ? "scale-110 text-cyan-300"
+                        ? "scale-110 text-yellow-500"
                         : ""
                     }`}
                   >
