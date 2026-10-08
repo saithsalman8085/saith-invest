@@ -99,28 +99,50 @@ export default function TransactionsPage() {
     loadTransactions();
   }, []);
 
+  const TRANSACTION_SUMMARY_RESET_AT =
+  "2026-10-07T20:45:00+05:00";
+
   const totals = useMemo(() => {
-    let moneyIn = 0;
-    let moneyOut = 0;
+  let moneyIn = 0;
+  let moneyOut = 0;
 
-    for (const transaction of transactions) {
-      if (transaction.status === "REVERSED") continue;
+  const resetTime = new Date(
+    TRANSACTION_SUMMARY_RESET_AT
+  ).getTime();
 
-      const amount = Math.abs(Number(transaction.amountUSD) || 0);
+  for (const transaction of transactions) {
+    if (transaction.status === "REVERSED") continue;
 
-      if (isIncoming(transaction)) {
-        moneyIn += amount;
-      } else if (OUTGOING_TYPES.has(transaction.type)) {
-        moneyOut += amount;
-      }
+    const transactionTime = new Date(
+      transaction.createdAt
+    ).getTime();
+
+    // Old transactions remain visible in history,
+    // but they are not included in the summary totals.
+    if (
+      !Number.isFinite(transactionTime) ||
+      transactionTime <= resetTime
+    ) {
+      continue;
     }
 
-    return {
-      moneyIn,
-      moneyOut,
-      netFlow: moneyIn - moneyOut,
-    };
-  }, [transactions]);
+    const amount = Math.abs(
+      Number(transaction.amountUSD) || 0
+    );
+
+    if (isIncoming(transaction)) {
+      moneyIn += amount;
+    } else if (OUTGOING_TYPES.has(transaction.type)) {
+      moneyOut += amount;
+    }
+  }
+
+  return {
+    moneyIn,
+    moneyOut,
+    netFlow: moneyIn - moneyOut,
+  };
+}, [transactions]);
 
   const filteredTransactions = useMemo(() => {
     const query = search.trim().toLowerCase();
