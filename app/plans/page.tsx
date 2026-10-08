@@ -189,18 +189,7 @@ export default function PlansPage() {
                         TOP PEACH SECTION
                     ================================= */}
                     <div className="relative bg-[#ffead5]">
-                      {/* Top-left label */}
-                      <div
-                        className={`absolute left-0 top-0 rounded-br-[18px] px-5 py-3 text-xs font-bold text-white shadow-md sm:px-7 sm:py-3.5 sm:text-base ${
-                          plan.isSpecial
-                            ? "bg-gradient-to-r from-red-600 to-red-500"
-                            : "bg-gradient-to-r from-[#f5a313] to-[#e9a62e]"
-                        }`}
-                      >
-                        {plan.isSpecial
-                          ? "Upgrade • Unlock 8 Benefits"
-                          : "Investment Plan"}
-                      </div>
+                      
 
                       {/* Question */}
                       <div className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full border border-[#d09b36] bg-[#f5d58a] text-xl font-bold text-[#765619] shadow-sm sm:right-5 sm:top-5 sm:h-14 sm:w-14 sm:text-2xl">
