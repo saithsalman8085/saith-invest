@@ -208,7 +208,7 @@ export default function PlansPage() {
                       </div>
 
                       {/* Content */}
-                      <div className="px-4 pb-2 pt-8 sm:px-8 sm:pb-3 sm:pt-10">
+                      <div className="px-3 pb-1 pt-4 sm:px-6 sm:pb-2 sm:pt-6">
                         {/* Plan name */}
                         <h2 className="pr-12 text-[27px] font-bold leading-tight text-[#171717] sm:pr-16 sm:text-4xl">
                           {plan.name}
@@ -283,12 +283,12 @@ export default function PlansPage() {
                         {/* Prices */}
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-3 sm:gap-x-5">
                           {/* Deposit */}
-                          <span className="text-[40px] font-medium leading-none text-[#ed8420] sm:text-[52px]">
+                          <span className="text-[26px] font-medium leading-none text-[#ed8420] sm:text-[32px]">
                             ${deposit.toLocaleString()}
                           </span>
 
                           {/* Plan name */}
-                          <span className="rounded-xl bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-3.5 py-2.5 text-base font-bold text-[#68451b] shadow-sm sm:px-5 sm:py-3 sm:text-2xl">
+                          <span className="rounded-xl bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-2.5 py-1.5 text-xs font-bold text-[#68451b] shadow-sm sm:px-3 sm:py-2 sm:text-lg">
                             {plan.name}
                           </span>
                         </div>
