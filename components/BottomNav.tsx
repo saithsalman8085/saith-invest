@@ -13,8 +13,7 @@ const items = [
 ];
 
 function Icon({ type }: { type: string; active: boolean }) {
-  const common =
-    "h-5 w-5 transition-all duration-200";
+  const common = "h-5 w-5 transition-all duration-200";
 
   if (type === "plans") {
     return (
@@ -30,11 +29,7 @@ function Icon({ type }: { type: string; active: boolean }) {
           strokeWidth="1.8"
           strokeLinecap="round"
         />
-        <path
-          d="M16 4v16"
-          stroke="currentColor"
-          strokeWidth="1.4"
-        />
+        <path d="M16 4v16" stroke="currentColor" strokeWidth="1.4" />
       </svg>
     );
   }
@@ -129,12 +124,7 @@ function Icon({ type }: { type: string; active: boolean }) {
           strokeWidth="1.8"
           strokeLinecap="round"
         />
-        <circle
-          cx="15"
-          cy="13"
-          r="1"
-          fill="currentColor"
-        />
+        <circle cx="15" cy="13" r="1" fill="currentColor" />
       </svg>
     );
   }
@@ -173,7 +163,7 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 md:hidden">
       <div className="mx-auto max-w-md">
-        <div className="relative overflow-visible rounded-3xl border border-yellow-500/80 bg-yellow-400 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.16)] backdrop-blur-xl">
+        <div className="relative overflow-visible rounded-3xl border border-yellow-200/60 bg-yellow-50/40 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.12)] backdrop-blur-xl">
 
           {/* Colorful top glow */}
           <div className="pointer-events-none absolute left-[8%] right-[8%] top-0 h-1 overflow-hidden rounded-full">
@@ -237,10 +227,13 @@ export default function BottomNav() {
                   onClick={() => handleClick(item.href)}
                   className="group relative flex min-h-[60px] flex-col items-center justify-end"
                 >
-                  {/* Click ripple */}
                   {isClicked && (
                     <span
-                      className={`pointer-events-none absolute inset-2 animate-ping rounded-2xl border ${clickColors[item.color as keyof typeof clickColors]}`}
+                      className={`pointer-events-none absolute inset-2 animate-ping rounded-2xl border ${
+                        clickColors[
+                          item.color as keyof typeof clickColors
+                        ]
+                      }`}
                     />
                   )}
 
@@ -256,17 +249,8 @@ export default function BottomNav() {
                           : "scale-100 group-hover:scale-105"
                       }`}
                     >
-                      <div
-                        className={
-                          isClicked
-                            ? "animate-bounce"
-                            : ""
-                        }
-                      >
-                        <Icon
-                          type={item.icon}
-                          active={active}
-                        />
+                      <div className={isClicked ? "animate-bounce" : ""}>
+                        <Icon type={item.icon} active={active} />
                       </div>
 
                       {active && (
@@ -293,10 +277,7 @@ export default function BottomNav() {
                           : "scale-100 group-hover:-translate-y-0.5"
                       }`}
                     >
-                      <Icon
-                        type={item.icon}
-                        active={active}
-                      />
+                      <Icon type={item.icon} active={active} />
 
                       {active && (
                         <span className="pointer-events-none absolute inset-0 rounded-2xl bg-current opacity-[0.06]" />
@@ -304,7 +285,11 @@ export default function BottomNav() {
 
                       {isClicked && (
                         <span
-                          className={`pointer-events-none absolute inset-0 animate-ping rounded-2xl border ${clickColors[item.color as keyof typeof clickColors]}`}
+                          className={`pointer-events-none absolute inset-0 animate-ping rounded-2xl border ${
+                            clickColors[
+                              item.color as keyof typeof clickColors
+                            ]
+                          }`}
                         />
                       )}
                     </div>
@@ -317,11 +302,7 @@ export default function BottomNav() {
                             item.color as keyof typeof labelColors
                           ]
                         : "text-gray-400"
-                    } ${
-                      isClicked
-                        ? "scale-110"
-                        : ""
-                    }`}
+                    } ${isClicked ? "scale-110" : ""}`}
                   >
                     {item.label}
                   </span>
