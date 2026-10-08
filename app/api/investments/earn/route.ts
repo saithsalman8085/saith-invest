@@ -23,6 +23,19 @@ function toPlainDateTime(date: Date) {
     })
   );
 }
+function plainDateTimeToDate(value: unknown) {
+  const plain = Temporal.PlainDateTime.from(
+    String(value)
+  );
+
+  const zoned = plain.toZonedDateTime(
+    "Asia/Karachi"
+  );
+
+  return new Date(
+    zoned.toInstant().epochMilliseconds
+  );
+}
 
 async function getWalletBalance(userId: string) {
   const transactions =
@@ -112,9 +125,10 @@ export async function POST(request: NextRequest) {
 
     const now = new Date();
 
-    const nextCollectionAt = new Date(
-      String(investment.nextCollectionAt)
-    );
+    const nextCollectionAt =
+  plainDateTimeToDate(
+    investment.nextCollectionAt
+  );
 
     const remainingMs =
       nextCollectionAt.getTime() - now.getTime();
