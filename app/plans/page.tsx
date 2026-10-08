@@ -28,9 +28,6 @@ export default function PlansPage() {
   const [loading, setLoading] = useState(true);
   const [investing, setInvesting] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<"success" | "error" | "info">(
-    "info"
-  );
 
   useEffect(() => {
     async function loadPlans() {
@@ -42,13 +39,11 @@ export default function PlansPage() {
         const data = await response.json();
 
         if (!response.ok) {
-          setMessageType("error");
           throw new Error(data.error || "Unable to load plans.");
         }
 
         setPlans(data.plans || []);
       } catch (error) {
-        setMessageType("error");
         setMessage(
           error instanceof Error
             ? error.message
@@ -73,7 +68,6 @@ export default function PlansPage() {
 
     setInvesting(plan.id);
     setMessage("");
-    setMessageType("info");
 
     try {
       const response = await fetch("/api/investments", {
@@ -89,21 +83,15 @@ export default function PlansPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setMessageType("error");
-
         throw new Error(
           data.error || "Unable to create investment."
         );
       }
 
-      setMessageType("success");
-
       setMessage(
         data.message || "Investment created successfully."
       );
     } catch (error) {
-      setMessageType("error");
-
       setMessage(
         error instanceof Error
           ? error.message
@@ -116,9 +104,8 @@ export default function PlansPage() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
-
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white/95 backdrop-blur-xl">
+      <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-3 sm:gap-4 sm:px-5 sm:py-5">
           <Link
             href="/"
@@ -151,7 +138,6 @@ export default function PlansPage() {
 
       <section className="px-3 pt-5 sm:px-5 sm:pt-10">
         <div className="mx-auto max-w-6xl">
-
           {/* Back */}
           <Link
             href="/dashboard"
@@ -160,7 +146,7 @@ export default function PlansPage() {
             ← Back to Dashboard
           </Link>
 
-          {/* Page Intro */}
+          {/* Heading */}
           <div className="mx-auto mt-2 max-w-3xl text-center sm:mt-8">
             <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-yellow-400/40 bg-yellow-50 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-yellow-700 sm:gap-2 sm:px-3 sm:py-1.5 sm:text-xs">
               <span className="h-1.5 w-1.5 rounded-full bg-yellow-500" />
@@ -182,15 +168,7 @@ export default function PlansPage() {
 
           {/* Message */}
           {message && (
-            <div
-              className={`mx-auto mt-4 max-w-2xl rounded-xl px-3 py-2.5 text-center text-xs sm:mt-6 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm ${
-                messageType === "success"
-                  ? "border border-emerald-200 bg-emerald-50 text-emerald-700"
-                  : messageType === "error"
-                    ? "border border-red-200 bg-red-50 text-red-600"
-                    : "border border-yellow-200 bg-yellow-50 text-yellow-700"
-              }`}
-            >
+            <div className="mx-auto mt-4 max-w-2xl rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-center text-xs text-emerald-700 sm:mt-6 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-sm">
               {message}
             </div>
           )}
@@ -202,7 +180,7 @@ export default function PlansPage() {
             </div>
           ) : plans.length === 0 ? (
             <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-gray-200 bg-gray-50 p-6 text-center sm:mt-12 sm:rounded-3xl sm:p-8">
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-white text-lg shadow-sm sm:h-12 sm:w-12 sm:rounded-2xl sm:text-xl">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-white text-lg sm:h-12 sm:w-12 sm:rounded-2xl sm:text-xl">
                 📋
               </div>
 
@@ -216,9 +194,10 @@ export default function PlansPage() {
             </div>
           ) : (
             /*
-             * ONE PLAN PER ROW
+             * IMPORTANT:
+             * One plan per row — same structure as the reference image.
              */
-            <div className="mt-6 space-y-5 sm:mt-10 sm:space-y-7">
+            <div className="mt-6 space-y-5 sm:mt-12 sm:space-y-7">
               {plans.map((plan) => {
                 const deposit = Number(plan.depositAmount);
                 const profit = Number(plan.profitAmount);
@@ -230,193 +209,184 @@ export default function PlansPage() {
                 return (
                   <div
                     key={plan.id}
-                    className="relative overflow-hidden rounded-[22px] border border-gray-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(0,0,0,0.10)] sm:rounded-[30px]"
+                    className="relative overflow-hidden rounded-[22px] border border-gray-100 bg-white shadow-[0_5px_22px_rgba(0,0,0,0.08)] sm:rounded-[30px]"
                   >
-
-                    {/* TOP INFORMATION AREA */}
-                    <div
-                      className={`relative overflow-hidden ${
-                        plan.isSpecial
-                          ? "bg-gradient-to-br from-[#fff0df] via-[#ffead4] to-[#ffe2c4]"
-                          : "bg-gradient-to-br from-[#fff7e9] via-[#fff0d8] to-[#ffe8c9]"
-                      }`}
-                    >
-
-                      {/* Special Banner */}
+                    {/* ================================
+                        TOP PEACH / CREAM AREA
+                    ================================= */}
+                    <div className="relative overflow-hidden bg-[#ffead5]">
+                      {/* Premium Banner */}
                       {plan.isSpecial && (
-                        <div className="absolute left-0 top-0 rounded-br-[18px] bg-gradient-to-r from-red-600 to-red-500 px-5 py-2.5 text-sm font-bold text-white shadow-md sm:px-7 sm:py-3 sm:text-lg">
+                        <div className="absolute left-0 top-0 z-10 rounded-br-[18px] bg-gradient-to-r from-[#ef2929] to-[#d71919] px-5 py-2.5 text-sm font-bold text-white shadow-md sm:px-7 sm:py-3 sm:text-lg">
                           Upgrade • Unlock 8 Benefits
                         </div>
                       )}
 
-                      {/* Normal Plan Accent */}
                       {!plan.isSpecial && (
-                        <div className="absolute left-0 top-0 rounded-br-[18px] bg-gradient-to-r from-yellow-500 to-orange-400 px-5 py-2.5 text-xs font-bold text-white shadow-md sm:px-7 sm:py-3 sm:text-sm">
+                        <div className="absolute left-0 top-0 z-10 rounded-br-[18px] bg-gradient-to-r from-[#f59e0b] to-[#e6a93b] px-5 py-2.5 text-sm font-bold text-white shadow-md sm:px-7 sm:py-3 sm:text-base">
                           Investment Plan
                         </div>
                       )}
 
-                      {/* Question Icon */}
-                      <div className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-yellow-600/30 bg-yellow-400/30 text-lg font-bold text-yellow-800 shadow-sm sm:right-5 sm:top-5 sm:h-12 sm:w-12 sm:text-xl">
+                      {/* Question Button */}
+                      <div className="absolute right-3 top-3 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-[#c99532] bg-[#f6d98d] text-xl font-bold text-[#8a641b] shadow-sm sm:right-5 sm:top-5 sm:h-14 sm:w-14 sm:text-2xl">
                         ?
                       </div>
 
-                      <div className="grid gap-5 px-4 pb-5 pt-20 sm:grid-cols-[230px_1fr] sm:gap-7 sm:px-7 sm:pb-7 sm:pt-24 lg:grid-cols-[270px_1fr]">
-
-                        {/* IMAGE / PRODUCT AREA */}
+                      <div className="grid gap-5 px-4 pb-6 pt-20 sm:grid-cols-[270px_1fr] sm:gap-8 sm:px-7 sm:pb-8 sm:pt-24 lg:grid-cols-[290px_1fr]">
+                        {/* ================================
+                            PRODUCT IMAGE STYLE AREA
+                        ================================= */}
                         <div className="flex items-center justify-center">
-                          <div className="relative flex h-48 w-full max-w-[260px] items-center justify-center overflow-hidden rounded-[22px] bg-gradient-to-br from-[#111827] via-[#243447] to-[#0f172a] shadow-lg sm:h-56 sm:max-w-none sm:rounded-[26px]">
+                          <div className="relative h-[230px] w-full max-w-[260px] overflow-hidden rounded-[22px] bg-gradient-to-br from-[#0d1117] via-[#253442] to-[#10151b] shadow-lg sm:h-[255px] sm:max-w-[290px] sm:rounded-[26px]">
+                            {/* Background lights */}
+                            <div className="absolute left-[-20px] top-[-20px] h-32 w-32 rounded-full bg-white/10 blur-3xl" />
+                            <div className="absolute bottom-[-25px] right-[-10px] h-36 w-36 rounded-full bg-yellow-400/10 blur-3xl" />
 
-                            {/* Decorative lights */}
-                            <div className="absolute left-5 top-5 h-16 w-16 rounded-full bg-yellow-400/10 blur-2xl" />
-                            <div className="absolute bottom-3 right-4 h-20 w-20 rounded-full bg-white/10 blur-2xl" />
+                            {/* Table / platform */}
+                            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/70 to-transparent" />
 
-                            {/* Product illustration */}
-                            <div className="relative flex flex-col items-center">
-                              <div className="flex h-24 w-20 items-center justify-center rounded-md border border-yellow-300/30 bg-gradient-to-br from-gray-700 to-gray-900 shadow-2xl sm:h-28 sm:w-24">
-                                <div className="flex h-11 w-11 items-center justify-center rounded-full border border-yellow-400/50 text-xl text-yellow-300 sm:h-12 sm:w-12">
+                            {/* Product */}
+                            <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+                              <div className="relative flex h-[125px] w-[92px] items-center justify-center rounded-sm border border-gray-500/50 bg-gradient-to-br from-[#34495a] via-[#17232e] to-[#0b1117] shadow-2xl sm:h-[145px] sm:w-[108px]">
+                                <div className="absolute inset-2 rounded-sm border border-yellow-400/10" />
+
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-yellow-400/50 bg-black/20 text-lg text-yellow-300 sm:h-14 sm:w-14 sm:text-xl">
                                   ◈
                                 </div>
                               </div>
 
-                              <div className="mt-3 max-w-[190px] text-center text-xs font-semibold text-white/90 sm:text-sm">
+                              <div className="mt-2 text-center text-[9px] font-semibold text-white/80 sm:text-[10px]">
                                 {plan.name}
                               </div>
 
-                              <div className="mt-1 text-[8px] uppercase tracking-[0.25em] text-yellow-300/70 sm:text-[9px]">
+                              <div className="mt-0.5 text-center text-[6px] uppercase tracking-[0.25em] text-yellow-300/70 sm:text-[7px]">
                                 ClaudeInvest
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* PLAN INFORMATION */}
-                        <div className="min-w-0">
+                        {/* ================================
+                            PLAN DETAILS
+                        ================================= */}
+                        <div className="min-w-0 self-center">
+                          <h2 className="text-2xl font-bold leading-tight text-[#171717] sm:text-4xl">
+                            {plan.name}
+                          </h2>
 
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0">
-                              <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-500 sm:text-xs">
-                                Investment Plan
-                              </p>
-
-                              <h2 className="mt-1 truncate text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
-                                {plan.name}
-                              </h2>
-                            </div>
-
-                            {plan.isSpecial && (
-                              <div className="shrink-0 rounded-lg border border-yellow-400/50 bg-yellow-100 px-2.5 py-1.5 text-[9px] font-bold text-yellow-800 sm:rounded-xl sm:px-3 sm:py-2 sm:text-xs">
-                                ★ Premium
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Existing information arranged like reference */}
-                          <div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4 sm:mt-6 sm:gap-x-8 sm:gap-y-5">
-
+                          <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 sm:mt-4 sm:gap-x-12 sm:gap-y-3">
+                            {/* Daily Income */}
                             <div>
-                              <p className="text-xs text-gray-500 sm:text-sm">
-                                Daily Earning
+                              <p className="text-lg leading-none text-[#555] sm:text-2xl">
+                                Daily income
                               </p>
 
-                              <p className="mt-0.5 text-xl font-bold text-gray-900 sm:text-2xl">
+                              <p className="mt-1 text-2xl font-bold leading-none text-[#171717] sm:text-4xl">
                                 ${daily.toLocaleString()}
                               </p>
                             </div>
 
+                            {/* Total Income */}
                             <div>
-                              <p className="text-xs text-gray-500 sm:text-sm">
-                                Total Return
+                              <p className="text-lg leading-none text-[#555] sm:text-2xl">
+                                Total income
                               </p>
 
-                              <p className="mt-0.5 text-xl font-bold text-gray-900 sm:text-2xl">
+                              <p className="mt-1 text-2xl font-bold leading-none text-[#171717] sm:text-4xl">
                                 ${total.toLocaleString()}
                               </p>
                             </div>
 
+                            {/* Contract Period */}
                             <div>
-                              <p className="text-xs text-gray-500 sm:text-sm">
-                                Duration
+                              <p className="text-lg leading-none text-[#555] sm:text-2xl">
+                                Contract period
                               </p>
 
-                              <p className="mt-0.5 text-xl font-bold text-gray-900 sm:text-2xl">
+                              <p className="mt-1 text-2xl font-bold leading-none text-[#171717] sm:text-4xl">
                                 {plan.durationDays} Days
                               </p>
                             </div>
 
+                            {/* Quantity Limit */}
                             <div>
-                              <p className="text-xs text-gray-500 sm:text-sm">
-                                Active Purchases
+                              <p className="text-lg leading-none text-[#555] sm:text-2xl">
+                                Quantity limit
                               </p>
 
-                              <p className="mt-0.5 text-xl font-bold text-gray-900 sm:text-2xl">
+                              <p className="mt-1 text-2xl font-bold leading-none text-[#171717] sm:text-4xl">
                                 {maxPurchases}
                               </p>
                             </div>
 
+                            {/* Referral Bonus */}
                             <div className="col-span-2">
-                              <p className="text-xs text-gray-500 sm:text-sm">
-                                Instant Referral Bonus
+                              <p className="text-lg leading-none text-[#555] sm:text-2xl">
+                                Subordinate purchase rebate
                               </p>
 
-                              <p className="mt-0.5 text-xl font-bold text-gray-900 sm:text-2xl">
+                              <p className="mt-1 text-2xl font-bold leading-none text-[#171717] sm:text-4xl">
                                 ${referralBonus.toLocaleString()}
                               </p>
                             </div>
-                          </div>
-
-                          {/* Status + Level */}
-                          <div className="mt-5 flex flex-wrap items-center gap-2 sm:mt-6 sm:gap-3">
-
-                            <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[10px] font-semibold text-emerald-700 sm:text-xs">
-                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                              Available
-                            </div>
-
-                            <div className="rounded-full bg-yellow-50 px-3 py-1.5 text-[10px] font-semibold text-yellow-700 sm:text-xs">
-                              Level 1: {Number(plan.level1Percent)}%
-                            </div>
-
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* BOTTOM PRICE AREA */}
-                    <div className="border-t border-gray-100 bg-white px-4 py-4 sm:px-7 sm:py-5">
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-                        {/* Prices + Plan Name */}
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-5">
-
-                          <div>
-                            <p className="text-2xl font-bold text-orange-500 sm:text-4xl">
-                              ${deposit.toLocaleString()}
-                            </p>
+                    {/* ================================
+                        BOTTOM WHITE PRICE AREA
+                    ================================= */}
+                    <div className="bg-white px-4 py-5 sm:px-7 sm:py-7">
+                      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 sm:gap-x-5">
+                          {/* Deposit */}
+                          <div className="text-[38px] font-semibold leading-none text-[#ef8c27] sm:text-[52px]">
+                            ${deposit.toLocaleString()}
                           </div>
 
-                          <div>
-                            <p className="text-2xl font-bold text-red-600 sm:text-4xl">
-                              ${profit.toLocaleString()}
-                            </p>
-                          </div>
-
-                          <div className="rounded-xl bg-gradient-to-r from-[#ffe0bd] to-[#f7bd57] px-3 py-2 text-sm font-bold text-yellow-900 shadow-sm sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-base">
+                          {/* Plan Name Badge */}
+                          <div className="rounded-xl bg-gradient-to-r from-[#ffe0bd] to-[#f5bd58] px-3 py-2.5 text-lg font-bold text-[#6b4618] shadow-sm sm:rounded-xl sm:px-5 sm:py-3 sm:text-2xl">
                             {plan.name}
+                          </div>
+
+                          {/* Profit */}
+                          <div className="text-[38px] font-semibold leading-none text-[#d71919] sm:text-[52px]">
+                            ${profit.toLocaleString()}
                           </div>
                         </div>
 
-                        {/* INVEST */}
+                        {/* INVEST BUTTON */}
                         <button
                           type="button"
                           onClick={() => handleInvest(plan)}
                           disabled={investing === plan.id}
-                          className="w-full rounded-2xl bg-gradient-to-r from-[#ffd8ad] to-[#f2b94b] px-7 py-3.5 text-base font-bold text-gray-900 shadow-sm transition hover:from-[#ffc98f] hover:to-[#e9a92e] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:min-w-[190px] sm:px-9 sm:py-4 sm:text-lg"
+                          className="w-full rounded-[22px] bg-gradient-to-r from-[#ffdbad] to-[#f4bd58] px-8 py-4 text-xl font-medium text-[#493316] shadow-sm transition hover:from-[#ffd09a] hover:to-[#efae36] disabled:cursor-not-allowed disabled:opacity-50 sm:w-[220px] sm:px-10 sm:py-5 sm:text-2xl"
                         >
                           {investing === plan.id
                             ? "Processing..."
-                            : "Invest"}
+                            : "INVEST"}
                         </button>
+                      </div>
+
+                      {/* Referral percentages remain available */}
+                      <div className="mt-4 flex flex-wrap gap-2 border-t border-gray-100 pt-3">
+                        <span className="rounded-full bg-yellow-50 px-3 py-1 text-[9px] font-semibold text-yellow-700 sm:text-[10px]">
+                          Level 1: {Number(plan.level1Percent)}%
+                        </span>
+
+                        <span className="rounded-full bg-yellow-50 px-3 py-1 text-[9px] font-semibold text-yellow-700 sm:text-[10px]">
+                          Level 2: {Number(plan.level2Percent)}%
+                        </span>
+
+                        <span className="rounded-full bg-yellow-50 px-3 py-1 text-[9px] font-semibold text-yellow-700 sm:text-[10px]">
+                          Level 3: {Number(plan.level3Percent)}%
+                        </span>
+
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-[9px] font-semibold text-emerald-700 sm:text-[10px]">
+                          {plan.status}
+                        </span>
                       </div>
                     </div>
                   </div>
