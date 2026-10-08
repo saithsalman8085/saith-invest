@@ -208,7 +208,7 @@ export default function PlansPage() {
                       </div>
 
                       {/* Content */}
-                      <div className="px-4 pb-4 pt-16 sm:px-8 sm:pb-6 sm:pt-20">
+                      <div className="px-4 pb-2 pt-8 sm:px-8 sm:pb-3 sm:pt-10">
                         {/* Plan name */}
                         <h2 className="pr-12 text-[27px] font-bold leading-tight text-[#171717] sm:pr-16 sm:text-4xl">
                           {plan.name}
