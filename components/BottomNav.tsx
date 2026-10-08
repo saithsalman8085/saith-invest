@@ -173,7 +173,7 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 md:hidden">
       <div className="mx-auto max-w-md">
-        <div className="relative overflow-visible rounded-3xl border border-gray-200/80 bg-white/95 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.16)] backdrop-blur-xl">
+        <div className="relative overflow-visible rounded-3xl border border-yellow-500/80 bg-yellow-400 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.16)] backdrop-blur-xl">
 
           {/* Colorful top glow */}
           <div className="pointer-events-none absolute left-[8%] right-[8%] top-0 h-1 overflow-hidden rounded-full">
