@@ -106,10 +106,6 @@ export default function RegisterPage() {
               </span>
             </Link>
 
-            <div className="mt-5 inline-flex rounded-full border border-yellow-300 bg-yellow-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-yellow-700">
-              Create Account
-            </div>
-
             <h1 className="mt-3 text-2xl font-bold sm:text-3xl">
               Create Your Account
             </h1>
