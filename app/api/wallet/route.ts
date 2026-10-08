@@ -3,10 +3,11 @@ import { db } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/session";
 
 const CREDIT_TYPES = [
-"DEPOSIT",
-"DAILY_EARNING",
-"REFERRAL_COMMISSION",
-"ACTIVE_USER_REWARD",
+  "DEPOSIT",
+  "DAILY_EARNING",
+  "REFERRAL_COMMISSION",
+  "ACTIVE_USER_REWARD",
+  "ADMIN_ADJUSTMENT",
 ];
 
 const DEBIT_TYPES = [
