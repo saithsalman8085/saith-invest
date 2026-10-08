@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const items = [
-  { label: "Plans", href: "/plans", icon: "plans" },
-  { label: "Invite", href: "/invite", icon: "invite" },
-  { label: "Dashboard", href: "/dashboard", icon: "dashboard" },
-  { label: "Wallet", href: "/deposit", icon: "wallet" },
-  { label: "Profile", href: "/profile", icon: "profile" },
+  { label: "Plans", href: "/plans", icon: "plans", color: "blue" },
+  { label: "Invite", href: "/invite", icon: "invite", color: "purple" },
+  { label: "Dashboard", href: "/dashboard", icon: "dashboard", color: "yellow" },
+  { label: "Wallet", href: "/deposit", icon: "wallet", color: "emerald" },
+  { label: "Profile", href: "/profile", icon: "profile", color: "pink" },
 ];
 
-function Icon({ type, active }: { type: string; active: boolean }) {
+function Icon({ type }: { type: string; active: boolean }) {
   const common =
-    "h-5 w-5 transition-transform duration-200";
+    "h-5 w-5 transition-all duration-200";
 
   if (type === "plans") {
     return (
@@ -173,10 +173,15 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 md:hidden">
       <div className="mx-auto max-w-md">
-        <div className="relative overflow-visible rounded-2xl border border-yellow-200 bg-white/95 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+        <div className="relative overflow-visible rounded-3xl border border-gray-200/80 bg-white/95 p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.16)] backdrop-blur-xl">
 
-          {/* Top light */}
-          <div className="pointer-events-none absolute left-[12%] right-[12%] top-0 h-px bg-gradient-to-r from-transparent via-yellow-400/80 to-transparent" />
+          {/* Colorful top glow */}
+          <div className="pointer-events-none absolute left-[8%] right-[8%] top-0 h-1 overflow-hidden rounded-full">
+            <div className="h-full w-full bg-gradient-to-r from-blue-400 via-purple-400 via-yellow-400 via-emerald-400 to-pink-400 opacity-90" />
+          </div>
+
+          {/* Soft bottom glow */}
+          <div className="pointer-events-none absolute -bottom-2 left-[10%] right-[10%] h-5 rounded-full bg-gradient-to-r from-blue-400/10 via-purple-400/10 via-yellow-400/10 via-emerald-400/10 to-pink-400/10 blur-xl" />
 
           <div className="grid grid-cols-5 items-end">
             {items.map((item) => {
@@ -189,28 +194,66 @@ export default function BottomNav() {
               const isDashboard = item.href === "/dashboard";
               const isClicked = clicked === item.href;
 
+              const activeColors = {
+                blue: "bg-blue-50 text-blue-600 shadow-[0_4px_16px_rgba(59,130,246,0.18)]",
+                purple:
+                  "bg-purple-50 text-purple-600 shadow-[0_4px_16px_rgba(168,85,247,0.18)]",
+                yellow:
+                  "bg-yellow-50 text-yellow-600 shadow-[0_4px_16px_rgba(234,179,8,0.18)]",
+                emerald:
+                  "bg-emerald-50 text-emerald-600 shadow-[0_4px_16px_rgba(16,185,129,0.18)]",
+                pink:
+                  "bg-pink-50 text-pink-600 shadow-[0_4px_16px_rgba(236,72,153,0.18)]",
+              };
+
+              const inactiveColors = {
+                blue: "text-blue-400",
+                purple: "text-purple-400",
+                yellow: "text-yellow-500",
+                emerald: "text-emerald-400",
+                pink: "text-pink-400",
+              };
+
+              const labelColors = {
+                blue: "text-blue-600",
+                purple: "text-purple-600",
+                yellow: "text-yellow-600",
+                emerald: "text-emerald-600",
+                pink: "text-pink-600",
+              };
+
+              const clickColors = {
+                blue: "border-blue-400/50 bg-blue-400/10",
+                purple: "border-purple-400/50 bg-purple-400/10",
+                yellow: "border-yellow-400/50 bg-yellow-400/10",
+                emerald: "border-emerald-400/50 bg-emerald-400/10",
+                pink: "border-pink-400/50 bg-pink-400/10",
+              };
+
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => handleClick(item.href)}
-                  className="group relative flex min-h-[58px] flex-col items-center justify-end"
+                  className="group relative flex min-h-[60px] flex-col items-center justify-end"
                 >
                   {/* Click ripple */}
                   {isClicked && (
-                    <span className="pointer-events-none absolute inset-2 animate-ping rounded-2xl bg-yellow-400/10" />
+                    <span
+                      className={`pointer-events-none absolute inset-2 animate-ping rounded-2xl border ${clickColors[item.color as keyof typeof clickColors]}`}
+                    />
                   )}
 
                   {isDashboard ? (
                     <div
-                      className={`absolute -top-7 flex h-14 w-14 items-center justify-center rounded-full border transition-all duration-200 ${
+                      className={`absolute -top-7 flex h-14 w-14 items-center justify-center rounded-full border-4 border-white transition-all duration-200 ${
                         active
-                          ? "border-yellow-400 bg-yellow-400 text-black shadow-[0_0_25px_rgba(250,204,21,0.45)]"
-                          : "border-yellow-200 bg-white text-gray-500 shadow-lg"
+                          ? "bg-gradient-to-br from-yellow-300 via-yellow-400 to-orange-400 text-black shadow-[0_0_28px_rgba(250,204,21,0.55)]"
+                          : "bg-gradient-to-br from-gray-100 to-white text-gray-500 shadow-[0_8px_20px_rgba(0,0,0,0.16)]"
                       } ${
                         isClicked
                           ? "scale-75 rotate-12"
-                          : "scale-100"
+                          : "scale-100 group-hover:scale-105"
                       }`}
                     >
                       <div
@@ -226,20 +269,28 @@ export default function BottomNav() {
                         />
                       </div>
 
+                      {active && (
+                        <span className="pointer-events-none absolute inset-0 rounded-full bg-yellow-300/20 blur-md" />
+                      )}
+
                       {isClicked && (
-                        <span className="pointer-events-none absolute inset-0 animate-ping rounded-full border-2 border-yellow-400/60" />
+                        <span className="pointer-events-none absolute inset-0 animate-ping rounded-full border-2 border-yellow-400/70" />
                       )}
                     </div>
                   ) : (
                     <div
-                      className={`relative flex h-8 w-10 items-center justify-center rounded-xl transition-all duration-200 ${
+                      className={`relative flex h-9 w-11 items-center justify-center rounded-2xl transition-all duration-200 ${
                         active
-                          ? "bg-yellow-100 text-yellow-600"
-                          : "text-gray-400"
+                          ? activeColors[
+                              item.color as keyof typeof activeColors
+                            ]
+                          : inactiveColors[
+                              item.color as keyof typeof inactiveColors
+                            ]
                       } ${
                         isClicked
                           ? "scale-75 -translate-y-1 rotate-6"
-                          : "scale-100"
+                          : "scale-100 group-hover:-translate-y-0.5"
                       }`}
                     >
                       <Icon
@@ -247,20 +298,28 @@ export default function BottomNav() {
                         active={active}
                       />
 
+                      {active && (
+                        <span className="pointer-events-none absolute inset-0 rounded-2xl bg-current opacity-[0.06]" />
+                      )}
+
                       {isClicked && (
-                        <span className="pointer-events-none absolute inset-0 animate-ping rounded-xl border border-yellow-400/50" />
+                        <span
+                          className={`pointer-events-none absolute inset-0 animate-ping rounded-2xl border ${clickColors[item.color as keyof typeof clickColors]}`}
+                        />
                       )}
                     </div>
                   )}
 
                   <span
-                    className={`mt-1 text-[10px] font-medium transition-all duration-200 ${
+                    className={`mt-1 text-[10px] font-semibold transition-all duration-200 ${
                       active
-                        ? "text-yellow-600"
-                        : "text-gray-500"
+                        ? labelColors[
+                            item.color as keyof typeof labelColors
+                          ]
+                        : "text-gray-400"
                     } ${
                       isClicked
-                        ? "scale-110 text-yellow-500"
+                        ? "scale-110"
                         : ""
                     }`}
                   >
