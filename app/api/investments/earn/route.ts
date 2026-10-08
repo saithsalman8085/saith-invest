@@ -239,16 +239,13 @@ export async function POST(request: NextRequest) {
           nextCollectionAt: null,
         } as any);
     } else {
-      const nextCollectionDate =
-        new Date(
-          now.getTime() +
-            24 * 60 * 60 * 1000
-        );
+      // EXACTLY 24 HOURS from the collection time.
+      const nextCollectionDate = new Date(
+        now.getTime() + 24 * 60 * 60 * 1000
+      );
 
       const nextCollectionTemporal =
-        toPlainDateTime(
-          nextCollectionDate
-        );
+        toPlainDateTime(nextCollectionDate);
 
       await db.orm.public.Investment
         .where((item) =>
