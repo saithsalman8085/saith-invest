@@ -195,12 +195,14 @@ export default function AdminPage() {
                 text="Manage referral levels and commission settings."
               />
 
-              <AdminCard
-                href="/admin/rewards"
-                icon="🏆"
-                title="Active User Rewards"
-                text="Manage active-user reward rules."
-              />
+              
+<AdminCard
+  href="/admin/active-user-history"
+  icon="📋"
+  title="Active User History"
+  text="Search any user ID and view referral and active-user history."
+/>
+
 
               <AdminCard
                 href="/admin/settings"
