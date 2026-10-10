@@ -387,6 +387,232 @@ export async function PATCH(request: NextRequest) {
         amountUSD: bonusAmount,
       });
     }
+        /*
+     * MANUAL INVITE SALARY
+     */
+    if (action === "SALARY") {
+      const allUsers = await db.orm.public.User.all();
+
+      // Find Level 1, 2 and 3 referrals of this user
+      const level1 = allUsers.filter(
+        (u) => u.referredById === userId
+      );
+
+      const level1Ids = level1.map((u) => u.id);
+
+      const level2 = allUsers.filter(
+        (u) => u.referredById && level1Ids.includes(u.referredById)
+      );
+
+      const level2Ids = level2.map((u) => u.id);
+
+      const level3 = allUsers.filter(
+        (u) => u.referredById && level2Ids.includes(u.referredById)
+      );
+
+      const network = Array.from(
+        new Map(
+          [...level1, ...level2, ...level3].map((u) => [u.id, u])
+        ).values()
+      );
+
+      // Count unique referred users who purchased a non-cancelled plan
+      const allInvestments = await db.orm.public.Investment.all();
+
+      const buyers = new Set(
+        allInvestments
+          .filter((investment) =>
+            String(investment.status) !== "CANCELLED"
+          )
+          .map((investment) => investment.userId)
+      );
+
+      const activeReferralCount = network.filter(
+        (u) => buyers.has(u.id)
+      ).length;
+
+      // Select one salary tier
+      let salaryAmount = 0;
+      let salaryPeriod = "";
+
+      if (activeReferralCount >= 500) {
+        salaryAmount = 200;
+        salaryPeriod = "MONTHLY";
+      } else if (activeReferralCount >= 200) {
+        salaryAmount = 80;
+        salaryPeriod = "MONTHLY";
+      } else if (activeReferralCount >= 100) {
+        salaryAmount = 35;
+        salaryPeriod = "MONTHLY";
+      } else if (activeReferralCount >= 50) {
+        salaryAmount = 5;
+        salaryPeriod = "WEEKLY";
+      } else if (activeReferralCount >= 30) {
+        salaryAmount = 2;
+        salaryPeriod = "WEEKLY";
+      } else {
+        return NextResponse.json(
+          {
+            error: "User is not eligible for invite salary.",
+            activeReferralCount,
+            requiredMembers: 30,
+          },
+          { status: 400 }
+        );
+      }
+
+      const now = new Date();
+
+      // Use Pakistan local calendar for monthly salary periods
+      const pakistanDate = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Karachi",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(now);
+
+      const [year, month, day] = pakistanDate.split("-").map(Number);
+
+      if (salaryPeriod === "MONTHLY" && day !== 1) {
+        return NextResponse.json(
+          {
+            error: "Monthly invite salary can only be paid on the 1st.",
+            activeReferralCount,
+            salaryAmount,
+            salaryPeriod,
+          },
+          { status: 400 }
+        );
+      }
+
+      // Prevent a second payment for the same salary period
+      const periodKey =
+        salaryPeriod === "MONTHLY"
+          ? `${year}-${String(month).padStart(2, "0")}`
+          : `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+      const periodStart =
+        salaryPeriod === "MONTHLY"
+          ? new Date(`${periodKey}-01T00:00:00+05:00`)
+          : new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      const transactions =
+        await db.orm.public.Transaction
+          .where((transaction) => transaction.userId.eq(userId))
+          .all();
+
+      const previousSalaryPayments = transactions.filter(
+        (transaction) =>
+          String(transaction.referenceId || "").startsWith(
+            "INVITE_SALARY:"
+          ) &&
+          String(transaction.status) === "COMPLETED"
+      );
+
+      const alreadyPaid = previousSalaryPayments.some(
+        (transaction) => {
+          const reference = String(transaction.referenceId || "");
+          if (salaryPeriod === "MONTHLY") {
+            return reference === `INVITE_SALARY:${userId}:MONTHLY:${periodKey}`;
+          }
+
+          const createdAt = new Date(
+            (transaction as any).createdAt || 0
+          ).getTime();
+
+          return (
+            reference.startsWith(`INVITE_SALARY:${userId}:WEEKLY:`) &&
+            createdAt > periodStart.getTime()
+          );
+        }
+      );
+
+      if (alreadyPaid) {
+        return NextResponse.json(
+          {
+            error: "Invite salary has already been paid for this period.",
+            activeReferralCount,
+            salaryAmount,
+            salaryPeriod,
+          },
+          { status: 409 }
+        );
+      }
+
+      const transactionsForBalance = transactions;
+
+      const creditTypes = [
+        "DEPOSIT",
+        "DAILY_EARNING",
+        "REFERRAL_COMMISSION",
+        "ACTIVE_USER_REWARD",
+        "ADMIN_ADJUSTMENT",
+      ];
+
+      const debitTypes = [
+        "INVESTMENT",
+        "WITHDRAWAL",
+        "WITHDRAWAL_FEE",
+      ];
+
+      let balance = 0;
+
+      for (const transaction of transactionsForBalance) {
+        if (String(transaction.status) !== "COMPLETED") continue;
+
+        const amount = Number(transaction.amountUSD) || 0;
+
+        if (creditTypes.includes(String(transaction.type))) {
+          balance += amount;
+        }
+
+        if (debitTypes.includes(String(transaction.type))) {
+          balance -= amount;
+        }
+      }
+
+      const balanceBefore = Number(balance.toFixed(2));
+      const balanceAfter = Number((balanceBefore + salaryAmount).toFixed(2));
+
+      const referenceId =
+        `INVITE_SALARY:${userId}:${salaryPeriod}:${periodKey}`;
+
+      const payment = await db.orm.public.Transaction.create({
+        userId,
+        type: "ADMIN_ADJUSTMENT",
+        status: "COMPLETED",
+        amountUSD: String(salaryAmount),
+        balanceBefore: String(balanceBefore),
+        balanceAfter: String(balanceAfter),
+        referenceId,
+        description:
+          `Manual invite salary (${salaryPeriod}) for ${activeReferralCount} plan-buying referred members.`,
+      } as any);
+
+      await db.orm.public.AuditLog.create({
+        action: "ADMIN_ADJUSTMENT",
+        adminId: admin.id,
+        targetUserId: userId,
+        description: "Manual invite salary paid by administrator.",
+        metadata: {
+          type: "INVITE_SALARY",
+          amountUSD: salaryAmount,
+          salaryPeriod,
+          periodKey,
+          activeReferralCount,
+          transactionId: payment.id,
+        },
+      } as any);
+
+      return NextResponse.json({
+        success: true,
+        message: "Invite salary paid successfully.",
+        amountUSD: salaryAmount,
+        salaryPeriod,
+        activeReferralCount,
+        transactionId: payment.id,
+      });
+    }
 
     /*
      * USER STATUS ACTION

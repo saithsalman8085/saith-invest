@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/session";
@@ -13,7 +14,6 @@ export async function GET() {
       );
     }
 
-    // Current logged-in user
     const user = await db.orm.public.User
       .where((user) => user.id.eq(userId))
       .first();
@@ -25,58 +25,84 @@ export async function GET() {
       );
     }
 
-    // LEVEL 1
-    // Users directly referred by current user
+    // LEVEL 1: Direct referrals
     const level1Users = await db.orm.public.User
       .where((user) => user.referredById.eq(userId))
       .all();
 
     const level1Ids = level1Users.map((user) => user.id);
 
-    // LEVEL 2
-    // Users referred by Level 1 users
+    // LEVEL 2: Referrals invited by Level 1
     let level2Users: typeof level1Users = [];
 
     if (level1Ids.length > 0) {
-      const users = await db.orm.public.User.all();
+      const allUsers = await db.orm.public.User.all();
 
-      level2Users = users.filter(
-        (user) =>
-          user.referredById &&
-          level1Ids.includes(user.referredById)
+      level2Users = allUsers.filter(
+        (referralUser) =>
+          referralUser.referredById &&
+          level1Ids.includes(referralUser.referredById)
       );
     }
 
     const level2Ids = level2Users.map((user) => user.id);
 
-    // LEVEL 3
-    // Users referred by Level 2 users
+    // LEVEL 3: Referrals invited by Level 2
     let level3Users: typeof level1Users = [];
 
     if (level2Ids.length > 0) {
-      const users = await db.orm.public.User.all();
+      const allUsers = await db.orm.public.User.all();
 
-      level3Users = users.filter(
-        (user) =>
-          user.referredById &&
-          level2Ids.includes(user.referredById)
+      level3Users = allUsers.filter(
+        (referralUser) =>
+          referralUser.referredById &&
+          level2Ids.includes(referralUser.referredById)
       );
     }
 
+    // All referrals across the three levels
     const allReferralUsers = [
       ...level1Users,
       ...level2Users,
       ...level3Users,
     ];
 
-    // Active users in the 3-level network
-    const activeUsers = allReferralUsers.filter(
-      (user) => user.status === "ACTIVE"
+    // Count each referred user only once
+    const uniqueReferralUsers = Array.from(
+      new Map(
+        allReferralUsers.map((referralUser) => [
+          referralUser.id,
+          referralUser,
+        ])
+      ).values()
+    );
+
+    // Total Invites includes all referred users,
+    // whether or not they purchased a plan
+    const totalInvites = uniqueReferralUsers.length;
+
+    // Active Users includes referrals with at least
+    // one investment that has not been cancelled
+    const allInvestments = await db.orm.public.Investment.all();
+
+    const usersWithInvestments = new Set(
+      allInvestments
+        .filter(
+          (investment) =>
+            String(investment.status) !== "CANCELLED"
+        )
+        .map((investment) => investment.userId)
+    );
+
+    const activeUsers = uniqueReferralUsers.filter(
+      (referralUser) => usersWithInvestments.has(referralUser.id)
     ).length;
 
-    // Referral earnings
+    // Referral earnings: existing calculation unchanged
     const commissions = await db.orm.public.ReferralCommission
-      .where((commission) => commission.beneficiaryId.eq(userId))
+      .where((commission) =>
+        commission.beneficiaryId.eq(userId)
+      )
       .all();
 
     const referralEarnings = commissions.reduce(
@@ -93,10 +119,10 @@ export async function GET() {
       },
 
       stats: {
-        totalInvites: level1Users.length,
+        totalInvites,
         activeUsers,
         referralEarnings: Number(referralEarnings.toFixed(2)),
-        totalNetwork: allReferralUsers.length,
+        totalNetwork: totalInvites,
       },
 
       levels: {

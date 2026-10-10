@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -85,7 +86,7 @@ function ActionButtons({
         disabled={loading === user.id}
         className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
       >
-        Bonus
+        Bonus / Salary
       </button>
 
       {user.status === "ACTIVE" && (
@@ -407,36 +408,85 @@ export default function AdminUsersPage() {
   }
 
   async function onBonus(user: User) {
-    const amountInput = window.prompt(
-      `Bonus amount for ${user.fullName}:`
+    setMessage("");
+    setError("");
+
+    const choice = window.prompt(
+      `Choose action for ${user.fullName}:\n\n1 = Send Bonus\n2 = Pay Invite Salary\n\nEnter 1 or 2:`
     );
 
-    if (amountInput === null) {
+    if (choice === null) {
       return;
     }
 
-    const amount = Number(amountInput);
+    const selected = choice.trim();
 
-    if (!Number.isFinite(amount) || amount <= 0) {
+    if (selected !== "1" && selected !== "2") {
       setError(
-        "Please enter a valid bonus amount."
+        "Please enter 1 for Bonus or 2 for Invite Salary."
       );
       return;
     }
 
-    const messageInput = window.prompt(
-      "Optional bonus message (Cancel to use default message):"
-    );
+    const action =
+      selected === "2" ? "SALARY" : "BONUS";
 
-    const message =
-      messageInput === null
-        ? ""
-        : messageInput.trim();
+    let amount: number | undefined;
+    let bonusMessage = "";
+
+    if (action === "BONUS") {
+      const amountInput = window.prompt(
+        `Bonus amount for ${user.fullName}:`
+      );
+
+      if (amountInput === null) {
+        return;
+      }
+
+      amount = Number(amountInput);
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        setError(
+          "Please enter a valid bonus amount."
+        );
+        return;
+      }
+
+      const messageInput = window.prompt(
+        "Optional bonus message (Cancel to use default message):"
+      );
+
+      bonusMessage =
+        messageInput === null
+          ? ""
+          : messageInput.trim();
+    } else {
+      const confirmed = window.confirm(
+        `Pay the eligible Invite Salary to ${user.fullName}?\n\nThe server will check eligibility and duplicate payments.`
+      );
+
+      if (!confirmed) {
+        return;
+      }
+    }
 
     try {
       setLoading(user.id);
       setMessage("");
       setError("");
+
+      const body =
+        action === "BONUS"
+          ? {
+              userId: user.id,
+              action,
+              amount,
+              message: bonusMessage,
+            }
+          : {
+              userId: user.id,
+              action,
+            };
 
       const response = await fetch(
         "/api/admin/users",
@@ -445,12 +495,7 @@ export default function AdminUsersPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            userId: user.id,
-            action: "BONUS",
-            amount,
-            message,
-          }),
+          body: JSON.stringify(body),
         }
       );
 
@@ -459,13 +504,17 @@ export default function AdminUsersPage() {
       if (!response.ok) {
         throw new Error(
           data.error ||
-            "Unable to send bonus."
+            (action === "SALARY"
+              ? "Unable to pay invite salary."
+              : "Unable to send bonus.")
         );
       }
 
       setMessage(
         data.message ||
-          "Bonus sent successfully."
+          (action === "SALARY"
+            ? "Invite salary paid successfully."
+            : "Bonus sent successfully.")
       );
 
       await loadUsers();
@@ -473,7 +522,9 @@ export default function AdminUsersPage() {
       setError(
         err instanceof Error
           ? err.message
-          : "Unable to send bonus."
+          : action === "SALARY"
+            ? "Unable to pay invite salary."
+            : "Unable to send bonus."
       );
     } finally {
       setLoading(null);
@@ -520,7 +571,7 @@ export default function AdminUsersPage() {
 
           <p className="mt-2 text-sm text-slate-400">
             Search users, manage account status,
-            edit details, reset passwords, and send bonuses.
+            edit details, reset passwords, and send bonuses or invite salaries.
           </p>
         </div>
 

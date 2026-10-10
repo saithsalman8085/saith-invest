@@ -224,6 +224,58 @@ export default function InvitePage() {
             </div>
           </div>
 
+          
+          {/* Invite Salary Tiers */}
+          <div className="mt-3 rounded-xl border border-yellow-300 bg-white p-4 shadow-sm sm:p-5">
+            <h2 className="text-base font-bold sm:text-lg">
+              Invite Salary
+            </h2>
+
+            <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+              Salary eligibility is based on active referrals across Levels 1, 2 and 3.
+            </p>
+
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full min-w-[280px] text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200 text-slate-500">
+                    <th className="px-2 py-2 font-medium">Active Users</th>
+                    <th className="px-2 py-2 font-medium">Salary</th>
+                    <th className="px-2 py-2 font-medium">Payment Period</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-slate-100">
+                    <td className="px-2 py-3">30–49</td>
+                    <td className="px-2 py-3 font-semibold">$2</td>
+                    <td className="px-2 py-3">Every 7 days</td>
+                  </tr>
+                  <tr className="border-b border-slate-100">
+                    <td className="px-2 py-3">50–99</td>
+                    <td className="px-2 py-3 font-semibold">$5</td>
+                    <td className="px-2 py-3">Every 7 days</td>
+                  </tr>
+                  <tr className="border-b border-slate-100">
+                    <td className="px-2 py-3">100–199</td>
+                    <td className="px-2 py-3 font-semibold">$35</td>
+                    <td className="px-2 py-3">Monthly, on the 1st</td>
+                  </tr>
+                  <tr className="border-b border-slate-100">
+                    <td className="px-2 py-3">200–499</td>
+                    <td className="px-2 py-3 font-semibold">$80</td>
+                    <td className="px-2 py-3">Monthly, on the 1st</td>
+                  </tr>
+                  <tr>
+                    <td className="px-2 py-3">500+</td>
+                    <td className="px-2 py-3 font-semibold">$200</td>
+                    <td className="px-2 py-3">Monthly, on the 1st</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
           {/* Referral Levels + Referral Network */}
           <div className="mt-2.5 grid grid-cols-2 gap-2 sm:mt-3 sm:gap-3">
 
