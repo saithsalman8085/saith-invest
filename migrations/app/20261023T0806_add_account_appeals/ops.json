@@ -1,0 +1,3259 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.AppealStatus",
+    "label": "Create enum type \"AppealStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "AppealStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"AppealStatus\"",
+        "sql": "CREATE TYPE \"public\".\"AppealStatus\" AS ENUM ('PENDING', 'APPROVED', 'REJECTED')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.AuditAction",
+    "label": "Create enum type \"AuditAction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "AuditAction"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"AuditAction\"",
+        "sql": "CREATE TYPE \"public\".\"AuditAction\" AS ENUM ('PASSWORD_RESET', 'KYC_LOCK', 'KYC_UNLOCK', 'KYC_CHANGE', 'USER_SUSPEND', 'USER_ACTIVATE', 'DEPOSIT_APPROVE', 'DEPOSIT_REJECT', 'WITHDRAWAL_APPROVE', 'WITHDRAWAL_REJECT', 'ADMIN_ADJUSTMENT', 'PLAN_CREATE', 'PLAN_UPDATE', 'PLAN_DELETE', 'PLAN_PUBLISH', 'PLAN_UNPUBLISH', 'SETTINGS_UPDATE')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.DepositStatus",
+    "label": "Create enum type \"DepositStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "DepositStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"DepositStatus\"",
+        "sql": "CREATE TYPE \"public\".\"DepositStatus\" AS ENUM ('PENDING', 'APPROVED', 'REJECTED')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.InvestmentStatus",
+    "label": "Create enum type \"InvestmentStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "InvestmentStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"InvestmentStatus\"",
+        "sql": "CREATE TYPE \"public\".\"InvestmentStatus\" AS ENUM ('ACTIVE', 'COMPLETED', 'CANCELLED')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.PlanStatus",
+    "label": "Create enum type \"PlanStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "PlanStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"PlanStatus\"",
+        "sql": "CREATE TYPE \"public\".\"PlanStatus\" AS ENUM ('DRAFT', 'PUBLISHED')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.ReferralLevel",
+    "label": "Create enum type \"ReferralLevel\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "ReferralLevel"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"ReferralLevel\"",
+        "sql": "CREATE TYPE \"public\".\"ReferralLevel\" AS ENUM ('LEVEL_1', 'LEVEL_2', 'LEVEL_3')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.RewardPeriod",
+    "label": "Create enum type \"RewardPeriod\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "RewardPeriod"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"RewardPeriod\"",
+        "sql": "CREATE TYPE \"public\".\"RewardPeriod\" AS ENUM ('DAYS_7', 'MONTHLY')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.TransactionStatus",
+    "label": "Create enum type \"TransactionStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "TransactionStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"TransactionStatus\"",
+        "sql": "CREATE TYPE \"public\".\"TransactionStatus\" AS ENUM ('PENDING', 'COMPLETED', 'REVERSED')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.TransactionType",
+    "label": "Create enum type \"TransactionType\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "TransactionType"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"TransactionType\"",
+        "sql": "CREATE TYPE \"public\".\"TransactionType\" AS ENUM ('DEPOSIT', 'INVESTMENT', 'DAILY_EARNING', 'REFERRAL_COMMISSION', 'ACTIVE_USER_REWARD', 'WITHDRAWAL', 'WITHDRAWAL_FEE', 'ADMIN_ADJUSTMENT')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.UserRole",
+    "label": "Create enum type \"UserRole\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "UserRole"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"UserRole\"",
+        "sql": "CREATE TYPE \"public\".\"UserRole\" AS ENUM ('USER', 'ADMIN')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.UserStatus",
+    "label": "Create enum type \"UserStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "UserStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"UserStatus\"",
+        "sql": "CREATE TYPE \"public\".\"UserStatus\" AS ENUM ('ACTIVE', 'SUSPENDED', 'BLOCKED')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.WithdrawalStatus",
+    "label": "Create enum type \"WithdrawalStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "WithdrawalStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"WithdrawalStatus\"",
+        "sql": "CREATE TYPE \"public\".\"WithdrawalStatus\" AS ENUM ('PENDING', 'APPROVED', 'REJECTED')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.AccountAppeal",
+    "label": "Create table \"AccountAppeal\"",
+    "summary": "Creates table \"AccountAppeal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "AccountAppeal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"AccountAppeal\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"AccountAppeal\"",
+        "sql": "CREATE TABLE \"public\".\"AccountAppeal\" (\n  \"adminNote\" text,\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"message\" text NOT NULL,\n  \"reviewedAt\" timestamp(3),\n  \"reviewedById\" text,\n  \"status\" \"AppealStatus\" DEFAULT 'PENDING'::\"AppealStatus\" NOT NULL,\n  \"updatedAt\" timestamp(3) NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"AccountAppeal\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.ActiveUserReward",
+    "label": "Create table \"ActiveUserReward\"",
+    "summary": "Creates table \"ActiveUserReward\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ActiveUserReward"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"ActiveUserReward\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"ActiveUserReward\"",
+        "sql": "CREATE TABLE \"public\".\"ActiveUserReward\" (\n  \"activeUserCount\" int4 NOT NULL,\n  \"claimedAt\" timestamp(3),\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"period\" \"RewardPeriod\" NOT NULL,\n  \"periodEnd\" timestamp(3) NOT NULL,\n  \"periodStart\" timestamp(3) NOT NULL,\n  \"rewardAmount\" numeric(18,2) NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"ActiveUserReward\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.AuditLog",
+    "label": "Create table \"AuditLog\"",
+    "summary": "Creates table \"AuditLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "AuditLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"AuditLog\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"AuditLog\"",
+        "sql": "CREATE TABLE \"public\".\"AuditLog\" (\n  \"action\" \"AuditAction\" NOT NULL,\n  \"adminId\" text,\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"description\" text,\n  \"id\" text NOT NULL,\n  \"metadata\" jsonb,\n  \"targetUserId\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"AuditLog\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Deposit",
+    "label": "Create table \"Deposit\"",
+    "summary": "Creates table \"Deposit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Deposit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Deposit\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Deposit\"",
+        "sql": "CREATE TABLE \"public\".\"Deposit\" (\n  \"amountPKR\" numeric(18,2) NOT NULL,\n  \"approvedAt\" timestamp(3),\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"creditAmountUSD\" numeric(18,2) NOT NULL,\n  \"exchangeRate\" numeric(18,4) NOT NULL,\n  \"id\" text NOT NULL,\n  \"paymentMethod\" text DEFAULT 'Easypaisa' NOT NULL,\n  \"rejectedAt\" timestamp(3),\n  \"rejectionReason\" text,\n  \"reviewedById\" text,\n  \"status\" \"DepositStatus\" DEFAULT 'PENDING'::\"DepositStatus\" NOT NULL,\n  \"submittedAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"transactionId\" text NOT NULL,\n  \"updatedAt\" timestamp(3) NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Deposit\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.EarningCollection",
+    "label": "Create table \"EarningCollection\"",
+    "summary": "Creates table \"EarningCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "EarningCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"EarningCollection\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"EarningCollection\"",
+        "sql": "CREATE TABLE \"public\".\"EarningCollection\" (\n  \"amount\" numeric(18,2) NOT NULL,\n  \"collectedAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"investmentId\" text NOT NULL,\n  \"transactionId\" text,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"EarningCollection\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Investment",
+    "label": "Create table \"Investment\"",
+    "summary": "Creates table \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Investment\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Investment\"",
+        "sql": "CREATE TABLE \"public\".\"Investment\" (\n  \"amount\" numeric(18,2) NOT NULL,\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"dailyReturn\" numeric(10,4) NOT NULL,\n  \"durationDays\" int4 NOT NULL,\n  \"endsAt\" timestamp(3) NOT NULL,\n  \"id\" text NOT NULL,\n  \"lastCollectedAt\" timestamp(3),\n  \"level1Percent\" numeric(10,4) NOT NULL,\n  \"level2Percent\" numeric(10,4) NOT NULL,\n  \"level3Percent\" numeric(10,4) NOT NULL,\n  \"nextCollectionAt\" timestamp(3),\n  \"planId\" text NOT NULL,\n  \"startedAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"status\" \"InvestmentStatus\" DEFAULT 'ACTIVE'::\"InvestmentStatus\" NOT NULL,\n  \"updatedAt\" timestamp(3) NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Investment\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.InvestmentPlan",
+    "label": "Create table \"InvestmentPlan\"",
+    "summary": "Creates table \"InvestmentPlan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "InvestmentPlan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"InvestmentPlan\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"InvestmentPlan\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"InvestmentPlan\"",
+        "sql": "CREATE TABLE \"public\".\"InvestmentPlan\" (\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"dailyEarning\" numeric(18,4) NOT NULL,\n  \"depositAmount\" numeric(18,2) NOT NULL,\n  \"durationDays\" int4 NOT NULL,\n  \"id\" text NOT NULL,\n  \"isSpecial\" bool DEFAULT false NOT NULL,\n  \"level1Percent\" numeric(10,4) NOT NULL,\n  \"level2Percent\" numeric(10,4) NOT NULL,\n  \"level3Percent\" numeric(10,4) NOT NULL,\n  \"maxPurchasesPerUser\" int4 DEFAULT 1 NOT NULL,\n  \"name\" text NOT NULL,\n  \"profitAmount\" numeric(18,2) NOT NULL,\n  \"referralBonusUSD\" numeric(18,2) DEFAULT '0'::numeric(18,2) NOT NULL,\n  \"status\" \"PlanStatus\" DEFAULT 'DRAFT'::\"PlanStatus\" NOT NULL,\n  \"totalReturn\" numeric(18,2) NOT NULL,\n  \"updatedAt\" timestamp(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"InvestmentPlan\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"InvestmentPlan\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.PlatformSettings",
+    "label": "Create table \"PlatformSettings\"",
+    "summary": "Creates table \"PlatformSettings\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "PlatformSettings"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"PlatformSettings\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PlatformSettings\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"PlatformSettings\"",
+        "sql": "CREATE TABLE \"public\".\"PlatformSettings\" (\n  \"adminTwoFactor\" bool DEFAULT false NOT NULL,\n  \"depositAccountName\" text DEFAULT 'ClaudeInvest' NOT NULL,\n  \"depositAccountNumber\" text DEFAULT '' NOT NULL,\n  \"depositApprovalMaxHours\" int4 DEFAULT 3 NOT NULL,\n  \"depositApprovalMinHours\" int4 DEFAULT 1 NOT NULL,\n  \"depositCurrency\" text DEFAULT 'PKR' NOT NULL,\n  \"depositInstructions\" text DEFAULT 'Send payment to the account above and enter your transaction ID.' NOT NULL,\n  \"depositPaymentMethod\" text DEFAULT 'Easypaisa' NOT NULL,\n  \"exchangeRate\" numeric(18,4) DEFAULT '300'::numeric(18,4) NOT NULL,\n  \"id\" text NOT NULL,\n  \"maintenanceMode\" bool DEFAULT false NOT NULL,\n  \"platformCurrency\" text DEFAULT 'USD' NOT NULL,\n  \"platformName\" text DEFAULT 'ClaudeInvest' NOT NULL,\n  \"supportEmail\" text,\n  \"updatedAt\" timestamp(3) NOT NULL,\n  \"withdrawalApprovalMaxHours\" int4 DEFAULT 2 NOT NULL,\n  \"withdrawalClosingHour\" int4 DEFAULT 23 NOT NULL,\n  \"withdrawalCurrency\" text DEFAULT 'PKR' NOT NULL,\n  \"withdrawalFeePercent\" numeric(10,4) DEFAULT '12'::numeric(10,4) NOT NULL,\n  \"withdrawalFriday\" bool DEFAULT true NOT NULL,\n  \"withdrawalMonday\" bool DEFAULT true NOT NULL,\n  \"withdrawalOpeningHour\" int4 DEFAULT 9 NOT NULL,\n  \"withdrawalSaturday\" bool DEFAULT false NOT NULL,\n  \"withdrawalSunday\" bool DEFAULT false NOT NULL,\n  \"withdrawalThursday\" bool DEFAULT true NOT NULL,\n  \"withdrawalTuesday\" bool DEFAULT true NOT NULL,\n  \"withdrawalWednesday\" bool DEFAULT true NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"PlatformSettings\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"PlatformSettings\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.ReferralCommission",
+    "label": "Create table \"ReferralCommission\"",
+    "summary": "Creates table \"ReferralCommission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ReferralCommission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"ReferralCommission\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"ReferralCommission\"",
+        "sql": "CREATE TABLE \"public\".\"ReferralCommission\" (\n  \"beneficiaryId\" text NOT NULL,\n  \"commissionAmount\" numeric(18,2) NOT NULL,\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"investmentAmount\" numeric(18,2) NOT NULL,\n  \"investmentId\" text NOT NULL,\n  \"level\" \"ReferralLevel\" NOT NULL,\n  \"percent\" numeric(10,4) NOT NULL,\n  \"sourceUserId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"ReferralCommission\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Transaction",
+    "label": "Create table \"Transaction\"",
+    "summary": "Creates table \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Transaction\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Transaction\"",
+        "sql": "CREATE TABLE \"public\".\"Transaction\" (\n  \"amountUSD\" numeric(18,2) NOT NULL,\n  \"balanceAfter\" numeric(18,2) NOT NULL,\n  \"balanceBefore\" numeric(18,2) NOT NULL,\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"depositId\" text,\n  \"description\" text,\n  \"id\" text NOT NULL,\n  \"referenceId\" text,\n  \"status\" \"TransactionStatus\" DEFAULT 'COMPLETED'::\"TransactionStatus\" NOT NULL,\n  \"type\" \"TransactionType\" NOT NULL,\n  \"userId\" text NOT NULL,\n  \"withdrawalId\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Transaction\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.User",
+    "label": "Create table \"User\"",
+    "summary": "Creates table \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"User\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"User\"",
+        "sql": "CREATE TABLE \"public\".\"User\" (\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"email\" text,\n  \"fullName\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"passwordHash\" text NOT NULL,\n  \"phone\" text,\n  \"premiumBadge\" bool DEFAULT false NOT NULL,\n  \"publicUserId\" text NOT NULL,\n  \"referralCode\" text NOT NULL,\n  \"referredById\" text,\n  \"role\" \"UserRole\" DEFAULT 'USER'::\"UserRole\" NOT NULL,\n  \"status\" \"UserStatus\" DEFAULT 'ACTIVE'::\"UserStatus\" NOT NULL,\n  \"updatedAt\" timestamp(3) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"User\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Withdrawal",
+    "label": "Create table \"Withdrawal\"",
+    "summary": "Creates table \"Withdrawal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Withdrawal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Withdrawal\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Withdrawal\"",
+        "sql": "CREATE TABLE \"public\".\"Withdrawal\" (\n  \"accountName\" text NOT NULL,\n  \"amountUSD\" numeric(18,2) NOT NULL,\n  \"approvedAt\" timestamp(3),\n  \"cnicNumber\" text NOT NULL,\n  \"easypaisaNumber\" text NOT NULL,\n  \"exchangeRate\" numeric(18,4) NOT NULL,\n  \"feePercent\" numeric(10,4) NOT NULL,\n  \"feeUSD\" numeric(18,2) NOT NULL,\n  \"id\" text NOT NULL,\n  \"netAmountUSD\" numeric(18,2) NOT NULL,\n  \"payoutPKR\" numeric(18,2) NOT NULL,\n  \"rejectedAt\" timestamp(3),\n  \"rejectionReason\" text,\n  \"requestedAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"reviewedById\" text,\n  \"status\" \"WithdrawalStatus\" DEFAULT 'PENDING'::\"WithdrawalStatus\" NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Withdrawal\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.WithdrawalProfile",
+    "label": "Create table \"WithdrawalProfile\"",
+    "summary": "Creates table \"WithdrawalProfile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "WithdrawalProfile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"WithdrawalProfile\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"WithdrawalProfile\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"WithdrawalProfile\"",
+        "sql": "CREATE TABLE \"public\".\"WithdrawalProfile\" (\n  \"accountName\" text NOT NULL,\n  \"cnicNumber\" text NOT NULL,\n  \"createdAt\" timestamp(3) DEFAULT (now()) NOT NULL,\n  \"easypaisaNumber\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"isLocked\" bool DEFAULT false NOT NULL,\n  \"updatedAt\" timestamp(3) NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"WithdrawalProfile\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"WithdrawalProfile\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AccountAppeal.AccountAppeal_createdAt_idx",
+    "label": "Create index \"AccountAppeal_createdAt_idx\" on \"AccountAppeal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AccountAppeal_createdAt_idx",
+        "table": "AccountAppeal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AccountAppeal_createdAt_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal_createdAt_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AccountAppeal_createdAt_idx\"",
+        "sql": "CREATE INDEX \"AccountAppeal_createdAt_idx\" ON \"public\".\"AccountAppeal\" (\"createdAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AccountAppeal_createdAt_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal_createdAt_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AccountAppeal.AccountAppeal_status_idx",
+    "label": "Create index \"AccountAppeal_status_idx\" on \"AccountAppeal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AccountAppeal_status_idx",
+        "table": "AccountAppeal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AccountAppeal_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AccountAppeal_status_idx\"",
+        "sql": "CREATE INDEX \"AccountAppeal_status_idx\" ON \"public\".\"AccountAppeal\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AccountAppeal_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AccountAppeal.AccountAppeal_userId_idx",
+    "label": "Create index \"AccountAppeal_userId_idx\" on \"AccountAppeal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AccountAppeal_userId_idx",
+        "table": "AccountAppeal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AccountAppeal_userId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal_userId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AccountAppeal_userId_idx\"",
+        "sql": "CREATE INDEX \"AccountAppeal_userId_idx\" ON \"public\".\"AccountAppeal\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AccountAppeal_userId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccountAppeal_userId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ActiveUserReward.ActiveUserReward_activeUserCount_idx",
+    "label": "Create index \"ActiveUserReward_activeUserCount_idx\" on \"ActiveUserReward\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ActiveUserReward_activeUserCount_idx",
+        "table": "ActiveUserReward"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ActiveUserReward_activeUserCount_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward_activeUserCount_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ActiveUserReward_activeUserCount_idx\"",
+        "sql": "CREATE INDEX \"ActiveUserReward_activeUserCount_idx\" ON \"public\".\"ActiveUserReward\" (\"activeUserCount\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ActiveUserReward_activeUserCount_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward_activeUserCount_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ActiveUserReward.ActiveUserReward_periodStart_periodEnd_idx",
+    "label": "Create index \"ActiveUserReward_periodStart_periodEnd_idx\" on \"ActiveUserReward\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ActiveUserReward_periodStart_periodEnd_idx",
+        "table": "ActiveUserReward"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ActiveUserReward_periodStart_periodEnd_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward_periodStart_periodEnd_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ActiveUserReward_periodStart_periodEnd_idx\"",
+        "sql": "CREATE INDEX \"ActiveUserReward_periodStart_periodEnd_idx\" ON \"public\".\"ActiveUserReward\" (\"periodStart\", \"periodEnd\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ActiveUserReward_periodStart_periodEnd_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward_periodStart_periodEnd_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ActiveUserReward.ActiveUserReward_userId_idx",
+    "label": "Create index \"ActiveUserReward_userId_idx\" on \"ActiveUserReward\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ActiveUserReward_userId_idx",
+        "table": "ActiveUserReward"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ActiveUserReward_userId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward_userId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ActiveUserReward_userId_idx\"",
+        "sql": "CREATE INDEX \"ActiveUserReward_userId_idx\" ON \"public\".\"ActiveUserReward\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ActiveUserReward_userId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ActiveUserReward_userId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AuditLog.AuditLog_action_idx",
+    "label": "Create index \"AuditLog_action_idx\" on \"AuditLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AuditLog_action_idx",
+        "table": "AuditLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AuditLog_action_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_action_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AuditLog_action_idx\"",
+        "sql": "CREATE INDEX \"AuditLog_action_idx\" ON \"public\".\"AuditLog\" (\"action\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AuditLog_action_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_action_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AuditLog.AuditLog_adminId_idx",
+    "label": "Create index \"AuditLog_adminId_idx\" on \"AuditLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AuditLog_adminId_idx",
+        "table": "AuditLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AuditLog_adminId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_adminId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AuditLog_adminId_idx\"",
+        "sql": "CREATE INDEX \"AuditLog_adminId_idx\" ON \"public\".\"AuditLog\" (\"adminId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AuditLog_adminId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_adminId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AuditLog.AuditLog_createdAt_idx",
+    "label": "Create index \"AuditLog_createdAt_idx\" on \"AuditLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AuditLog_createdAt_idx",
+        "table": "AuditLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AuditLog_createdAt_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_createdAt_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AuditLog_createdAt_idx\"",
+        "sql": "CREATE INDEX \"AuditLog_createdAt_idx\" ON \"public\".\"AuditLog\" (\"createdAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AuditLog_createdAt_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_createdAt_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AuditLog.AuditLog_targetUserId_idx",
+    "label": "Create index \"AuditLog_targetUserId_idx\" on \"AuditLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AuditLog_targetUserId_idx",
+        "table": "AuditLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AuditLog_targetUserId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_targetUserId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AuditLog_targetUserId_idx\"",
+        "sql": "CREATE INDEX \"AuditLog_targetUserId_idx\" ON \"public\".\"AuditLog\" (\"targetUserId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AuditLog_targetUserId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AuditLog_targetUserId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Deposit.Deposit_paymentMethod_transactionId_key",
+    "label": "Create index \"Deposit_paymentMethod_transactionId_key\" on \"Deposit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Deposit_paymentMethod_transactionId_key",
+        "table": "Deposit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Deposit_paymentMethod_transactionId_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_paymentMethod_transactionId_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Deposit_paymentMethod_transactionId_key\"",
+        "sql": "CREATE UNIQUE INDEX \"Deposit_paymentMethod_transactionId_key\" ON \"public\".\"Deposit\" (\"paymentMethod\", \"transactionId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Deposit_paymentMethod_transactionId_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_paymentMethod_transactionId_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Deposit.Deposit_status_idx",
+    "label": "Create index \"Deposit_status_idx\" on \"Deposit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Deposit_status_idx",
+        "table": "Deposit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Deposit_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Deposit_status_idx\"",
+        "sql": "CREATE INDEX \"Deposit_status_idx\" ON \"public\".\"Deposit\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Deposit_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Deposit.Deposit_submittedAt_idx",
+    "label": "Create index \"Deposit_submittedAt_idx\" on \"Deposit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Deposit_submittedAt_idx",
+        "table": "Deposit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Deposit_submittedAt_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_submittedAt_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Deposit_submittedAt_idx\"",
+        "sql": "CREATE INDEX \"Deposit_submittedAt_idx\" ON \"public\".\"Deposit\" (\"submittedAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Deposit_submittedAt_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_submittedAt_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Deposit.Deposit_userId_idx",
+    "label": "Create index \"Deposit_userId_idx\" on \"Deposit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Deposit_userId_idx",
+        "table": "Deposit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Deposit_userId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_userId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Deposit_userId_idx\"",
+        "sql": "CREATE INDEX \"Deposit_userId_idx\" ON \"public\".\"Deposit\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Deposit_userId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Deposit_userId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.EarningCollection.EarningCollection_collectedAt_idx",
+    "label": "Create index \"EarningCollection_collectedAt_idx\" on \"EarningCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "EarningCollection_collectedAt_idx",
+        "table": "EarningCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"EarningCollection_collectedAt_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_collectedAt_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"EarningCollection_collectedAt_idx\"",
+        "sql": "CREATE INDEX \"EarningCollection_collectedAt_idx\" ON \"public\".\"EarningCollection\" (\"collectedAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"EarningCollection_collectedAt_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_collectedAt_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.EarningCollection.EarningCollection_investmentId_idx",
+    "label": "Create index \"EarningCollection_investmentId_idx\" on \"EarningCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "EarningCollection_investmentId_idx",
+        "table": "EarningCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"EarningCollection_investmentId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_investmentId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"EarningCollection_investmentId_idx\"",
+        "sql": "CREATE INDEX \"EarningCollection_investmentId_idx\" ON \"public\".\"EarningCollection\" (\"investmentId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"EarningCollection_investmentId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_investmentId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.EarningCollection.EarningCollection_transactionId_key",
+    "label": "Create index \"EarningCollection_transactionId_key\" on \"EarningCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "EarningCollection_transactionId_key",
+        "table": "EarningCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"EarningCollection_transactionId_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_transactionId_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"EarningCollection_transactionId_key\"",
+        "sql": "CREATE UNIQUE INDEX \"EarningCollection_transactionId_key\" ON \"public\".\"EarningCollection\" (\"transactionId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"EarningCollection_transactionId_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_transactionId_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.EarningCollection.EarningCollection_userId_idx",
+    "label": "Create index \"EarningCollection_userId_idx\" on \"EarningCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "EarningCollection_userId_idx",
+        "table": "EarningCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"EarningCollection_userId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_userId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"EarningCollection_userId_idx\"",
+        "sql": "CREATE INDEX \"EarningCollection_userId_idx\" ON \"public\".\"EarningCollection\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"EarningCollection_userId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EarningCollection_userId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Investment.Investment_nextCollectionAt_idx",
+    "label": "Create index \"Investment_nextCollectionAt_idx\" on \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Investment_nextCollectionAt_idx",
+        "table": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Investment_nextCollectionAt_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_nextCollectionAt_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Investment_nextCollectionAt_idx\"",
+        "sql": "CREATE INDEX \"Investment_nextCollectionAt_idx\" ON \"public\".\"Investment\" (\"nextCollectionAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Investment_nextCollectionAt_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_nextCollectionAt_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Investment.Investment_planId_idx",
+    "label": "Create index \"Investment_planId_idx\" on \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Investment_planId_idx",
+        "table": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Investment_planId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_planId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Investment_planId_idx\"",
+        "sql": "CREATE INDEX \"Investment_planId_idx\" ON \"public\".\"Investment\" (\"planId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Investment_planId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_planId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Investment.Investment_status_idx",
+    "label": "Create index \"Investment_status_idx\" on \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Investment_status_idx",
+        "table": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Investment_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Investment_status_idx\"",
+        "sql": "CREATE INDEX \"Investment_status_idx\" ON \"public\".\"Investment\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Investment_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Investment.Investment_userId_idx",
+    "label": "Create index \"Investment_userId_idx\" on \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Investment_userId_idx",
+        "table": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Investment_userId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_userId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Investment_userId_idx\"",
+        "sql": "CREATE INDEX \"Investment_userId_idx\" ON \"public\".\"Investment\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Investment_userId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_userId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Investment.Investment_userId_status_idx",
+    "label": "Create index \"Investment_userId_status_idx\" on \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Investment_userId_status_idx",
+        "table": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Investment_userId_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_userId_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Investment_userId_status_idx\"",
+        "sql": "CREATE INDEX \"Investment_userId_status_idx\" ON \"public\".\"Investment\" (\"userId\", \"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Investment_userId_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Investment_userId_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.InvestmentPlan.InvestmentPlan_isSpecial_idx",
+    "label": "Create index \"InvestmentPlan_isSpecial_idx\" on \"InvestmentPlan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "InvestmentPlan_isSpecial_idx",
+        "table": "InvestmentPlan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"InvestmentPlan_isSpecial_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"InvestmentPlan_isSpecial_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"InvestmentPlan_isSpecial_idx\"",
+        "sql": "CREATE INDEX \"InvestmentPlan_isSpecial_idx\" ON \"public\".\"InvestmentPlan\" (\"isSpecial\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"InvestmentPlan_isSpecial_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"InvestmentPlan_isSpecial_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.InvestmentPlan.InvestmentPlan_status_idx",
+    "label": "Create index \"InvestmentPlan_status_idx\" on \"InvestmentPlan\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "InvestmentPlan_status_idx",
+        "table": "InvestmentPlan"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"InvestmentPlan_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"InvestmentPlan_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"InvestmentPlan_status_idx\"",
+        "sql": "CREATE INDEX \"InvestmentPlan_status_idx\" ON \"public\".\"InvestmentPlan\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"InvestmentPlan_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"InvestmentPlan_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ReferralCommission.ReferralCommission_beneficiaryId_idx",
+    "label": "Create index \"ReferralCommission_beneficiaryId_idx\" on \"ReferralCommission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ReferralCommission_beneficiaryId_idx",
+        "table": "ReferralCommission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ReferralCommission_beneficiaryId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_beneficiaryId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ReferralCommission_beneficiaryId_idx\"",
+        "sql": "CREATE INDEX \"ReferralCommission_beneficiaryId_idx\" ON \"public\".\"ReferralCommission\" (\"beneficiaryId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ReferralCommission_beneficiaryId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_beneficiaryId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ReferralCommission.ReferralCommission_investmentId_idx",
+    "label": "Create index \"ReferralCommission_investmentId_idx\" on \"ReferralCommission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ReferralCommission_investmentId_idx",
+        "table": "ReferralCommission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ReferralCommission_investmentId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_investmentId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ReferralCommission_investmentId_idx\"",
+        "sql": "CREATE INDEX \"ReferralCommission_investmentId_idx\" ON \"public\".\"ReferralCommission\" (\"investmentId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ReferralCommission_investmentId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_investmentId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ReferralCommission.ReferralCommission_level_idx",
+    "label": "Create index \"ReferralCommission_level_idx\" on \"ReferralCommission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ReferralCommission_level_idx",
+        "table": "ReferralCommission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ReferralCommission_level_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_level_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ReferralCommission_level_idx\"",
+        "sql": "CREATE INDEX \"ReferralCommission_level_idx\" ON \"public\".\"ReferralCommission\" (\"level\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ReferralCommission_level_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_level_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ReferralCommission.ReferralCommission_sourceUserId_idx",
+    "label": "Create index \"ReferralCommission_sourceUserId_idx\" on \"ReferralCommission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ReferralCommission_sourceUserId_idx",
+        "table": "ReferralCommission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ReferralCommission_sourceUserId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_sourceUserId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ReferralCommission_sourceUserId_idx\"",
+        "sql": "CREATE INDEX \"ReferralCommission_sourceUserId_idx\" ON \"public\".\"ReferralCommission\" (\"sourceUserId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ReferralCommission_sourceUserId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReferralCommission_sourceUserId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Transaction.Transaction_createdAt_idx",
+    "label": "Create index \"Transaction_createdAt_idx\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Transaction_createdAt_idx",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Transaction_createdAt_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_createdAt_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Transaction_createdAt_idx\"",
+        "sql": "CREATE INDEX \"Transaction_createdAt_idx\" ON \"public\".\"Transaction\" (\"createdAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Transaction_createdAt_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_createdAt_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Transaction.Transaction_referenceId_idx",
+    "label": "Create index \"Transaction_referenceId_idx\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Transaction_referenceId_idx",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Transaction_referenceId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_referenceId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Transaction_referenceId_idx\"",
+        "sql": "CREATE INDEX \"Transaction_referenceId_idx\" ON \"public\".\"Transaction\" (\"referenceId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Transaction_referenceId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_referenceId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Transaction.Transaction_status_idx",
+    "label": "Create index \"Transaction_status_idx\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Transaction_status_idx",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Transaction_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Transaction_status_idx\"",
+        "sql": "CREATE INDEX \"Transaction_status_idx\" ON \"public\".\"Transaction\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Transaction_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Transaction.Transaction_type_idx",
+    "label": "Create index \"Transaction_type_idx\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Transaction_type_idx",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Transaction_type_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_type_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Transaction_type_idx\"",
+        "sql": "CREATE INDEX \"Transaction_type_idx\" ON \"public\".\"Transaction\" (\"type\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Transaction_type_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_type_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Transaction.Transaction_userId_idx",
+    "label": "Create index \"Transaction_userId_idx\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Transaction_userId_idx",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Transaction_userId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_userId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Transaction_userId_idx\"",
+        "sql": "CREATE INDEX \"Transaction_userId_idx\" ON \"public\".\"Transaction\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Transaction_userId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Transaction_userId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_email_key",
+    "label": "Create index \"User_email_key\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_email_key",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_email_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_email_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_email_key\"",
+        "sql": "CREATE UNIQUE INDEX \"User_email_key\" ON \"public\".\"User\" (\"email\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_email_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_email_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_phone_idx",
+    "label": "Create index \"User_phone_idx\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_phone_idx",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_phone_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_phone_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_phone_idx\"",
+        "sql": "CREATE INDEX \"User_phone_idx\" ON \"public\".\"User\" (\"phone\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_phone_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_phone_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_phone_key",
+    "label": "Create index \"User_phone_key\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_phone_key",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_phone_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_phone_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_phone_key\"",
+        "sql": "CREATE UNIQUE INDEX \"User_phone_key\" ON \"public\".\"User\" (\"phone\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_phone_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_phone_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_publicUserId_key",
+    "label": "Create index \"User_publicUserId_key\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_publicUserId_key",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_publicUserId_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_publicUserId_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_publicUserId_key\"",
+        "sql": "CREATE UNIQUE INDEX \"User_publicUserId_key\" ON \"public\".\"User\" (\"publicUserId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_publicUserId_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_publicUserId_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_referralCode_key",
+    "label": "Create index \"User_referralCode_key\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_referralCode_key",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_referralCode_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_referralCode_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_referralCode_key\"",
+        "sql": "CREATE UNIQUE INDEX \"User_referralCode_key\" ON \"public\".\"User\" (\"referralCode\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_referralCode_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_referralCode_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_referredById_idx",
+    "label": "Create index \"User_referredById_idx\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_referredById_idx",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_referredById_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_referredById_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_referredById_idx\"",
+        "sql": "CREATE INDEX \"User_referredById_idx\" ON \"public\".\"User\" (\"referredById\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_referredById_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_referredById_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.User.User_status_idx",
+    "label": "Create index \"User_status_idx\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "User_status_idx",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"User_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"User_status_idx\"",
+        "sql": "CREATE INDEX \"User_status_idx\" ON \"public\".\"User\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"User_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Withdrawal.Withdrawal_requestedAt_idx",
+    "label": "Create index \"Withdrawal_requestedAt_idx\" on \"Withdrawal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Withdrawal_requestedAt_idx",
+        "table": "Withdrawal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Withdrawal_requestedAt_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal_requestedAt_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Withdrawal_requestedAt_idx\"",
+        "sql": "CREATE INDEX \"Withdrawal_requestedAt_idx\" ON \"public\".\"Withdrawal\" (\"requestedAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Withdrawal_requestedAt_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal_requestedAt_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Withdrawal.Withdrawal_status_idx",
+    "label": "Create index \"Withdrawal_status_idx\" on \"Withdrawal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Withdrawal_status_idx",
+        "table": "Withdrawal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Withdrawal_status_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal_status_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Withdrawal_status_idx\"",
+        "sql": "CREATE INDEX \"Withdrawal_status_idx\" ON \"public\".\"Withdrawal\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Withdrawal_status_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal_status_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Withdrawal.Withdrawal_userId_idx",
+    "label": "Create index \"Withdrawal_userId_idx\" on \"Withdrawal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Withdrawal_userId_idx",
+        "table": "Withdrawal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Withdrawal_userId_idx\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal_userId_idx\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Withdrawal_userId_idx\"",
+        "sql": "CREATE INDEX \"Withdrawal_userId_idx\" ON \"public\".\"Withdrawal\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Withdrawal_userId_idx\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Withdrawal_userId_idx\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.WithdrawalProfile.WithdrawalProfile_userId_key",
+    "label": "Create index \"WithdrawalProfile_userId_key\" on \"WithdrawalProfile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "WithdrawalProfile_userId_key",
+        "table": "WithdrawalProfile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"WithdrawalProfile_userId_key\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"WithdrawalProfile_userId_key\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"WithdrawalProfile_userId_key\"",
+        "sql": "CREATE UNIQUE INDEX \"WithdrawalProfile_userId_key\" ON \"public\".\"WithdrawalProfile\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"WithdrawalProfile_userId_key\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"WithdrawalProfile_userId_key\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AccountAppeal.AccountAppeal_userId_fkey",
+    "label": "Add foreign key \"AccountAppeal_userId_fkey\" on \"AccountAppeal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AccountAppeal_userId_fkey",
+        "table": "AccountAppeal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AccountAppeal_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AccountAppeal_userId_fkey",
+          "public",
+          "\"public\".\"AccountAppeal\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AccountAppeal_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AccountAppeal\"\nADD CONSTRAINT \"AccountAppeal_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE CASCADE\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AccountAppeal_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AccountAppeal_userId_fkey",
+          "public",
+          "\"public\".\"AccountAppeal\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.ActiveUserReward.ActiveUserReward_userId_fkey",
+    "label": "Add foreign key \"ActiveUserReward_userId_fkey\" on \"ActiveUserReward\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "ActiveUserReward_userId_fkey",
+        "table": "ActiveUserReward"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"ActiveUserReward_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ActiveUserReward_userId_fkey",
+          "public",
+          "\"public\".\"ActiveUserReward\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"ActiveUserReward_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"ActiveUserReward\"\nADD CONSTRAINT \"ActiveUserReward_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"ActiveUserReward_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ActiveUserReward_userId_fkey",
+          "public",
+          "\"public\".\"ActiveUserReward\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AuditLog.AuditLog_adminId_fkey",
+    "label": "Add foreign key \"AuditLog_adminId_fkey\" on \"AuditLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AuditLog_adminId_fkey",
+        "table": "AuditLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AuditLog_adminId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AuditLog_adminId_fkey",
+          "public",
+          "\"public\".\"AuditLog\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AuditLog_adminId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AuditLog\"\nADD CONSTRAINT \"AuditLog_adminId_fkey\"\nFOREIGN KEY (\"adminId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE SET NULL\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AuditLog_adminId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AuditLog_adminId_fkey",
+          "public",
+          "\"public\".\"AuditLog\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AuditLog.AuditLog_targetUserId_fkey",
+    "label": "Add foreign key \"AuditLog_targetUserId_fkey\" on \"AuditLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AuditLog_targetUserId_fkey",
+        "table": "AuditLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AuditLog_targetUserId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AuditLog_targetUserId_fkey",
+          "public",
+          "\"public\".\"AuditLog\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AuditLog_targetUserId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AuditLog\"\nADD CONSTRAINT \"AuditLog_targetUserId_fkey\"\nFOREIGN KEY (\"targetUserId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE SET NULL\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AuditLog_targetUserId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AuditLog_targetUserId_fkey",
+          "public",
+          "\"public\".\"AuditLog\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Deposit.Deposit_userId_fkey",
+    "label": "Add foreign key \"Deposit_userId_fkey\" on \"Deposit\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Deposit_userId_fkey",
+        "table": "Deposit"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Deposit_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Deposit_userId_fkey",
+          "public",
+          "\"public\".\"Deposit\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Deposit_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Deposit\"\nADD CONSTRAINT \"Deposit_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Deposit_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Deposit_userId_fkey",
+          "public",
+          "\"public\".\"Deposit\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.EarningCollection.EarningCollection_investmentId_fkey",
+    "label": "Add foreign key \"EarningCollection_investmentId_fkey\" on \"EarningCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "EarningCollection_investmentId_fkey",
+        "table": "EarningCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"EarningCollection_investmentId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EarningCollection_investmentId_fkey",
+          "public",
+          "\"public\".\"EarningCollection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"EarningCollection_investmentId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"EarningCollection\"\nADD CONSTRAINT \"EarningCollection_investmentId_fkey\"\nFOREIGN KEY (\"investmentId\")\nREFERENCES \"public\".\"Investment\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"EarningCollection_investmentId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EarningCollection_investmentId_fkey",
+          "public",
+          "\"public\".\"EarningCollection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.EarningCollection.EarningCollection_userId_fkey",
+    "label": "Add foreign key \"EarningCollection_userId_fkey\" on \"EarningCollection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "EarningCollection_userId_fkey",
+        "table": "EarningCollection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"EarningCollection_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EarningCollection_userId_fkey",
+          "public",
+          "\"public\".\"EarningCollection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"EarningCollection_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"EarningCollection\"\nADD CONSTRAINT \"EarningCollection_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"EarningCollection_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EarningCollection_userId_fkey",
+          "public",
+          "\"public\".\"EarningCollection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Investment.Investment_userId_fkey",
+    "label": "Add foreign key \"Investment_userId_fkey\" on \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Investment_userId_fkey",
+        "table": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Investment_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Investment_userId_fkey",
+          "public",
+          "\"public\".\"Investment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Investment_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Investment\"\nADD CONSTRAINT \"Investment_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Investment_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Investment_userId_fkey",
+          "public",
+          "\"public\".\"Investment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Investment.Investment_planId_fkey",
+    "label": "Add foreign key \"Investment_planId_fkey\" on \"Investment\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Investment_planId_fkey",
+        "table": "Investment"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Investment_planId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Investment_planId_fkey",
+          "public",
+          "\"public\".\"Investment\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Investment_planId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Investment\"\nADD CONSTRAINT \"Investment_planId_fkey\"\nFOREIGN KEY (\"planId\")\nREFERENCES \"public\".\"InvestmentPlan\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Investment_planId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Investment_planId_fkey",
+          "public",
+          "\"public\".\"Investment\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.ReferralCommission.ReferralCommission_beneficiaryId_fkey",
+    "label": "Add foreign key \"ReferralCommission_beneficiaryId_fkey\" on \"ReferralCommission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "ReferralCommission_beneficiaryId_fkey",
+        "table": "ReferralCommission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"ReferralCommission_beneficiaryId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ReferralCommission_beneficiaryId_fkey",
+          "public",
+          "\"public\".\"ReferralCommission\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"ReferralCommission_beneficiaryId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"ReferralCommission\"\nADD CONSTRAINT \"ReferralCommission_beneficiaryId_fkey\"\nFOREIGN KEY (\"beneficiaryId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"ReferralCommission_beneficiaryId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ReferralCommission_beneficiaryId_fkey",
+          "public",
+          "\"public\".\"ReferralCommission\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.ReferralCommission.ReferralCommission_investmentId_fkey",
+    "label": "Add foreign key \"ReferralCommission_investmentId_fkey\" on \"ReferralCommission\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "ReferralCommission_investmentId_fkey",
+        "table": "ReferralCommission"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"ReferralCommission_investmentId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ReferralCommission_investmentId_fkey",
+          "public",
+          "\"public\".\"ReferralCommission\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"ReferralCommission_investmentId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"ReferralCommission\"\nADD CONSTRAINT \"ReferralCommission_investmentId_fkey\"\nFOREIGN KEY (\"investmentId\")\nREFERENCES \"public\".\"Investment\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"ReferralCommission_investmentId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ReferralCommission_investmentId_fkey",
+          "public",
+          "\"public\".\"ReferralCommission\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Transaction.Transaction_userId_fkey",
+    "label": "Add foreign key \"Transaction_userId_fkey\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Transaction_userId_fkey",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Transaction_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Transaction_userId_fkey",
+          "public",
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Transaction_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Transaction\"\nADD CONSTRAINT \"Transaction_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Transaction_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Transaction_userId_fkey",
+          "public",
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Transaction.Transaction_depositId_fkey",
+    "label": "Add foreign key \"Transaction_depositId_fkey\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Transaction_depositId_fkey",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Transaction_depositId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Transaction_depositId_fkey",
+          "public",
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Transaction_depositId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Transaction\"\nADD CONSTRAINT \"Transaction_depositId_fkey\"\nFOREIGN KEY (\"depositId\")\nREFERENCES \"public\".\"Deposit\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Transaction_depositId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Transaction_depositId_fkey",
+          "public",
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Transaction.Transaction_withdrawalId_fkey",
+    "label": "Add foreign key \"Transaction_withdrawalId_fkey\" on \"Transaction\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Transaction_withdrawalId_fkey",
+        "table": "Transaction"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Transaction_withdrawalId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Transaction_withdrawalId_fkey",
+          "public",
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Transaction_withdrawalId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Transaction\"\nADD CONSTRAINT \"Transaction_withdrawalId_fkey\"\nFOREIGN KEY (\"withdrawalId\")\nREFERENCES \"public\".\"Withdrawal\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Transaction_withdrawalId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Transaction_withdrawalId_fkey",
+          "public",
+          "\"public\".\"Transaction\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.User.User_referredById_fkey",
+    "label": "Add foreign key \"User_referredById_fkey\" on \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "User_referredById_fkey",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"User_referredById_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_referredById_fkey",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"User_referredById_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"User\"\nADD CONSTRAINT \"User_referredById_fkey\"\nFOREIGN KEY (\"referredById\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE SET NULL\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"User_referredById_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_referredById_fkey",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Withdrawal.Withdrawal_userId_fkey",
+    "label": "Add foreign key \"Withdrawal_userId_fkey\" on \"Withdrawal\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Withdrawal_userId_fkey",
+        "table": "Withdrawal"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Withdrawal_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Withdrawal_userId_fkey",
+          "public",
+          "\"public\".\"Withdrawal\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Withdrawal_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Withdrawal\"\nADD CONSTRAINT \"Withdrawal_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE RESTRICT\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Withdrawal_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Withdrawal_userId_fkey",
+          "public",
+          "\"public\".\"Withdrawal\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.WithdrawalProfile.WithdrawalProfile_userId_fkey",
+    "label": "Add foreign key \"WithdrawalProfile_userId_fkey\" on \"WithdrawalProfile\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "WithdrawalProfile_userId_fkey",
+        "table": "WithdrawalProfile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"WithdrawalProfile_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "WithdrawalProfile_userId_fkey",
+          "public",
+          "\"public\".\"WithdrawalProfile\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"WithdrawalProfile_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"WithdrawalProfile\"\nADD CONSTRAINT \"WithdrawalProfile_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")\nON DELETE CASCADE\nON UPDATE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"WithdrawalProfile_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "WithdrawalProfile_userId_fkey",
+          "public",
+          "\"public\".\"WithdrawalProfile\""
+        ]
+      }
+    ]
+  }
+]

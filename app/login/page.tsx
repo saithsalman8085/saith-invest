@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -11,12 +12,19 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [showAppeal, setShowAppeal] = useState(false);
+  const [appealMessage, setAppealMessage] = useState("");
+  const [appealLoading, setAppealLoading] = useState(false);
+  const [appealError, setAppealError] = useState("");
+  const [appealSuccess, setAppealSuccess] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     setError("");
     setMessage("");
+    setShowAppeal(false);
+    setAppealError("");
+    setAppealSuccess("");
 
     if (!contact.trim() || !password) {
       setError("Please enter your email/phone and password.");
@@ -28,9 +36,7 @@ export default function LoginPage() {
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contact: contact.trim(),
           password,
@@ -41,6 +47,19 @@ export default function LoginPage() {
 
       if (!response.ok) {
         setError(data.error || "Login failed.");
+
+        if (response.status === 403) {
+          if (
+            String(data.error || "").toLowerCase().includes("suspended")
+          ) {
+            setShowAppeal(true);
+          } else if (
+            String(data.error || "").toLowerCase().includes("blocked")
+          ) {
+            setShowAppeal(false);
+          }
+        }
+
         return;
       }
 
@@ -51,7 +70,6 @@ export default function LoginPage() {
       }
 
       setMessage("Login successful. Redirecting...");
-
       window.location.href = "/dashboard";
     } catch {
       setError("Something went wrong. Please try again.");
@@ -60,9 +78,43 @@ export default function LoginPage() {
     }
   }
 
+  async function handleAppealSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setAppealError("");
+    setAppealSuccess("");
+
+    if (!appealMessage.trim()) {
+      setAppealError("Please explain why your account should be reactivated.");
+      return;
+    }
+
+    setAppealLoading(true);
+
+    try {
+      const response = await fetch("/api/auth/appeal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: appealMessage.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setAppealError(data.error || "Unable to submit your appeal.");
+        return;
+      }
+
+      setAppealSuccess(data.message || "Your appeal has been submitted.");
+      setAppealMessage("");
+    } catch {
+      setAppealError("Something went wrong. Please try again.");
+    } finally {
+      setAppealLoading(false);
+    }
+  }
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#fffdf9] text-black">
-      {/* SOFT BACKGROUND */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-yellow-300/20 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-orange-200/20 blur-3xl" />
@@ -70,8 +122,6 @@ export default function LoginPage() {
 
       <div className="relative flex min-h-screen items-center justify-center px-4 py-8 sm:py-10">
         <div className="w-full max-w-md">
-
-          {/* BACK */}
           <Link
             href="/"
             className="mb-5 inline-flex items-center gap-2 text-xs font-semibold text-yellow-600 transition hover:text-yellow-700 sm:mb-7 sm:text-sm"
@@ -79,10 +129,7 @@ export default function LoginPage() {
             ← Back to ClaudeInvest
           </Link>
 
-          {/* LOGIN CARD */}
           <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_10px_40px_rgba(234,179,8,0.10)] sm:rounded-3xl">
-
-            {/* HEADER */}
             <div className="border-b border-yellow-200 bg-gradient-to-r from-yellow-100 via-yellow-50 to-orange-50 p-5 sm:p-7">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-400 text-sm font-extrabold text-black shadow-lg shadow-yellow-300/30">
                 CI
@@ -101,16 +148,12 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* FORM */}
             <div className="p-5 sm:p-7">
               <form onSubmit={handleSubmit} className="space-y-5">
-
-                {/* CONTACT */}
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-gray-700">
                     Email or Phone Number
                   </label>
-
                   <input
                     type="text"
                     value={contact}
@@ -121,12 +164,10 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {/* PASSWORD */}
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-gray-700">
                     Password
                   </label>
-
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
@@ -136,7 +177,6 @@ export default function LoginPage() {
                       autoComplete="current-password"
                       className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3.5 pr-20 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
                     />
-
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
@@ -147,7 +187,6 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* REMEMBER / FORGOT */}
                 <div className="flex items-center justify-between gap-4">
                   <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-gray-500 sm:text-sm">
                     <input
@@ -156,7 +195,6 @@ export default function LoginPage() {
                       onChange={(e) => setRememberMe(e.target.checked)}
                       className="h-4 w-4 rounded border-yellow-300 accent-yellow-400"
                     />
-
                     Remember me
                   </label>
 
@@ -173,21 +211,18 @@ export default function LoginPage() {
                   </button>
                 </div>
 
-                {/* ERROR */}
                 {error && (
                   <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
                     {error}
                   </div>
                 )}
 
-                {/* MESSAGE */}
                 {message && (
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-600">
                     {message}
                   </div>
                 )}
 
-                {/* LOGIN BUTTON */}
                 <button
                   type="submit"
                   disabled={loading}
@@ -197,20 +232,61 @@ export default function LoginPage() {
                 </button>
               </form>
 
-              {/* DIVIDER */}
+              {showAppeal && (
+                <div className="mt-6 rounded-2xl border border-yellow-200 bg-yellow-50 p-4 sm:p-5">
+                  <h2 className="text-lg font-bold text-gray-900">
+                    Account Appeal
+                  </h2>
+                  <p className="mt-2 text-sm text-gray-600">
+                    Your account is suspended. Explain why you believe it
+                    should be reactivated.
+                  </p>
+
+                  <form onSubmit={handleAppealSubmit} className="mt-4 space-y-3">
+                    <textarea
+                      value={appealMessage}
+                      onChange={(e) => setAppealMessage(e.target.value)}
+                      maxLength={2000}
+                      rows={4}
+                      placeholder="Write your appeal here..."
+                      className="w-full resize-y rounded-xl border border-yellow-200 bg-white px-3 py-3 text-sm text-black outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-100"
+                    />
+
+                    <p className="text-right text-xs text-gray-500">
+                      {appealMessage.length}/2000
+                    </p>
+
+                    {appealError && (
+                      <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+                        {appealError}
+                      </div>
+                    )}
+
+                    {appealSuccess && (
+                      <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+                        {appealSuccess}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={appealLoading}
+                      className="w-full rounded-xl bg-yellow-400 px-4 py-3 text-sm font-bold text-black transition hover:bg-yellow-300 disabled:opacity-60"
+                    >
+                      {appealLoading ? "Submitting..." : "Submit Appeal"}
+                    </button>
+                  </form>
+                </div>
+              )}
+
               <div className="my-6 flex items-center gap-3">
                 <div className="h-px flex-1 bg-yellow-100" />
-
-                <span className="text-xs font-medium text-gray-400">
-                  OR
-                </span>
-
+                <span className="text-xs font-medium text-gray-400">OR</span>
                 <div className="h-px flex-1 bg-yellow-100" />
               </div>
 
-              {/* REGISTER */}
               <p className="text-center text-sm text-gray-500">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   href="/register"
                   className="font-bold text-yellow-600 transition hover:text-yellow-700"
@@ -221,7 +297,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* FOOTER */}
           <p className="mt-5 text-center text-[10px] text-gray-400 sm:mt-6 sm:text-xs">
             ClaudeInvest © 2025
           </p>

@@ -189,11 +189,11 @@ export default function AdminPage() {
 
             <div className="mt-4 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               <AdminCard
-                href="/admin/referrals"
-                icon="♧"
-                title="Referral Settings"
-                text="Manage referral levels and commission settings."
-              />
+  href="/admin/account-appeals"
+  icon="🛡️"
+  title="Account Appeals"
+  text="Review suspended account appeals and approve or reject reactivation requests."
+/>
 
               
 <AdminCard

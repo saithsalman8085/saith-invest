@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'2d578af1a190c47988de7c2f7aa4c1c6c9758fa37b4a40e7b2600341ad30ceda'>;
+  StorageHashBase<'d0dc5a791e103a6c33be2b0abbb0db84f47c8aa8845baa046cf206c5e47aac8a'>;
 export type ExecutionHash =
-  ExecutionHashBase<'2e823c8707edb2b5aa9a1a1e4539d3815639d7783205f7766eaef47802ad3e5f'>;
+  ExecutionHashBase<'13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -250,6 +250,17 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 
 export type FieldOutputTypes = {
   readonly public: {
+    readonly AccountAppeal: {
+      readonly adminNote: CodecTypes['pg/text@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly message: CodecTypes['pg/text@1']['output'];
+      readonly reviewedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
+      readonly reviewedById: CodecTypes['pg/text@1']['output'] | null;
+      readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
     readonly ActiveUserReward: {
       readonly activeUserCount: CodecTypes['pg/int4@1']['output'];
       readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
@@ -459,6 +470,17 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly public: {
+    readonly AccountAppeal: {
+      readonly adminNote: CodecTypes['pg/text@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly message: CodecTypes['pg/text@1']['input'];
+      readonly reviewedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
+      readonly reviewedById: CodecTypes['pg/text@1']['input'] | null;
+      readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
     readonly ActiveUserReward: {
       readonly activeUserCount: CodecTypes['pg/int4@1']['input'];
       readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
@@ -668,6 +690,17 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
+    readonly AccountAppeal: {
+      readonly adminNote: CodecTypes['pg/text@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly message: CodecTypes['pg/text@1']['output'];
+      readonly reviewedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
+      readonly reviewedById: CodecTypes['pg/text@1']['output'] | null;
+      readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
     readonly ActiveUserReward: {
       readonly activeUserCount: CodecTypes['pg/int4@1']['output'];
       readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
@@ -877,6 +910,17 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
+    readonly AccountAppeal: {
+      readonly adminNote: CodecTypes['pg/text@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly message: CodecTypes['pg/text@1']['input'];
+      readonly reviewedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
+      readonly reviewedById: CodecTypes['pg/text@1']['input'] | null;
+      readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
     readonly ActiveUserReward: {
       readonly activeUserCount: CodecTypes['pg/int4@1']['input'];
       readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
@@ -1086,6 +1130,19 @@ export type StorageColumnInputTypes = {
 };
 
 export namespace Models {
+  export type public_AccountAppeal = {
+    adminNote: CodecTypes['pg/text@1']['output'] | null;
+    createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    id: CodecTypes['pg/text@1']['output'];
+    message: CodecTypes['pg/text@1']['output'];
+    reviewedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
+    reviewedById: CodecTypes['pg/text@1']['output'] | null;
+    status: 'PENDING' | 'APPROVED' | 'REJECTED';
+    updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    userId: CodecTypes['pg/text@1']['output'];
+    user: public_User;
+    readonly [RelationKeys]?: 'user';
+  };
   export type public_ActiveUserReward = {
     activeUserCount: CodecTypes['pg/int4@1']['output'];
     claimedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
@@ -1287,6 +1344,7 @@ export namespace Models {
     role: 'USER' | 'ADMIN';
     status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
     updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    accountAppeals: public_AccountAppeal[];
     adminAuditLogs: public_AuditLog[];
     auditLogs: public_AuditLog[];
     deposits: public_Deposit[];
@@ -1300,6 +1358,7 @@ export namespace Models {
     withdrawalProfile: public_WithdrawalProfile | null;
     withdrawals: public_Withdrawal[];
     readonly [RelationKeys]?:
+      | 'accountAppeals'
       | 'adminAuditLogs'
       | 'auditLogs'
       | 'deposits'
@@ -1351,6 +1410,7 @@ export namespace Models {
 
 export declare const models: {
   public: {
+    AccountAppeal: Models.public_AccountAppeal;
     ActiveUserReward: Models.public_ActiveUserReward;
     AuditLog: Models.public_AuditLog;
     Deposit: Models.public_Deposit;
@@ -1384,6 +1444,97 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
+            readonly AccountAppeal: {
+              columns: {
+                readonly adminNote: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly typeParams: { readonly precision: 3 };
+                };
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly message: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly reviewedAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: true;
+                  readonly typeParams: { readonly precision: 3 };
+                };
+                readonly reviewedById: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly status: {
+                  readonly nativeType: 'AppealStatus';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'PENDING'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'AppealStatus' };
+                };
+                readonly updatedAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 3 };
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'AccountAppeal_createdAt_idx';
+                  readonly columns: readonly ['createdAt'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'AccountAppeal_status_idx';
+                  readonly columns: readonly ['status'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'AccountAppeal_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'AccountAppeal';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
             readonly ActiveUserReward: {
               columns: {
                 readonly activeUserCount: {
@@ -2242,7 +2393,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly default: {
                     readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/numeric@1', '8'>;
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '12'>;
                   };
                   readonly typeParams: { readonly precision: 10; readonly scale: 4 };
                 };
@@ -2923,6 +3074,10 @@ type ContractBase = Omit<
             };
           };
           readonly valueSet: {
+            readonly AppealStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['PENDING', 'APPROVED', 'REJECTED'];
+            };
             readonly AuditAction: {
               readonly kind: 'valueSet';
               readonly values: readonly [
@@ -3005,6 +3160,10 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
+    readonly AccountAppeal: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'AccountAppeal';
+    };
     readonly ActiveUserReward: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ActiveUserReward';
@@ -3049,6 +3208,88 @@ type ContractBase = Omit<
     readonly namespaces: {
       readonly public: {
         readonly models: {
+          readonly AccountAppeal: {
+            readonly fields: {
+              readonly adminNote: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly message: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly reviewedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly reviewedById: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'AppealStatus' };
+                };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'AccountAppeal';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly adminNote: { readonly column: 'adminNote' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly id: { readonly column: 'id' };
+                readonly message: { readonly column: 'message' };
+                readonly reviewedAt: { readonly column: 'reviewedAt' };
+                readonly reviewedById: { readonly column: 'reviewedById' };
+                readonly status: { readonly column: 'status' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+                readonly userId: { readonly column: 'userId' };
+              };
+            };
+          };
           readonly ActiveUserReward: {
             readonly fields: {
               readonly activeUserCount: {
@@ -4224,6 +4465,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly accountAppeals: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AccountAppeal';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly adminAuditLogs: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -4628,6 +4880,23 @@ type ContractBase = Omit<
     readonly executionHash: ExecutionHash;
     readonly mutations: {
       readonly defaults: readonly [
+        {
+          readonly onCreate: { readonly id: 'cuid2'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'AccountAppeal';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'plainDateTimeNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'plainDateTimeNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'AccountAppeal';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
         {
           readonly onCreate: { readonly id: 'cuid2'; readonly kind: 'generator' };
           readonly ref: {

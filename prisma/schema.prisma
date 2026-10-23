@@ -147,6 +147,7 @@ model User {
   // Audit logs
   auditLogs      AuditLog[] @relation("AuditTarget")
   adminAuditLogs AuditLog[] @relation("AuditAdmin")
+  accountAppeals AccountAppeal[]
 
   @@index([referredById])
   @@index([status])
@@ -568,5 +569,30 @@ model AuditLog {
   @@index([action])
   @@index([adminId])
   @@index([targetUserId])
+  @@index([createdAt])
+}
+
+enum AppealStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model AccountAppeal {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  message     String
+  status      AppealStatus @default(PENDING)
+  adminNote   String?
+
+  reviewedById String?
+  createdAt    DateTime    @default(now())
+  reviewedAt   DateTime?
+  updatedAt    DateTime    @updatedAt
+
+  @@index([userId])
+  @@index([status])
   @@index([createdAt])
 }

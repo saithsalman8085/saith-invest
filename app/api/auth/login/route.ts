@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
     }
 
     const isEmail = contact.includes("@");
-
     const email = isEmail ? contact.toLowerCase() : null;
     const phone = isEmail ? null : contact;
 
@@ -38,13 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (user.status !== "ACTIVE") {
-      return NextResponse.json(
-        { error: "Your account is not active." },
-        { status: 403 }
-      );
-    }
-
+    // Verify password before revealing account status.
     const passwordMatch = await bcrypt.compare(
       password,
       user.passwordHash
@@ -54,6 +47,43 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Invalid email/phone or password." },
         { status: 401 }
+      );
+    }
+
+    if (String(user.status) === "BLOCKED") {
+      return NextResponse.json(
+        { error: "Your account is blocked. Please contact support." },
+        { status: 403 }
+      );
+    }
+
+    if (String(user.status) === "SUSPENDED") {
+      const sessionToken = await createSession(user.id);
+
+      const response = NextResponse.json(
+        {
+          error:
+            "Your account is suspended. You can submit an appeal to request reactivation.",
+          suspended: true,
+        },
+        { status: 403 }
+      );
+
+      response.cookies.set("claudeinvest_session", sessionToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+
+      return response;
+    }
+
+    if (String(user.status) !== "ACTIVE") {
+      return NextResponse.json(
+        { error: "Your account is not active." },
+        { status: 403 }
       );
     }
 
@@ -85,12 +115,7 @@ export async function POST(request: NextRequest) {
     console.error("LOGIN_ERROR:", error);
 
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unable to login.",
-      },
+      { error: "Unable to login. Please try again later." },
       { status: 500 }
     );
   }
