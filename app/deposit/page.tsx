@@ -243,55 +243,23 @@ export default function DepositPage() {
 
           <Link
             href="/withdraw"
-            className="rounded-xl border border-yellow-400 bg-yellow-50 px-4 py-2.5 text-center text-xs font-semibold text-yellow-800 transition hover:bg-yellow-400 hover:text-black sm:px-5 sm:py-3 sm:text-sm"
+            aria-label="Withdraw money from your wallet"
+            className="group flex items-center justify-center gap-3 rounded-xl border-2 border-yellow-500 bg-yellow-400 px-4 py-3 text-center text-black shadow-md shadow-yellow-200/70 transition hover:-translate-y-0.5 hover:bg-yellow-300 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-yellow-200 sm:px-5 sm:py-3.5"
           >
-            Go to Withdrawal
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-black text-lg text-yellow-400 transition group-hover:scale-105">
+              ↗
+            </span>
+
+            <span className="text-left">
+              <span className="block text-sm font-extrabold sm:text-base">
+                Withdraw Money
+              </span>
+
+              <span className="mt-0.5 block text-[10px] font-medium text-black/70 sm:text-xs">
+                Transfer funds from your wallet
+              </span>
+            </span>
           </Link>
-        </div>
-
-        {/* SIMPLE DEPOSIT GUIDE */}
-        <div className="mb-4 rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 via-[#fff8df] to-orange-50 p-3 shadow-sm sm:mb-6 sm:p-5">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-sm font-bold text-black">
-              $
-            </div>
-
-            <div>
-              <h2 className="text-sm font-bold text-black sm:text-base">
-                How to Deposit
-              </h2>
-
-              <p className="text-[10px] text-gray-600 sm:text-xs">
-                Follow these simple steps to add money to your wallet.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-            <GuideStep
-              number="1"
-              title="Make Payment"
-              text="Send payment to the account below."
-            />
-
-            <GuideStep
-              number="2"
-              title="Enter Amount"
-              text="Enter the exact PKR amount sent."
-            />
-
-            <GuideStep
-              number="3"
-              title="Transaction ID"
-              text="Enter the payment transaction ID."
-            />
-
-            <GuideStep
-              number="4"
-              title="Submit"
-              text="Submit and wait for approval."
-            />
-          </div>
         </div>
 
         {/* MESSAGES */}
@@ -414,7 +382,6 @@ export default function DepositPage() {
             </div>
 
             <div className="p-4 sm:p-6">
-
               <div className="space-y-5 sm:space-y-6">
 
                 {/* AMOUNT */}
@@ -792,34 +759,6 @@ function InfoBox({
 
       <p className="mt-1.5 break-all text-xs font-bold text-black sm:mt-2 sm:text-sm">
         {value}
-      </p>
-    </div>
-  );
-}
-
-function GuideStep({
-  number,
-  title,
-  text,
-}: {
-  number: string;
-  title: string;
-  text: string;
-}) {
-  return (
-    <div className="rounded-xl border border-yellow-200 bg-white p-2.5 sm:p-3">
-      <div className="flex items-center gap-2">
-        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-[10px] font-bold text-black sm:h-7 sm:w-7 sm:text-xs">
-          {number}
-        </div>
-
-        <p className="text-[10px] font-bold text-black sm:text-xs">
-          {title}
-        </p>
-      </div>
-
-      <p className="mt-1.5 text-[8px] leading-3 text-gray-500 sm:text-[10px] sm:leading-4">
-        {text}
       </p>
     </div>
   );
