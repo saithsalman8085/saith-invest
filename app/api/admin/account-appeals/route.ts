@@ -117,7 +117,7 @@ export async function PATCH(request: NextRequest) {
         status: decision,
         adminNote: adminNote || null,
         reviewedById: admin.id,
-        reviewedAt: new Date(),
+        reviewedAt: new Date().toISOString().slice(0, 23),
       } as any);
 
     // Reactivate the user only when the appeal is approved.
