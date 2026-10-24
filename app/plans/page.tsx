@@ -171,7 +171,7 @@ export default function PlansPage() {
             /*
              * ONE PLAN PER ROW
              */
-            <div className="space-y-5 sm:space-y-7">
+            <div className="space-y-2.5 sm:space-y-3.5">
               {plans.map((plan) => {
                 const deposit = Number(plan.depositAmount);
                 const profit = Number(plan.profitAmount);
@@ -183,7 +183,7 @@ export default function PlansPage() {
                 return (
                   <article
                     key={plan.id}
-                    className="overflow-hidden rounded-[22px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.09)] ring-1 ring-gray-100 sm:rounded-[28px]"
+                    className="overflow-hidden rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.08)] ring-1 ring-gray-100 sm:rounded-2xl"
                   >
                     {/* =================================
                         TOP PEACH SECTION
@@ -192,70 +192,70 @@ export default function PlansPage() {
                       
 
                       {/* Question */}
-                      <div className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full border border-[#d09b36] bg-[#f5d58a] text-xl font-bold text-[#765619] shadow-sm sm:right-5 sm:top-5 sm:h-14 sm:w-14 sm:text-2xl">
+                      <div className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-[#d09b36] bg-[#f5d58a] text-sm font-bold text-[#765619] shadow-sm sm:right-4 sm:top-4 sm:h-9 sm:w-9 sm:text-base">
                         ?
                       </div>
 
                       {/* Content */}
-                      <div className="px-3 pb-1 pt-4 sm:px-6 sm:pb-2 sm:pt-6">
+                      <div className="px-3 pb-2 pt-3 sm:px-4 sm:pb-2 sm:pt-4">
                         {/* Plan name */}
-                        <h2 className="pr-12 text-[27px] font-bold leading-tight text-[#171717] sm:pr-16 sm:text-4xl">
+                        <h2 className="pr-10 text-lg font-bold leading-tight text-[#171717] sm:pr-12 sm:text-2xl">
                           {plan.name}
                         </h2>
 
                         {/* Details */}
-                        <div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-4 sm:mt-7 sm:gap-x-14 sm:gap-y-5">
+                        <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 sm:mt-4 sm:gap-x-5 sm:gap-y-3">
                           {/* Daily */}
                           <div>
-                            <p className="text-[15px] leading-tight text-[#555] sm:text-2xl">
+                            <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Daily income
                             </p>
 
-                            <p className="mt-1 text-[23px] font-bold leading-none text-[#171717] sm:text-4xl">
+                            <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               ${daily.toLocaleString()}
                             </p>
                           </div>
 
                           {/* Total */}
                           <div>
-                            <p className="text-[15px] leading-tight text-[#555] sm:text-2xl">
+                            <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Total income
                             </p>
 
-                            <p className="mt-1 text-[23px] font-bold leading-none text-[#171717] sm:text-4xl">
+                            <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               ${total.toLocaleString()}
                             </p>
                           </div>
 
                           {/* Duration */}
                           <div>
-                            <p className="text-[15px] leading-tight text-[#555] sm:text-2xl">
+                            <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Contract period
                             </p>
 
-                            <p className="mt-1 text-[23px] font-bold leading-none text-[#171717] sm:text-4xl">
+                            <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               {plan.durationDays} Days
                             </p>
                           </div>
 
                           {/* Quantity */}
                           <div>
-                            <p className="text-[15px] leading-tight text-[#555] sm:text-2xl">
+                            <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Quantity limit
                             </p>
 
-                            <p className="mt-1 text-[23px] font-bold leading-none text-[#171717] sm:text-4xl">
+                            <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               {quantity}
                             </p>
                           </div>
 
                           {/* Referral */}
                           <div className="col-span-2">
-                            <p className="text-[15px] leading-tight text-[#555] sm:text-2xl">
+                            <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Subordinate purchase rebate
                             </p>
 
-                            <p className="mt-1 text-[23px] font-bold leading-none text-[#171717] sm:text-4xl">
+                            <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               ${referralBonus.toLocaleString()}
                             </p>
                           </div>
@@ -266,18 +266,18 @@ export default function PlansPage() {
                     {/* =================================
                         WHITE BOTTOM SECTION
                     ================================= */}
-                    <div className="bg-white px-4 py-5 sm:px-8 sm:py-7">
+                    <div className="bg-white px-3 py-3 sm:px-4 sm:py-4">
                       {/* Price / Invest row */}
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         {/* Prices */}
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-3 sm:gap-x-5">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-2 sm:gap-x-3">
                           {/* Deposit */}
-                          <span className="text-[26px] font-medium leading-none text-[#ed8420] sm:text-[32px]">
+                          <span className="text-lg font-medium leading-none text-[#ed8420] sm:text-2xl">
                             ${deposit.toLocaleString()}
                           </span>
 
                           {/* Plan name */}
-                          <span className="rounded-xl bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-2.5 py-1.5 text-xs font-bold text-[#68451b] shadow-sm sm:px-3 sm:py-2 sm:text-lg">
+                          <span className="rounded-lg bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-2 py-1 text-[10px] font-bold text-[#68451b] shadow-sm sm:px-2 sm:py-1 sm:text-sm">
                             {plan.name}
                           </span>
                         </div>
@@ -287,7 +287,7 @@ export default function PlansPage() {
                           type="button"
                           onClick={() => handleInvest(plan)}
                           disabled={investing === plan.id}
-                          className="w-full rounded-[18px] bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] px-7 py-3.5 text-lg font-medium text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 sm:w-[220px] sm:rounded-[20px] sm:px-9 sm:py-4 sm:text-2xl"
+                          className="w-full rounded-xl bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-2 text-sm font-medium text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 sm:w-[160px] sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-base"
                         >
                           {investing === plan.id
                             ? "Processing..."
@@ -296,7 +296,7 @@ export default function PlansPage() {
                       </div>
 
                       {/* Referral / Status badges */}
-                      <div className="mt-4 flex flex-wrap gap-2 border-t border-gray-100 pt-3">
+                      <div className="mt-2 flex flex-wrap gap-1.5 border-t border-gray-100 pt-2">
                         <span className="rounded-full bg-yellow-50 px-2.5 py-1 text-[9px] font-semibold text-yellow-700">
                           Level 1: {Number(plan.level1Percent)}%
                         </span>
