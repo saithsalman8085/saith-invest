@@ -16,11 +16,9 @@ export async function GET() {
     const users = await db.orm.public.User.all();
     const deposits = await db.orm.public.Deposit.all();
     const withdrawals = await db.orm.public.Withdrawal.all();
-    const plans = await db.orm.public.InvestmentPlan.all();
+    const plans = await db.orm.public.Investment.all();
 
-    const publishedPlans = plans.filter(
-      (plan) => plan.status === "PUBLISHED"
-    );
+    const totalPlans = plans.length;
 
     const pendingDeposits = deposits.filter(
       (deposit) => deposit.status === "PENDING"
@@ -34,7 +32,7 @@ export async function GET() {
       success: true,
       stats: {
         totalUsers: users.length,
-        activePlans: publishedPlans.length,
+        activePlans: totalPlans,
         pendingDeposits: pendingDeposits.length,
         pendingWithdrawals: pendingWithdrawals.length,
       },

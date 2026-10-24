@@ -4,10 +4,7 @@ import { isDisposableEmail } from "disposable-email-domains-js";
 import { db } from "@/lib/prisma";
 
 function generateReferralCode() {
-return (
-"SAITH" +
-Math.random().toString(36).substring(2, 8).toUpperCase()
-);
+  return Math.random().toString(36).substring(2, 10).toUpperCase();
 }
 
 function generatePublicUserId() {

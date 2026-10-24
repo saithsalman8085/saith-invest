@@ -131,9 +131,18 @@ export default function LoginPage() {
 
           <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_10px_40px_rgba(234,179,8,0.10)] sm:rounded-3xl">
             <div className="border-b border-yellow-200 bg-gradient-to-r from-yellow-100 via-yellow-50 to-orange-50 p-5 sm:p-7">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-400 text-sm font-extrabold text-black shadow-lg shadow-yellow-300/30">
-                CI
+              <div className="flex h-12 w-12 items-center justify-center">
+                
+<img
+  src="/claudeinvest-logo.svg"
+  alt="ClaudeInvest logo"
+  className="h-12 w-12 rounded-2xl object-contain"
+/>
+
               </div>
+              <div className="mt-3 text-xl font-bold tracking-tight text-black">
+  ClaudeInvest
+</div>
 
               <div className="mt-4 inline-flex rounded-full border border-yellow-300 bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-700">
                 Secure Login
