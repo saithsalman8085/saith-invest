@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
+import { Temporal } from "temporal-polyfill";
 
 export async function GET() {
   try {
@@ -117,7 +118,7 @@ export async function PATCH(request: NextRequest) {
         status: decision,
         adminNote: adminNote || null,
         reviewedById: admin.id,
-        reviewedAt: new Date().toISOString().slice(0, 23),
+        reviewedAt: Temporal.Now.plainDateTimeISO(),
       } as any);
 
     // Reactivate the user only when the appeal is approved.
