@@ -1,15 +1,9 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
 
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
-
-function generateTemporaryPassword() {
-  const randomPart = crypto.randomBytes(6).toString("base64url");
-
-  return `CI-${randomPart}-9`;
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,10 +19,28 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const userId = String(body.userId || "").trim();
+    const newPassword =
+      typeof body.newPassword === "string"
+        ? body.newPassword
+        : "";
 
     if (!userId) {
       return NextResponse.json(
         { error: "User ID is required." },
+        { status: 400 }
+      );
+    }
+
+    if (newPassword.length < 8) {
+      return NextResponse.json(
+        { error: "Password must be at least 8 characters long." },
+        { status: 400 }
+      );
+    }
+
+    if (newPassword.length > 128) {
+      return NextResponse.json(
+        { error: "Password cannot exceed 128 characters." },
         { status: 400 }
       );
     }
@@ -54,18 +66,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const temporaryPassword = generateTemporaryPassword();
-
-    const passwordHash = await bcrypt.hash(
-      temporaryPassword,
-      12
-    );
+    const passwordHash = await bcrypt.hash(newPassword, 12);
 
     await db.orm.public.User
       .where((user) => user.id.eq(userId))
-      .update({
-        passwordHash,
-      } as any);
+      .update({ passwordHash } as any);
 
     await db.orm.public.AuditLog.create({
       action: "PASSWORD_RESET",
@@ -80,7 +85,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "Password reset successfully.",
-      temporaryPassword,
     });
   } catch (error) {
     console.error("ADMIN_PASSWORD_RESET_ERROR:", error);

@@ -19,7 +19,6 @@ type User = {
 type ResetResult = {
   userId: string;
   fullName: string;
-  temporaryPassword: string;
 } | null;
 
 type EditUser = {
@@ -40,9 +39,7 @@ function StatusBadge({ status }: { status: string }) {
         : "bg-red-500/10 text-red-400 border-red-500/20";
 
   return (
-    <span
-      className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${className}`}
-    >
+    <span className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${className}`}>
       {normalized}
     </span>
   );
@@ -64,46 +61,32 @@ function ActionButtons({
   onBonus: (user: User) => void;
 }) {
   if (user.role === "ADMIN") {
-    return (
-      <span className="text-xs text-slate-500">
-        Admin account protected
-      </span>
-    );
+    return <span className="text-xs text-slate-500">Admin account protected</span>;
   }
+
+  const buttonClass =
+    "rounded-lg border px-3 py-2 text-xs font-semibold transition disabled:opacity-50";
 
   return (
     <div className="flex flex-wrap gap-2">
-      <button
-        onClick={() => onEdit(user)}
-        disabled={loading === user.id}
-        className="rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-semibold text-blue-400 transition hover:bg-blue-500/20 disabled:opacity-50"
-      >
+      <button onClick={() => onEdit(user)} disabled={loading === user.id}
+        className={`${buttonClass} border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20`}>
         Edit
       </button>
 
-      <button
-        onClick={() => onBonus(user)}
-        disabled={loading === user.id}
-        className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
-      >
+      <button onClick={() => onBonus(user)} disabled={loading === user.id}
+        className={`${buttonClass} border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20`}>
         Bonus / Salary
       </button>
 
       {user.status === "ACTIVE" && (
         <>
-          <button
-            onClick={() => onStatusChange(user, "SUSPEND")}
-            disabled={loading === user.id}
-            className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-amber-400 transition hover:bg-amber-500/20 disabled:opacity-50"
-          >
+          <button onClick={() => onStatusChange(user, "SUSPEND")} disabled={loading === user.id}
+            className={`${buttonClass} border-amber-500/20 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20`}>
             Suspend
           </button>
-
-          <button
-            onClick={() => onStatusChange(user, "BLOCK")}
-            disabled={loading === user.id}
-            className="rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-400 transition hover:bg-red-500/20 disabled:opacity-50"
-          >
+          <button onClick={() => onStatusChange(user, "BLOCK")} disabled={loading === user.id}
+            className={`${buttonClass} border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20`}>
             Block
           </button>
         </>
@@ -111,39 +94,26 @@ function ActionButtons({
 
       {user.status === "SUSPENDED" && (
         <>
-          <button
-            onClick={() => onStatusChange(user, "ACTIVATE")}
-            disabled={loading === user.id}
-            className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
-          >
+          <button onClick={() => onStatusChange(user, "ACTIVATE")} disabled={loading === user.id}
+            className={`${buttonClass} border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20`}>
             Activate
           </button>
-
-          <button
-            onClick={() => onStatusChange(user, "BLOCK")}
-            disabled={loading === user.id}
-            className="rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-400 transition hover:bg-red-500/20 disabled:opacity-50"
-          >
+          <button onClick={() => onStatusChange(user, "BLOCK")} disabled={loading === user.id}
+            className={`${buttonClass} border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20`}>
             Block
           </button>
         </>
       )}
 
       {user.status === "BLOCKED" && (
-        <button
-          onClick={() => onStatusChange(user, "ACTIVATE")}
-          disabled={loading === user.id}
-          className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
-        >
+        <button onClick={() => onStatusChange(user, "ACTIVATE")} disabled={loading === user.id}
+          className={`${buttonClass} border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20`}>
           Activate
         </button>
       )}
 
-      <button
-        onClick={() => onResetPassword(user)}
-        disabled={loading === user.id}
-        className="rounded-lg border border-blue-500/20 bg-blue-500/10 px-3 py-2 text-xs font-semibold text-blue-400 transition hover:bg-blue-500/20 disabled:opacity-50"
-      >
+      <button onClick={() => onResetPassword(user)} disabled={loading === user.id}
+        className={`${buttonClass} border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20`}>
         Reset Password
       </button>
     </div>
@@ -157,39 +127,24 @@ export default function AdminUsersPage() {
   const [pageLoading, setPageLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [resetResult, setResetResult] =
-    useState<ResetResult>(null);
-
-  const [editUser, setEditUser] =
-    useState<EditUser>(null);
+  const [resetResult, setResetResult] = useState<ResetResult>(null);
+  const [resetUser, setResetUser] = useState<User | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [editUser, setEditUser] = useState<EditUser>(null);
 
   async function loadUsers() {
     try {
       setPageLoading(true);
       setError("");
 
-      const response = await fetch(
-        "/api/admin/users",
-        {
-          cache: "no-store",
-        }
-      );
-
+      const response = await fetch("/api/admin/users", { cache: "no-store" });
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.error || "Unable to load users."
-        );
-      }
-
+      if (!response.ok) throw new Error(data.error || "Unable to load users.");
       setUsers(data.users || []);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to load users."
-      );
+      setError(err instanceof Error ? err.message : "Unable to load users.");
     } finally {
       setPageLoading(false);
     }
@@ -202,7 +157,6 @@ export default function AdminUsersPage() {
   function onEdit(user: User) {
     setMessage("");
     setError("");
-
     setEditUser({
       id: user.id,
       fullName: user.fullName,
@@ -212,9 +166,7 @@ export default function AdminUsersPage() {
   }
 
   async function saveUserChanges() {
-    if (!editUser) {
-      return;
-    }
+    if (!editUser) return;
 
     if (!editUser.fullName.trim()) {
       setError("Full name is required.");
@@ -226,185 +178,113 @@ export default function AdminUsersPage() {
       setMessage("");
       setError("");
 
-      const response = await fetch(
-        "/api/admin/users",
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: editUser.id,
-            action: "EDIT",
-            fullName: editUser.fullName,
-            email: editUser.email,
-            phone: editUser.phone,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Unable to update user details."
-        );
-      }
-
-      setEditUser(null);
-
-      setMessage(
-        data.message ||
-          "User details updated successfully."
-      );
-
-      await loadUsers();
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to update user details."
-      );
-    } finally {
-      setLoading(null);
-    }
-  }
-
-  async function onStatusChange(
-    user: User,
-    action: string
-  ) {
-    const actionText =
-      action === "SUSPEND"
-        ? "suspend"
-        : action === "BLOCK"
-          ? "block"
-          : "activate";
-
-    const confirmed = window.confirm(
-      `Are you sure you want to ${actionText} ${user.fullName}?`
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      setLoading(user.id);
-      setMessage("");
-      setError("");
-
-      const response = await fetch(
-        "/api/admin/users",
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            action,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Unable to update user."
-        );
-      }
-
-      setMessage(
-        data.message ||
-          "User updated successfully."
-      );
-
-      await loadUsers();
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to update user."
-      );
-    } finally {
-      setLoading(null);
-    }
-  }
-
-  async function onResetPassword(user: User) {
-    const confirmed = window.confirm(
-      `Reset password for ${user.fullName}?`
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      setLoading(user.id);
-      setMessage("");
-      setError("");
-      setResetResult(null);
-
-      const response = await fetch(
-        "/api/admin/users/reset-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user.id,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Unable to reset password."
-        );
-      }
-
-      setResetResult({
-        userId: user.id,
-        fullName: user.fullName,
-        temporaryPassword:
-          data.temporaryPassword,
+      const response = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: editUser.id,
+          action: "EDIT",
+          fullName: editUser.fullName,
+          email: editUser.email,
+          phone: editUser.phone,
+        }),
       });
 
-      setMessage(
-        "Password reset successfully."
-      );
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to update user details.");
+
+      setEditUser(null);
+      setMessage(data.message || "User details updated successfully.");
+      await loadUsers();
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to reset password."
-      );
+      setError(err instanceof Error ? err.message : "Unable to update user details.");
     } finally {
       setLoading(null);
     }
   }
 
-  async function copyTemporaryPassword() {
-    if (!resetResult) {
+  async function onStatusChange(user: User, action: string) {
+    const actionText =
+      action === "SUSPEND" ? "suspend" : action === "BLOCK" ? "block" : "activate";
+
+    if (!window.confirm(`Are you sure you want to ${actionText} ${user.fullName}?`)) return;
+
+    try {
+      setLoading(user.id);
+      setMessage("");
+      setError("");
+
+      const response = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, action }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to update user.");
+
+      setMessage(data.message || "User updated successfully.");
+      await loadUsers();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to update user.");
+    } finally {
+      setLoading(null);
+    }
+  }
+
+  function onResetPassword(user: User) {
+    setMessage("");
+    setError("");
+    setNewPassword("");
+    setShowPassword(false);
+    setResetResult(null);
+    setResetUser(user);
+  }
+
+  async function submitPasswordReset() {
+    if (!resetUser) return;
+
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters long.");
       return;
     }
 
-    await navigator.clipboard.writeText(
-      resetResult.temporaryPassword
-    );
+    if (newPassword.length > 128) {
+      setError("Password cannot exceed 128 characters.");
+      return;
+    }
 
-    setMessage(
-      "Temporary password copied."
-    );
+    try {
+      setLoading(resetUser.id);
+      setMessage("");
+      setError("");
+
+      const response = await fetch("/api/admin/users/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: resetUser.id,
+          newPassword,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to reset password.");
+
+      setResetResult({
+        userId: resetUser.id,
+        fullName: resetUser.fullName,
+      });
+
+      setResetUser(null);
+      setNewPassword("");
+      setShowPassword(false);
+      setMessage(`Password reset successfully for ${resetResult?.fullName || data.fullName || "the user"}.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to reset password.");
+    } finally {
+      setLoading(null);
+    }
   }
 
   async function onBonus(user: User) {
@@ -415,59 +295,36 @@ export default function AdminUsersPage() {
       `Choose action for ${user.fullName}:\n\n1 = Send Bonus\n2 = Pay Invite Salary\n\nEnter 1 or 2:`
     );
 
-    if (choice === null) {
-      return;
-    }
+    if (choice === null) return;
 
     const selected = choice.trim();
-
     if (selected !== "1" && selected !== "2") {
-      setError(
-        "Please enter 1 for Bonus or 2 for Invite Salary."
-      );
+      setError("Please enter 1 for Bonus or 2 for Invite Salary.");
       return;
     }
 
-    const action =
-      selected === "2" ? "SALARY" : "BONUS";
-
+    const action = selected === "2" ? "SALARY" : "BONUS";
     let amount: number | undefined;
     let bonusMessage = "";
 
     if (action === "BONUS") {
-      const amountInput = window.prompt(
-        `Bonus amount for ${user.fullName}:`
-      );
-
-      if (amountInput === null) {
-        return;
-      }
+      const amountInput = window.prompt(`Bonus amount for ${user.fullName}:`);
+      if (amountInput === null) return;
 
       amount = Number(amountInput);
-
       if (!Number.isFinite(amount) || amount <= 0) {
-        setError(
-          "Please enter a valid bonus amount."
-        );
+        setError("Please enter a valid bonus amount.");
         return;
       }
 
       const messageInput = window.prompt(
         "Optional bonus message (Cancel to use default message):"
       );
-
-      bonusMessage =
-        messageInput === null
-          ? ""
-          : messageInput.trim();
+      bonusMessage = messageInput === null ? "" : messageInput.trim();
     } else {
-      const confirmed = window.confirm(
+      if (!window.confirm(
         `Pay the eligible Invite Salary to ${user.fullName}?\n\nThe server will check eligibility and duplicate payments.`
-      );
-
-      if (!confirmed) {
-        return;
-      }
+      )) return;
     }
 
     try {
@@ -477,54 +334,32 @@ export default function AdminUsersPage() {
 
       const body =
         action === "BONUS"
-          ? {
-              userId: user.id,
-              action,
-              amount,
-              message: bonusMessage,
-            }
-          : {
-              userId: user.id,
-              action,
-            };
+          ? { userId: user.id, action, amount, message: bonusMessage }
+          : { userId: user.id, action };
 
-      const response = await fetch(
-        "/api/admin/users",
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(
-          data.error ||
-            (action === "SALARY"
-              ? "Unable to pay invite salary."
-              : "Unable to send bonus.")
+          data.error || (action === "SALARY" ? "Unable to pay invite salary." : "Unable to send bonus.")
         );
       }
 
       setMessage(
         data.message ||
-          (action === "SALARY"
-            ? "Invite salary paid successfully."
-            : "Bonus sent successfully.")
+          (action === "SALARY" ? "Invite salary paid successfully." : "Bonus sent successfully.")
       );
-
       await loadUsers();
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : action === "SALARY"
-            ? "Unable to pay invite salary."
-            : "Unable to send bonus."
+          : action === "SALARY" ? "Unable to pay invite salary." : "Unable to send bonus."
       );
     } finally {
       setLoading(null);
@@ -532,46 +367,25 @@ export default function AdminUsersPage() {
   }
 
   const filteredUsers = useMemo(() => {
-    const value = search
-      .trim()
-      .toLowerCase();
+    const value = search.trim().toLowerCase();
+    if (!value) return users;
 
-    if (!value) {
-      return users;
-    }
-
-    return users.filter((user) => {
-      return (
-        user.fullName
-          .toLowerCase()
-          .includes(value) ||
-        String(user.email || "")
-          .toLowerCase()
-          .includes(value) ||
-        String(user.phone || "")
-          .toLowerCase()
-          .includes(value) ||
-        user.publicUserId
-          .toLowerCase()
-          .includes(value) ||
-        user.referralCode
-          .toLowerCase()
-          .includes(value)
-      );
-    });
+    return users.filter((user) =>
+      user.fullName.toLowerCase().includes(value) ||
+      String(user.email || "").toLowerCase().includes(value) ||
+      String(user.phone || "").toLowerCase().includes(value) ||
+      user.publicUserId.toLowerCase().includes(value) ||
+      user.referralCode.toLowerCase().includes(value)
+    );
   }, [users, search]);
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">
-            User Management
-          </h1>
-
+          <h1 className="text-3xl font-bold">User Management</h1>
           <p className="mt-2 text-sm text-slate-400">
-            Search users, manage account status,
-            edit details, reset passwords, and send bonuses or invite salaries.
+            Search users, manage account status, edit details, reset passwords, and send bonuses or invite salaries.
           </p>
         </div>
 
@@ -591,154 +405,118 @@ export default function AdminUsersPage() {
           <div className="mb-6 rounded-2xl border border-white/10 bg-slate-900 p-5">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-bold">
-                  Edit User
-                </h2>
-
-                <p className="mt-1 text-xs text-slate-500">
-                  Update the user's basic account details.
-                </p>
+                <h2 className="text-lg font-bold">Edit User</h2>
+                <p className="mt-1 text-xs text-slate-500">Update the user's basic account details.</p>
               </div>
-
-              <button
-                onClick={() => setEditUser(null)}
-                disabled={loading === editUser.id}
-                className="rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-slate-300 transition hover:bg-white/5 disabled:opacity-50"
-              >
+              <button onClick={() => setEditUser(null)} disabled={loading === editUser.id}
+                className="rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-slate-300 transition hover:bg-white/5 disabled:opacity-50">
                 Cancel
               </button>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
               <div>
-                <label className="mb-2 block text-xs font-semibold text-slate-400">
-                  Full Name
-                </label>
-
-                <input
-                  value={editUser.fullName}
-                  onChange={(event) =>
-                    setEditUser({
-                      ...editUser,
-                      fullName:
-                        event.target.value,
-                    })
-                  }
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50"
-                />
+                <label className="mb-2 block text-xs font-semibold text-slate-400">Full Name</label>
+                <input value={editUser.fullName} onChange={(event) => setEditUser({ ...editUser, fullName: event.target.value })}
+                  className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50" />
               </div>
-
               <div>
-                <label className="mb-2 block text-xs font-semibold text-slate-400">
-                  Email
-                </label>
-
-                <input
-                  type="email"
-                  value={editUser.email}
-                  onChange={(event) =>
-                    setEditUser({
-                      ...editUser,
-                      email:
-                        event.target.value,
-                    })
-                  }
-                  placeholder="No email"
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50"
-                />
+                <label className="mb-2 block text-xs font-semibold text-slate-400">Email</label>
+                <input type="email" value={editUser.email} onChange={(event) => setEditUser({ ...editUser, email: event.target.value })}
+                  placeholder="No email" className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50" />
               </div>
-
               <div>
-                <label className="mb-2 block text-xs font-semibold text-slate-400">
-                  Phone
-                </label>
-
-                <input
-                  value={editUser.phone}
-                  onChange={(event) =>
-                    setEditUser({
-                      ...editUser,
-                      phone:
-                        event.target.value,
-                    })
-                  }
-                  placeholder="No phone"
-                  className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50"
-                />
+                <label className="mb-2 block text-xs font-semibold text-slate-400">Phone</label>
+                <input value={editUser.phone} onChange={(event) => setEditUser({ ...editUser, phone: event.target.value })}
+                  placeholder="No phone" className="w-full rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50" />
               </div>
             </div>
 
             <div className="mt-5 flex justify-end">
-              <button
-                onClick={saveUserChanges}
-                disabled={loading === editUser.id}
-                className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold transition hover:bg-blue-500 disabled:opacity-50"
-              >
-                {loading === editUser.id
-                  ? "Saving..."
-                  : "Save Changes"}
+              <button onClick={saveUserChanges} disabled={loading === editUser.id}
+                className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold transition hover:bg-blue-500 disabled:opacity-50">
+                {loading === editUser.id ? "Saving..." : "Save Changes"}
               </button>
             </div>
           </div>
         )}
 
         {resetResult && (
-          <div className="mb-6 rounded-2xl border border-blue-500/20 bg-blue-500/10 p-5">
-            <div className="mb-3">
-              <p className="text-sm font-semibold text-blue-300">
-                Temporary Password
-              </p>
+          <div className="mb-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-5">
+            <p className="text-sm font-semibold text-emerald-300">Password Reset Complete</p>
+            <p className="mt-1 text-sm text-slate-300">
+              Password for <strong>{resetResult.fullName}</strong> was changed successfully.
+            </p>
+            <button onClick={() => setResetResult(null)}
+              className="mt-3 rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-white/5">
+              Hide
+            </button>
+          </div>
+        )}
 
-              <p className="mt-1 text-xs text-slate-400">
-                Give this password to{" "}
-                {resetResult.fullName}.
-                It is shown here only for this reset.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <div className="rounded-xl border border-white/10 bg-slate-950 px-4 py-3 font-mono text-lg font-bold tracking-wider">
-                {resetResult.temporaryPassword}
+        {resetUser && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4">
+            <div role="dialog" aria-modal="true" aria-labelledby="reset-password-title"
+              className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 p-6 shadow-2xl">
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <div>
+                  <h2 id="reset-password-title" className="text-xl font-bold">Set New Password</h2>
+                  <p className="mt-2 text-sm text-slate-400">
+                    Account: <span className="font-semibold text-white">{resetUser.fullName}</span>
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500">Minimum 8 characters. This changes the user's current password immediately.</p>
+                </div>
+                <button type="button" onClick={() => { setResetUser(null); setNewPassword(""); setError(""); }}
+                  disabled={loading === resetUser.id}
+                  aria-label="Close password dialog"
+                  className="rounded-lg px-2 py-1 text-xl text-slate-400 hover:bg-white/5 disabled:opacity-50">
+                  ×
+                </button>
               </div>
 
-              <button
-                onClick={copyTemporaryPassword}
-                className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold transition hover:bg-blue-500"
-              >
-                Copy Password
-              </button>
+              <form onSubmit={(event) => { event.preventDefault(); void submitPasswordReset(); }}>
+                <label htmlFor="admin-new-password" className="mb-2 block text-sm font-semibold text-slate-300">
+                  New Password
+                </label>
+                <div className="flex gap-2">
+                  <input id="admin-new-password" type={showPassword ? "text" : "password"}
+                    value={newPassword} onChange={(event) => { setNewPassword(event.target.value); setError(""); }}
+                    minLength={8} maxLength={128} autoComplete="new-password" autoFocus required
+                    placeholder="Enter a password (8–128 characters)"
+                    className="min-w-0 flex-1 rounded-xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50" />
+                  <button type="button" onClick={() => setShowPassword((value) => !value)}
+                    className="rounded-xl border border-white/10 px-3 text-xs font-semibold text-slate-300 hover:bg-white/5">
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
 
-              <button
-                onClick={() =>
-                  setResetResult(null)
-                }
-                className="rounded-xl border border-white/10 px-4 py-3 text-sm font-semibold text-slate-300 transition hover:bg-white/5"
-              >
-                Hide
-              </button>
+                <div className="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                  <button type="button"
+                    onClick={() => { setResetUser(null); setNewPassword(""); setError(""); }}
+                    disabled={loading === resetUser.id}
+                    className="rounded-xl border border-white/10 px-4 py-3 text-sm font-semibold text-slate-300 hover:bg-white/5 disabled:opacity-50">
+                    Cancel
+                  </button>
+                  <button type="submit" disabled={loading === resetUser.id || newPassword.length < 8}
+                    className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50">
+                    {loading === resetUser.id ? "Resetting..." : "Reset Password"}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
 
         <div className="mb-6">
-          <input
-            value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
+          <input value={search} onChange={(event) => setSearch(event.target.value)}
             placeholder="Search name, email, phone, user ID or referral code..."
-            className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50"
-          />
+            className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-500/50" />
         </div>
 
         {pageLoading ? (
-          <div className="rounded-2xl border border-white/10 bg-slate-900 p-8 text-center text-sm text-slate-400">
-            Loading users...
-          </div>
+          <div className="rounded-2xl border border-white/10 bg-slate-900 p-8 text-center text-sm text-slate-400">Loading users...</div>
         ) : filteredUsers.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-slate-900 p-8 text-center text-sm text-slate-400">
-            No users found.
-          </div>
+          <div className="rounded-2xl border border-white/10 bg-slate-900 p-8 text-center text-sm text-slate-400">No users found.</div>
         ) : (
           <>
             <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-slate-900 md:block">
@@ -746,184 +524,71 @@ export default function AdminUsersPage() {
                 <table className="w-full min-w-[1050px]">
                   <thead className="border-b border-white/10 bg-slate-950/50">
                     <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
-                      <th className="px-5 py-4">
-                        User
-                      </th>
-
-                      <th className="px-5 py-4">
-                        Contact
-                      </th>
-
-                      <th className="px-5 py-4">
-                        Role
-                      </th>
-
-                      <th className="px-5 py-4">
-                        Status
-                      </th>
-
-                      <th className="px-5 py-4">
-                        Referral
-                      </th>
-
-                      <th className="px-5 py-4">
-                        Joined
-                      </th>
-
-                      <th className="px-5 py-4">
-                        Actions
-                      </th>
+                      <th className="px-5 py-4">User</th>
+                      <th className="px-5 py-4">Contact</th>
+                      <th className="px-5 py-4">Role</th>
+                      <th className="px-5 py-4">Status</th>
+                      <th className="px-5 py-4">Referral</th>
+                      <th className="px-5 py-4">Joined</th>
+                      <th className="px-5 py-4">Actions</th>
                     </tr>
                   </thead>
-
                   <tbody className="divide-y divide-white/5">
-                    {filteredUsers.map(
-                      (user) => (
-                        <tr
-                          key={user.id}
-                          className="align-top hover:bg-white/[0.02]"
-                        >
-                          <td className="px-5 py-5">
-                            <div className="font-semibold">
-                              {user.fullName}
-                            </div>
-
-                            <div className="mt-1 text-xs text-slate-500">
-                              ID:{" "}
-                              {user.publicUserId}
-                            </div>
-
-                            {user.premiumBadge && (
-                              <div className="mt-2 inline-flex rounded-full border border-yellow-400/20 bg-yellow-400/10 px-2 py-1 text-[10px] font-bold text-yellow-300">
-                                PREMIUM
-                              </div>
-                            )}
-                          </td>
-
-                          <td className="px-5 py-5 text-sm">
-                            <div>
-                              {user.email ||
-                                "No email"}
-                            </div>
-
-                            <div className="mt-1 text-xs text-slate-500">
-                              {user.phone ||
-                                "No phone"}
-                            </div>
-                          </td>
-
-                          <td className="px-5 py-5 text-sm text-slate-300">
-                            {user.role}
-                          </td>
-
-                          <td className="px-5 py-5">
-                            <StatusBadge
-                              status={
-                                user.status
-                              }
-                            />
-                          </td>
-
-                          <td className="px-5 py-5">
-                            <div className="font-mono text-xs text-slate-300">
-                              {
-                                user.referralCode
-                              }
-                            </div>
-                          </td>
-
-                          <td className="px-5 py-5 text-xs text-slate-500">
-                            {new Date(
-                              user.createdAt
-                            ).toLocaleDateString()}
-                          </td>
-
-                          <td className="px-5 py-5">
-                            <ActionButtons
-                              user={user}
-                              loading={loading}
-                              onStatusChange={
-                                onStatusChange
-                              }
-                              onResetPassword={
-                                onResetPassword
-                              }
-                              onEdit={onEdit}
-                              onBonus={onBonus}
-                            />
-                          </td>
-                        </tr>
-                      )
-                    )}
+                    {filteredUsers.map((user) => (
+                      <tr key={user.id} className="align-top hover:bg-white/[0.02]">
+                        <td className="px-5 py-5">
+                          <div className="font-semibold">{user.fullName}</div>
+                          <div className="mt-1 text-xs text-slate-500">ID: {user.publicUserId}</div>
+                          {user.premiumBadge && (
+                            <div className="mt-2 inline-flex rounded-full border border-yellow-400/20 bg-yellow-400/10 px-2 py-1 text-[10px] font-bold text-yellow-300">PREMIUM</div>
+                          )}
+                        </td>
+                        <td className="px-5 py-5 text-sm">
+                          <div>{user.email || "No email"}</div>
+                          <div className="mt-1 text-xs text-slate-500">{user.phone || "No phone"}</div>
+                        </td>
+                        <td className="px-5 py-5 text-sm text-slate-300">{user.role}</td>
+                        <td className="px-5 py-5"><StatusBadge status={user.status} /></td>
+                        <td className="px-5 py-5"><div className="font-mono text-xs text-slate-300">{user.referralCode}</div></td>
+                        <td className="px-5 py-5 text-xs text-slate-500">{new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td className="px-5 py-5">
+                          <ActionButtons user={user} loading={loading} onStatusChange={onStatusChange}
+                            onResetPassword={onResetPassword} onEdit={onEdit} onBonus={onBonus} />
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
 
             <div className="space-y-4 md:hidden">
-              {filteredUsers.map(
-                (user) => (
-                  <div
-                    key={user.id}
-                    className="rounded-2xl border border-white/10 bg-slate-900 p-5"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <h2 className="font-semibold">
-                          {user.fullName}
-                        </h2>
-
-                        <p className="mt-1 text-xs text-slate-500">
-                          ID:{" "}
-                          {user.publicUserId}
-                        </p>
-                      </div>
-
-                      <StatusBadge
-                        status={user.status}
-                      />
+              {filteredUsers.map((user) => (
+                <div key={user.id} className="rounded-2xl border border-white/10 bg-slate-900 p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h2 className="font-semibold">{user.fullName}</h2>
+                      <p className="mt-1 text-xs text-slate-500">ID: {user.publicUserId}</p>
                     </div>
-
-                    {user.premiumBadge && (
-                      <div className="mt-3 inline-flex rounded-full border border-yellow-400/20 bg-yellow-400/10 px-2 py-1 text-[10px] font-bold text-yellow-300">
-                        PREMIUM
-                      </div>
-                    )}
-
-                    <div className="mt-4 space-y-2 text-sm">
-                      <p className="text-slate-300">
-                        {user.email ||
-                          "No email"}
-                      </p>
-
-                      <p className="text-slate-500">
-                        {user.phone ||
-                          "No phone"}
-                      </p>
-
-                      <p className="font-mono text-xs text-slate-500">
-                        Referral:{" "}
-                        {user.referralCode}
-                      </p>
-                    </div>
-
-                    <div className="mt-5">
-                      <ActionButtons
-                        user={user}
-                        loading={loading}
-                        onStatusChange={
-                          onStatusChange
-                        }
-                        onResetPassword={
-                          onResetPassword
-                        }
-                        onEdit={onEdit}
-                        onBonus={onBonus}
-                      />
-                    </div>
+                    <StatusBadge status={user.status} />
                   </div>
-                )
-              )}
+
+                  {user.premiumBadge && (
+                    <div className="mt-3 inline-flex rounded-full border border-yellow-400/20 bg-yellow-400/10 px-2 py-1 text-[10px] font-bold text-yellow-300">PREMIUM</div>
+                  )}
+
+                  <div className="mt-4 space-y-2 text-sm">
+                    <p className="text-slate-300">{user.email || "No email"}</p>
+                    <p className="text-slate-500">{user.phone || "No phone"}</p>
+                    <p className="font-mono text-xs text-slate-500">Referral: {user.referralCode}</p>
+                  </div>
+
+                  <div className="mt-5">
+                    <ActionButtons user={user} loading={loading} onStatusChange={onStatusChange}
+                      onResetPassword={onResetPassword} onEdit={onEdit} onBonus={onBonus} />
+                  </div>
+                </div>
+              ))}
             </div>
           </>
         )}
