@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'281a257928cf535d1c263496041078e513312da1993a2b6a7d6ef8659f64c982'>;
+  StorageHashBase<'fa10d5890654bcd6bcf8310d41d31de686d29383622874cc75f5a36cefede67a'>;
 export type ExecutionHash =
   ExecutionHashBase<'13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825'>;
 export type ProfileHash =
@@ -2136,12 +2136,20 @@ type ContractBase = Omit<
                   readonly nativeType: 'numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
                   readonly typeParams: { readonly precision: 18; readonly scale: 4 };
                 };
                 readonly depositAmount: {
                   readonly nativeType: 'numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
                   readonly typeParams: { readonly precision: 18; readonly scale: 2 };
                 };
                 readonly durationDays: {
@@ -2205,6 +2213,10 @@ type ContractBase = Omit<
                   readonly nativeType: 'numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
                   readonly typeParams: { readonly precision: 18; readonly scale: 2 };
                 };
                 readonly referralBonusUSD: {
@@ -2231,6 +2243,10 @@ type ContractBase = Omit<
                   readonly nativeType: 'numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
                   readonly typeParams: { readonly precision: 18; readonly scale: 2 };
                 };
                 readonly updatedAt: {
@@ -2419,7 +2435,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly default: {
                     readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/numeric@1', '12'>;
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '8'>;
                   };
                   readonly typeParams: { readonly precision: 10; readonly scale: 4 };
                 };

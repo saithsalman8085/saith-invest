@@ -194,13 +194,13 @@ model InvestmentPlan {
   category PlanCategory @default(NORMAL)
 expiresAt DateTime?
 
-  depositAmount Decimal @db.Decimal(18, 2)
-  profitAmount Decimal @db.Decimal(18, 2)
+  depositAmount Decimal @default(0) @db.Decimal(18, 2)
+profitAmount Decimal @default(0) @db.Decimal(18, 2)
 
   durationDays Int
 
-  dailyEarning Decimal @db.Decimal(18, 4)
-  totalReturn Decimal @db.Decimal(18, 2)
+  dailyEarning Decimal @default(0) @db.Decimal(18, 4)
+totalReturn Decimal @default(0) @db.Decimal(18, 2)
 
   level1Percent Decimal @db.Decimal(10, 4)
   level2Percent Decimal @db.Decimal(10, 4)
@@ -493,7 +493,7 @@ withdrawalCurrency String @default("PKR")
 
 exchangeRate Decimal @default(300) @db.Decimal(18, 4)
 
-withdrawalFeePercent Decimal @default(12) @db.Decimal(10, 4)
+withdrawalFeePercent Decimal @default(8) @db.Decimal(10, 4)
 
 // =========================
 // DEPOSIT PAYMENT DETAILS
