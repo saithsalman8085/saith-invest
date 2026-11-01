@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'d0dc5a791e103a6c33be2b0abbb0db84f47c8aa8845baa046cf206c5e47aac8a'>;
+  StorageHashBase<'281a257928cf535d1c263496041078e513312da1993a2b6a7d6ef8659f64c982'>;
 export type ExecutionHash =
   ExecutionHashBase<'13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825'>;
 export type ProfileHash =
@@ -343,10 +343,12 @@ export type FieldOutputTypes = {
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
     readonly InvestmentPlan: {
+      readonly category: 'NORMAL' | 'PREMIUM' | 'LIMITED_TIME';
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly dailyEarning: Numeric<18, 4>;
       readonly depositAmount: Numeric<18, 2>;
       readonly durationDays: CodecTypes['pg/int4@1']['output'];
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly isSpecial: CodecTypes['pg/bool@1']['output'];
       readonly level1Percent: Numeric<10, 4>;
@@ -563,10 +565,12 @@ export type FieldInputTypes = {
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
     readonly InvestmentPlan: {
+      readonly category: 'NORMAL' | 'PREMIUM' | 'LIMITED_TIME';
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly dailyEarning: CodecTypes['pg/numeric@1']['input'];
       readonly depositAmount: CodecTypes['pg/numeric@1']['input'];
       readonly durationDays: CodecTypes['pg/int4@1']['input'];
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly isSpecial: CodecTypes['pg/bool@1']['input'];
       readonly level1Percent: CodecTypes['pg/numeric@1']['input'];
@@ -783,10 +787,12 @@ export type StorageColumnTypes = {
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
     readonly InvestmentPlan: {
+      readonly category: 'NORMAL' | 'PREMIUM' | 'LIMITED_TIME';
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly dailyEarning: Numeric<18, 4>;
       readonly depositAmount: Numeric<18, 2>;
       readonly durationDays: CodecTypes['pg/int4@1']['output'];
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly isSpecial: CodecTypes['pg/bool@1']['output'];
       readonly level1Percent: Numeric<10, 4>;
@@ -1003,10 +1009,12 @@ export type StorageColumnInputTypes = {
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
     readonly InvestmentPlan: {
+      readonly category: 'NORMAL' | 'PREMIUM' | 'LIMITED_TIME';
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly dailyEarning: CodecTypes['pg/numeric@1']['input'];
       readonly depositAmount: CodecTypes['pg/numeric@1']['input'];
       readonly durationDays: CodecTypes['pg/int4@1']['input'];
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly isSpecial: CodecTypes['pg/bool@1']['input'];
       readonly level1Percent: CodecTypes['pg/numeric@1']['input'];
@@ -1241,10 +1249,12 @@ export namespace Models {
     readonly [RelationKeys]?: 'earnings' | 'plan' | 'referralCommissions' | 'user';
   };
   export type public_InvestmentPlan = {
+    category: 'NORMAL' | 'PREMIUM' | 'LIMITED_TIME';
     createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     dailyEarning: Numeric<18, 4>;
     depositAmount: Numeric<18, 2>;
     durationDays: CodecTypes['pg/int4@1']['output'];
+    expiresAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
     id: CodecTypes['pg/text@1']['output'];
     isSpecial: CodecTypes['pg/bool@1']['output'];
     level1Percent: Numeric<10, 4>;
@@ -2105,6 +2115,16 @@ type ContractBase = Omit<
             };
             readonly InvestmentPlan: {
               columns: {
+                readonly category: {
+                  readonly nativeType: 'PlanCategory';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'NORMAL'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'PlanCategory' };
+                };
                 readonly createdAt: {
                   readonly nativeType: 'timestamp';
                   readonly codecId: 'pg/timestamp-temporal@1';
@@ -2128,6 +2148,12 @@ type ContractBase = Omit<
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
+                };
+                readonly expiresAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: true;
+                  readonly typeParams: { readonly precision: 3 };
                 };
                 readonly id: {
                   readonly nativeType: 'text';
@@ -3108,6 +3134,10 @@ type ContractBase = Omit<
               readonly kind: 'valueSet';
               readonly values: readonly ['ACTIVE', 'COMPLETED', 'CANCELLED'];
             };
+            readonly PlanCategory: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['NORMAL', 'PREMIUM', 'LIMITED_TIME'];
+            };
             readonly PlanStatus: {
               readonly kind: 'valueSet';
               readonly values: readonly ['DRAFT', 'PUBLISHED'];
@@ -3861,6 +3891,14 @@ type ContractBase = Omit<
           };
           readonly InvestmentPlan: {
             readonly fields: {
+              readonly category: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'PlanCategory' };
+                };
+              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -3888,6 +3926,14 @@ type ContractBase = Omit<
               readonly durationDays: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly expiresAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
               };
               readonly id: {
                 readonly nullable: false;
@@ -3987,10 +4033,12 @@ type ContractBase = Omit<
               readonly table: 'InvestmentPlan';
               readonly namespaceId: 'public';
               readonly fields: {
+                readonly category: { readonly column: 'category' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly dailyEarning: { readonly column: 'dailyEarning' };
                 readonly depositAmount: { readonly column: 'depositAmount' };
                 readonly durationDays: { readonly column: 'durationDays' };
+                readonly expiresAt: { readonly column: 'expiresAt' };
                 readonly id: { readonly column: 'id' };
                 readonly isSpecial: { readonly column: 'isSpecial' };
                 readonly level1Percent: { readonly column: 'level1Percent' };

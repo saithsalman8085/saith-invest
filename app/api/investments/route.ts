@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { Temporal } from "temporal-polyfill";
 import { db } from "@/lib/prisma";
@@ -106,6 +107,39 @@ export async function POST(request: NextRequest) {
         { error: "This investment plan is not available." },
         { status: 400 }
       );
+    }
+
+    // Limited Time Plan Expiry Check
+    const category = String(
+      plan.category ?? (plan.isSpecial ? "PREMIUM" : "NORMAL")
+    );
+
+    if (category === "LIMITED_TIME") {
+      if (!plan.expiresAt) {
+        return NextResponse.json(
+          {
+            error: "This Limited Time offer has no valid expiry date.",
+          },
+          { status: 400 }
+        );
+      }
+
+      const currentTime =
+        Temporal.Now.plainDateTimeISO("Asia/Karachi");
+
+      if (
+        Temporal.PlainDateTime.compare(
+          plan.expiresAt,
+          currentTime
+        ) <= 0
+      ) {
+        return NextResponse.json(
+          {
+            error: "This Limited Time offer has expired and is no longer available.",
+          },
+          { status: 400 }
+        );
+      }
     }
 
     const amount = Number(plan.depositAmount);

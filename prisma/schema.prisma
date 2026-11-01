@@ -29,6 +29,12 @@ enum PlanStatus {
   PUBLISHED
 }
 
+enum PlanCategory {
+  NORMAL
+  PREMIUM
+  LIMITED_TIME
+}
+
 enum InvestmentStatus {
   ACTIVE
   COMPLETED
@@ -184,6 +190,9 @@ model InvestmentPlan {
   id String @id @default(cuid())
 
   name String
+
+  category PlanCategory @default(NORMAL)
+expiresAt DateTime?
 
   depositAmount Decimal @db.Decimal(18, 2)
   profitAmount Decimal @db.Decimal(18, 2)

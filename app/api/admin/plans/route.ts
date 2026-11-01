@@ -1,6 +1,13 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
+
+const PLAN_CATEGORIES = [
+  "NORMAL",
+  "PREMIUM",
+  "LIMITED_TIME",
+] as const;
 
 function getPlanData(body: any) {
   const name = String(body.name || "").trim();
@@ -23,14 +30,42 @@ function getPlanData(body: any) {
     body.referralBonusUSD ?? 0
   );
 
-  const isSpecial =
-    body.isSpecial === true ||
-    body.isSpecial === "true";
+  const category = PLAN_CATEGORIES.includes(
+    String(body.category || "").toUpperCase() as any
+  )
+    ? String(body.category).toUpperCase()
+    : body.isSpecial === true || body.isSpecial === "true"
+      ? "PREMIUM"
+      : "NORMAL";
+
+  const isSpecial = category === "PREMIUM";
 
   const status =
     String(body.status || "DRAFT").toUpperCase() === "PUBLISHED"
       ? "PUBLISHED"
       : "DRAFT";
+
+  let expiresAt: Date | null = null;
+
+  if (category === "LIMITED_TIME") {
+    if (!body.expiresAt) {
+      throw new Error(
+        "Expiry date and time are required for Limited Time plans."
+      );
+    }
+
+    expiresAt = new Date(body.expiresAt);
+
+    if (!Number.isFinite(expiresAt.getTime())) {
+      throw new Error("Invalid Limited Time expiry date.");
+    }
+
+    if (expiresAt.getTime() <= Date.now()) {
+      throw new Error(
+        "Limited Time expiry must be in the future."
+      );
+    }
+  }
 
   if (!name) {
     throw new Error("Plan name is required.");
@@ -93,9 +128,7 @@ function getPlanData(body: any) {
     !Number.isFinite(referralBonusUSD) ||
     referralBonusUSD < 0
   ) {
-    throw new Error(
-      "Referral bonus cannot be negative."
-    );
+    throw new Error("Referral bonus cannot be negative.");
   }
 
   return {
@@ -108,6 +141,8 @@ function getPlanData(body: any) {
     level1Percent: String(level1Percent),
     level2Percent: String(level2Percent),
     level3Percent: String(level3Percent),
+    category,
+    expiresAt,
     isSpecial,
     maxPurchasesPerUser,
     referralBonusUSD: String(referralBonusUSD),
@@ -134,12 +169,7 @@ export async function GET() {
       plans,
     });
   } catch (error) {
-    console.error(
-      "ADMIN_PLANS_GET_ERROR:",
-      error instanceof Error
-        ? error.stack
-        : error
-    );
+    console.error("ADMIN_PLANS_GET_ERROR:", error);
 
     return NextResponse.json(
       { error: "Unable to load plans." },
@@ -176,12 +206,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error(
-      "ADMIN_PLAN_CREATE_ERROR:",
-      error instanceof Error
-        ? error.stack
-        : error
-    );
+    console.error("ADMIN_PLAN_CREATE_ERROR:", error);
 
     return NextResponse.json(
       {
@@ -218,9 +243,7 @@ export async function PATCH(request: NextRequest) {
 
     const existingPlan =
       await db.orm.public.InvestmentPlan
-        .where((plan) =>
-          plan.id.eq(planId)
-        )
+        .where((plan) => plan.id.eq(planId))
         .first();
 
     if (!existingPlan) {
@@ -234,9 +257,7 @@ export async function PATCH(request: NextRequest) {
 
     const plan =
       await db.orm.public.InvestmentPlan
-        .where((item) =>
-          item.id.eq(planId)
-        )
+        .where((item) => item.id.eq(planId))
         .update(data as any);
 
     return NextResponse.json({
@@ -245,12 +266,7 @@ export async function PATCH(request: NextRequest) {
       message: "Plan updated successfully.",
     });
   } catch (error) {
-    console.error(
-      "ADMIN_PLAN_UPDATE_ERROR:",
-      error instanceof Error
-        ? error.stack
-        : error
-    );
+    console.error("ADMIN_PLAN_UPDATE_ERROR:", error);
 
     return NextResponse.json(
       {
@@ -287,9 +303,7 @@ export async function DELETE(request: NextRequest) {
 
     const plan =
       await db.orm.public.InvestmentPlan
-        .where((item) =>
-          item.id.eq(planId)
-        )
+        .where((item) => item.id.eq(planId))
         .first();
 
     if (!plan) {
@@ -317,9 +331,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     await db.orm.public.InvestmentPlan
-      .where((item) =>
-        item.id.eq(planId)
-      )
+      .where((item) => item.id.eq(planId))
       .delete();
 
     return NextResponse.json({
@@ -327,12 +339,7 @@ export async function DELETE(request: NextRequest) {
       message: "Plan deleted successfully.",
     });
   } catch (error) {
-    console.error(
-      "ADMIN_PLAN_DELETE_ERROR:",
-      error instanceof Error
-        ? error.stack
-        : error
-    );
+    console.error("ADMIN_PLAN_DELETE_ERROR:", error);
 
     return NextResponse.json(
       {

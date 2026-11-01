@@ -6,6 +6,8 @@ import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
 
+type PlanCategory = "NORMAL" | "PREMIUM" | "LIMITED_TIME";
+
 type Plan = {
   id: string;
   name: string;
@@ -21,7 +23,54 @@ type Plan = {
   maxPurchasesPerUser: number;
   isSpecial: boolean;
   status: string;
+  category?: PlanCategory;
+  expiresAt?: string | null;
 };
+
+const TABS: { label: string; value: PlanCategory }[] = [
+  { label: "Normal Plans", value: "NORMAL" },
+  { label: "Premium Plans", value: "PREMIUM" },
+  { label: "Limited Time Plans", value: "LIMITED_TIME" },
+];
+
+function getPlanCategory(plan: Plan): PlanCategory {
+  if (plan.category) {
+    return plan.category;
+  }
+
+  return plan.isSpecial ? "PREMIUM" : "NORMAL";
+}
+
+// Limited Time expiry is stored as Pakistan local time.
+function getExpiryTimestamp(value?: string | null): number | null {
+  if (!value) return null;
+
+  const normalized = value.trim();
+
+  if (!normalized) return null;
+
+  const hasTimezone = /(?:Z|[+-]\d{2}:\d{2})$/i.test(normalized);
+
+  const timestamp = new Date(
+    hasTimezone ? normalized : `${normalized}+05:00`
+  ).getTime();
+
+  return Number.isFinite(timestamp) ? timestamp : null;
+}
+
+function formatCountdown(milliseconds: number) {
+  const totalSeconds = Math.max(
+    0,
+    Math.floor(milliseconds / 1000)
+  );
+
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
 
 export default function PlansPage() {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -31,6 +80,11 @@ export default function PlansPage() {
   const [messageType, setMessageType] = useState<
     "success" | "error"
   >("success");
+
+  const [activeTab, setActiveTab] =
+    useState<PlanCategory>("NORMAL");
+
+  const [currentTime, setCurrentTime] = useState(Date.now());
 
   useEffect(() => {
     async function loadPlans() {
@@ -61,7 +115,50 @@ export default function PlansPage() {
     loadPlans();
   }, []);
 
+  // Update countdown every second.
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  // Automatically hide Limited Time plans after expiry.
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setPlans((previousPlans) =>
+        previousPlans.filter((plan) => {
+          if (getPlanCategory(plan) !== "LIMITED_TIME") {
+            return true;
+          }
+
+          const expiry = getExpiryTimestamp(plan.expiresAt);
+
+          return expiry !== null && expiry > Date.now();
+        })
+      );
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   async function handleInvest(plan: Plan) {
+    // Extra frontend expiry protection.
+    if (getPlanCategory(plan) === "LIMITED_TIME") {
+      const expiry = getExpiryTimestamp(plan.expiresAt);
+
+      if (!expiry || expiry <= Date.now()) {
+        setPlans((previousPlans) =>
+          previousPlans.filter((item) => item.id !== plan.id)
+        );
+
+        setMessageType("error");
+        setMessage("This Limited Time offer has expired.");
+        return;
+      }
+    }
+
     const confirmed = window.confirm(
       `Invest $${Number(plan.depositAmount).toLocaleString()} in ${plan.name}?`
     );
@@ -109,6 +206,20 @@ export default function PlansPage() {
     }
   }
 
+  const visiblePlans = plans.filter((plan) => {
+    if (getPlanCategory(plan) !== activeTab) {
+      return false;
+    }
+
+    if (activeTab === "LIMITED_TIME") {
+      const expiry = getExpiryTimestamp(plan.expiresAt);
+
+      return expiry !== null && expiry > currentTime;
+    }
+
+    return true;
+  });
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
       {/* Header */}
@@ -128,7 +239,7 @@ export default function PlansPage() {
       <section className="px-2.5 py-4 sm:px-5 sm:py-10">
         <div className="mx-auto max-w-6xl">
           {/* Page heading */}
-          <div className="mb-5 text-center sm:mb-10">
+          <div className="mb-5 text-center sm:mb-7">
             <div className="mx-auto inline-flex items-center rounded-full border border-yellow-300 bg-yellow-50 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-yellow-700 sm:px-4 sm:py-1.5 sm:text-[10px]">
               Investment Plans
             </div>
@@ -140,6 +251,28 @@ export default function PlansPage() {
             <p className="mx-auto mt-1 max-w-xl text-[10px] leading-4 text-gray-500 sm:mt-2 sm:text-sm sm:leading-6">
               Choose an investment plan that suits your goals.
             </p>
+          </div>
+
+          {/* Plan Category Tabs */}
+          <div className="mb-5 grid grid-cols-3 gap-1.5 rounded-xl border border-gray-200 bg-gray-50 p-1.5 sm:mb-8 sm:gap-2 sm:rounded-2xl sm:p-2">
+            {TABS.map((tab) => {
+              const selected = activeTab === tab.value;
+
+              return (
+                <button
+                  key={tab.value}
+                  type="button"
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`min-h-[44px] rounded-lg px-1.5 py-2 text-[10px] font-bold leading-tight transition sm:min-h-[50px] sm:rounded-xl sm:px-3 sm:text-sm ${
+                    selected
+                      ? "bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] text-[#3d2b15] shadow-sm"
+                      : "bg-transparent text-gray-500 hover:bg-white hover:text-gray-800"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Message */}
@@ -160,101 +293,121 @@ export default function PlansPage() {
             <div className="py-10 text-center text-sm text-gray-500">
               Loading investment plans...
             </div>
-          ) : plans.length === 0 ? (
+          ) : visiblePlans.length === 0 ? (
             <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6 text-center">
-              <h2 className="font-bold">No plans available</h2>
+              <h2 className="font-bold">
+                No {activeTab === "NORMAL"
+                  ? "Normal"
+                  : activeTab === "PREMIUM"
+                    ? "Premium"
+                    : "Limited Time"}{" "}
+                plans available
+              </h2>
+
               <p className="mt-2 text-sm text-gray-500">
-                There are currently no published investment plans.
+                There are currently no available plans in this category.
               </p>
             </div>
           ) : (
-            /*
-             * ONE PLAN PER ROW
-             */
             <div className="space-y-2.5 sm:space-y-3.5">
-              {plans.map((plan) => {
+              {visiblePlans.map((plan) => {
                 const deposit = Number(plan.depositAmount);
-                const profit = Number(plan.profitAmount);
                 const daily = Number(plan.dailyEarning);
                 const total = Number(plan.totalReturn);
                 const referralBonus = Number(plan.referralBonusUSD);
                 const quantity = Number(plan.maxPurchasesPerUser);
+                const category = getPlanCategory(plan);
+
+                const expiry =
+                  category === "LIMITED_TIME"
+                    ? getExpiryTimestamp(plan.expiresAt)
+                    : null;
 
                 return (
                   <article
                     key={plan.id}
                     className="overflow-hidden rounded-xl bg-white shadow-[0_2px_10px_rgba(0,0,0,0.08)] ring-1 ring-gray-100 sm:rounded-2xl"
                   >
-                    {/* =================================
-                        TOP PEACH SECTION
-                    ================================= */}
+                    {/* Top Peach Section */}
                     <div className="relative bg-[#ffead5]">
-                      
-
-                      {/* Question */}
                       <div className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-[#d09b36] bg-[#f5d58a] text-sm font-bold text-[#765619] shadow-sm sm:right-4 sm:top-4 sm:h-9 sm:w-9 sm:text-base">
                         ?
                       </div>
 
-                      {/* Content */}
                       <div className="px-3 pb-2 pt-3 sm:px-4 sm:pb-2 sm:pt-4">
-                        {/* Plan name */}
-                        <h2 className="pr-10 text-lg font-bold leading-tight text-[#171717] sm:pr-12 sm:text-2xl">
-                          {plan.name}
-                        </h2>
+                        <div className="mb-2 flex flex-wrap items-center gap-2 pr-10">
+                          <h2 className="text-lg font-bold leading-tight text-[#171717] sm:text-2xl">
+                            {plan.name}
+                          </h2>
+
+                          {category === "PREMIUM" && (
+                            <span className="rounded-full bg-yellow-500 px-2.5 py-1 text-[9px] font-bold text-white">
+                              PREMIUM
+                            </span>
+                          )}
+
+                          {category === "LIMITED_TIME" && (
+                            <span className="rounded-full bg-red-500 px-2.5 py-1 text-[9px] font-bold text-white">
+                              LIMITED TIME
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Limited Time Countdown */}
+                        {category === "LIMITED_TIME" && expiry !== null && (
+                          <div className="mb-3 rounded-xl border border-red-200 bg-white/70 px-3 py-2">
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-red-600">
+                              Offer ends in
+                            </p>
+
+                            <p className="mt-1 text-sm font-bold tabular-nums text-red-700 sm:text-base">
+                              {formatCountdown(expiry - currentTime)}
+                            </p>
+                          </div>
+                        )}
 
                         {/* Details */}
                         <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 sm:mt-4 sm:gap-x-5 sm:gap-y-3">
-                          {/* Daily */}
                           <div>
                             <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Daily income
                             </p>
-
                             <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               ${daily.toLocaleString()}
                             </p>
                           </div>
 
-                          {/* Total */}
                           <div>
                             <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Total income
                             </p>
-
                             <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               ${total.toLocaleString()}
                             </p>
                           </div>
 
-                          {/* Duration */}
                           <div>
                             <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Contract period
                             </p>
-
                             <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               {plan.durationDays} Days
                             </p>
                           </div>
 
-                          {/* Quantity */}
                           <div>
                             <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Quantity limit
                             </p>
-
                             <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               {quantity}
                             </p>
                           </div>
 
-                          {/* Referral */}
                           <div className="col-span-2">
                             <p className="text-[11px] leading-tight text-[#555] sm:text-sm">
                               Subordinate purchase rebate
                             </p>
-
                             <p className="mt-1 text-base font-bold leading-none text-[#171717] sm:text-xl">
                               ${referralBonus.toLocaleString()}
                             </p>
@@ -263,31 +416,24 @@ export default function PlansPage() {
                       </div>
                     </div>
 
-                    {/* =================================
-                        WHITE BOTTOM SECTION
-                    ================================= */}
+                    {/* White Bottom Section */}
                     <div className="bg-white px-3 py-3 sm:px-4 sm:py-4">
-                      {/* Price / Invest row */}
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        {/* Prices */}
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-2 sm:gap-x-3">
-                          {/* Deposit */}
                           <span className="text-lg font-medium leading-none text-[#ed8420] sm:text-2xl">
                             ${deposit.toLocaleString()}
                           </span>
 
-                          {/* Plan name */}
-                          <span className="rounded-lg bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-2 py-1 text-[10px] font-bold text-[#68451b] shadow-sm sm:px-2 sm:py-1 sm:text-sm">
+                          <span className="rounded-lg bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-2 py-1 text-[10px] font-bold text-[#68451b] shadow-sm sm:text-sm">
                             {plan.name}
                           </span>
                         </div>
 
-                        {/* Invest */}
                         <button
                           type="button"
                           onClick={() => handleInvest(plan)}
                           disabled={investing === plan.id}
-                          className="w-full rounded-xl bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-2 text-sm font-medium text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 sm:w-[160px] sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-base"
+                          className="w-full rounded-xl bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-2 text-sm font-medium text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 sm:w-[160px] sm:px-5 sm:py-2.5 sm:text-base"
                         >
                           {investing === plan.id
                             ? "Processing..."

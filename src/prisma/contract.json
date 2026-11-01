@@ -1072,6 +1072,16 @@
           },
           "InvestmentPlan": {
             "fields": {
+              "category": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "PlanCategory"
+                  }
+                }
+              },
               "createdAt": {
                 "nullable": false,
                 "type": {
@@ -1109,6 +1119,16 @@
                 "type": {
                   "codecId": "pg/int4@1",
                   "kind": "scalar"
+                }
+              },
+              "expiresAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamp-temporal@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "precision": 3
+                  }
                 }
               },
               "id": {
@@ -1245,6 +1265,9 @@
             },
             "storage": {
               "fields": {
+                "category": {
+                  "column": "category"
+                },
                 "createdAt": {
                   "column": "createdAt"
                 },
@@ -1256,6 +1279,9 @@
                 },
                 "durationDays": {
                   "column": "durationDays"
+                },
+                "expiresAt": {
+                  "column": "expiresAt"
                 },
                 "id": {
                   "column": "id"
@@ -2716,6 +2742,15 @@
               ],
               "typeName": "InvestmentStatus"
             },
+            "PlanCategory": {
+              "kind": "postgres-enum",
+              "members": [
+                "NORMAL",
+                "PREMIUM",
+                "LIMITED_TIME"
+              ],
+              "typeName": "PlanCategory"
+            },
             "PlanStatus": {
               "kind": "postgres-enum",
               "members": [
@@ -3719,6 +3754,24 @@
             },
             "InvestmentPlan": {
               "columns": {
+                "category": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "NORMAL"
+                  },
+                  "nativeType": "PlanCategory",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "PlanCategory"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "PlanCategory",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
                 "createdAt": {
                   "codecId": "pg/timestamp-temporal@1",
                   "default": {
@@ -3753,6 +3806,14 @@
                   "codecId": "pg/int4@1",
                   "nativeType": "int4",
                   "nullable": false
+                },
+                "expiresAt": {
+                  "codecId": "pg/timestamp-temporal@1",
+                  "nativeType": "timestamp",
+                  "nullable": true,
+                  "typeParams": {
+                    "precision": 3
+                  }
                 },
                 "id": {
                   "codecId": "pg/text@1",
@@ -5015,6 +5076,14 @@
                 "CANCELLED"
               ]
             },
+            "PlanCategory": {
+              "kind": "valueSet",
+              "values": [
+                "NORMAL",
+                "PREMIUM",
+                "LIMITED_TIME"
+              ]
+            },
             "PlanStatus": {
               "kind": "valueSet",
               "values": [
@@ -5087,7 +5156,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "d0dc5a791e103a6c33be2b0abbb0db84f47c8aa8845baa046cf206c5e47aac8a"
+    "storageHash": "281a257928cf535d1c263496041078e513312da1993a2b6a7d6ef8659f64c982"
   },
   "execution": {
     "executionHash": "13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825",
