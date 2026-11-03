@@ -107,7 +107,7 @@ export default function ProfilePage() {
 
           {/* Profile Hero */}
           <div className="relative overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_8px_30px_rgba(234,179,8,0.08)] sm:rounded-3xl">
-            <div className="h-20 bg-gradient-to-r from-yellow-300/50 via-yellow-100 to-orange-100/50 sm:h-24" />
+            <div className="h-8 bg-gradient-to-r from-yellow-300/50 via-yellow-100 to-orange-100/50 sm:h-10" />
 
             <div className="relative px-3.5 pb-4 sm:px-7 sm:pb-7">
               <h1 className="mb-3 text-center text-xl font-bold sm:mb-4 sm:text-3xl">
