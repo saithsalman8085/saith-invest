@@ -30,6 +30,7 @@ export async function GET() {
       .all();
 
     let balance = 0;
+    let totalWithdraw = 0;
     let totalEarnings = 0;
 
     const creditTypes = [
@@ -52,6 +53,10 @@ export async function GET() {
       }
 
       const amount = Number(transaction.amountUSD);
+
+      if (transaction.type === "WITHDRAWAL") {
+  totalWithdraw += amount;
+}
 
       if (creditTypes.includes(transaction.type)) {
         balance += amount;
@@ -136,7 +141,7 @@ export async function GET() {
         balance: Number(balance.toFixed(2)),
         totalInvested: Number(totalInvested.toFixed(2)),
         totalEarnings: Number(totalEarnings.toFixed(2)),
-        referrals: referrals.length,
+        totalWithdraw: Number(totalWithdraw.toFixed(2)),
       },
       
 

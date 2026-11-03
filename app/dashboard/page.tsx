@@ -26,7 +26,7 @@ type DashboardData = {
     balance: number;
     totalInvested: number;
     totalEarnings: number;
-    referrals: number;
+    totalWithdraw: number;
   };
   activeInvestments: Investment[];
   transactions: {
@@ -372,21 +372,21 @@ export default function DashboardPage() {
               </h2>
             </div>
 
-            {/* Referrals */}
-            <div className="relative overflow-hidden rounded-xl border border-yellow-100 bg-white p-2.5 shadow-sm sm:rounded-2xl sm:p-4">
-              <div className="absolute right-0 top-0 h-12 w-12 rounded-bl-full bg-yellow-50" />
+            {/* Total Withdraw */}
+<div className="relative overflow-hidden rounded-xl border border-yellow-100 bg-white p-2.5 shadow-sm sm:rounded-2xl sm:p-4">
+  <div className="absolute right-0 top-0 h-12 w-12 rounded-bl-full bg-yellow-50" />
 
-              <p className="relative text-[9px] font-medium text-gray-500 sm:text-[11px]">
-                Referrals
-              </p>
+  <p className="relative text-[9px] font-medium text-gray-500 sm:text-[11px]">
+    Total Withdraw
+  </p>
 
-              <h2 className="relative mt-1 text-base font-bold sm:mt-1.5 sm:text-xl">
-                {loading
-                  ? "0"
-                  : data?.stats.referrals || 0}
-              </h2>
-            </div>
-          </div>
+  <h2 className="relative mt-1 text-base font-bold sm:mt-1.5 sm:text-xl">
+    {loading
+      ? "$0.00"
+      : formatMoney(data?.stats.totalWithdraw || 0)}
+  </h2>
+</div>
+</div>
 
           {/* Active Investments */}
           <div className="mt-4 sm:mt-6">
