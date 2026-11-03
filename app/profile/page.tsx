@@ -324,7 +324,7 @@ export default function ProfilePage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-gray-400 sm:py-6 sm:text-xs">
-            ClaudeInvest © 2026
+            ClaudeInvest © 2025
           </div>
         </div>
       </section>
