@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
@@ -84,19 +85,33 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#fffdf9] pb-24 text-black">
       {/* Header */}
-      <header className="border-b border-yellow-100 bg-white/95 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-3 py-3 sm:px-5 sm:py-5">
+      <header className="border-b border-yellow-200 bg-white/95 backdrop-blur-xl">
+        <div className="relative mx-auto grid max-w-6xl grid-cols-3 items-center px-3 py-2.5 sm:px-5 sm:py-3">
+          <div />
+
           <Link
             href="/"
-            className="text-lg font-bold tracking-tight text-yellow-500 sm:text-2xl"
+            className="flex items-center justify-center gap-2 whitespace-nowrap"
           >
-            ClaudeInvest
+            <Image
+              src="/claudeinvest-logo.svg"
+              alt="ClaudeInvest logo"
+              width={34}
+              height={34}
+              className="h-8 w-8 object-contain"
+            />
+            <span className="text-lg font-extrabold tracking-tight text-yellow-600 sm:text-xl">
+              ClaudeInvest
+            </span>
           </Link>
-          <MainNav />
+
+          <div className="flex justify-end">
+            <MainNav />
+          </div>
         </div>
       </header>
 
-      <section className="px-2.5 py-4 sm:px-5 sm:py-10">
+      <section className="px-2.5 py-4 sm:px-5 sm:py-8">
         <div className="mx-auto max-w-5xl">
           {/* Error */}
           {error && (
@@ -106,51 +121,52 @@ export default function ProfilePage() {
           )}
 
           {/* Profile Hero */}
-          <div className="relative overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_8px_30px_rgba(234,179,8,0.08)] sm:rounded-3xl">
-            <div className="h-8 bg-gradient-to-r from-yellow-300/50 via-yellow-100 to-orange-100/50 sm:h-10" />
+          <div className="overflow-hidden rounded-2xl border border-yellow-300 bg-white shadow-[0_6px_24px_rgba(234,179,8,0.13)] sm:rounded-3xl">
+            <div className="h-2 bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500" />
 
-            <div className="relative px-3.5 pb-4 sm:px-7 sm:pb-7">
-              <h1 className="mb-3 text-center text-xl font-bold sm:mb-4 sm:text-3xl">
-                My Profile
-              </h1>
+            <div className="bg-gradient-to-b from-yellow-50 via-white to-white px-3.5 pb-4 pt-3.5 sm:px-7 sm:pb-6 sm:pt-5">
+              <div className="mb-3 text-center sm:mb-5">
+                <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl">
+                  My Profile
+                </h1>
+                <div className="mx-auto mt-1.5 h-1 w-12 rounded-full bg-yellow-400" />
+              </div>
 
-              <div className="-mt-1 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-5">
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-white bg-yellow-400 text-lg font-bold text-black shadow-md sm:h-20 sm:w-20 sm:rounded-2xl sm:text-3xl">
-                    {user?.fullName?.charAt(0).toUpperCase() || "U"}
-                  </div>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-yellow-300 bg-gradient-to-br from-yellow-300 to-amber-400 text-xl font-extrabold text-black shadow-[0_4px_12px_rgba(234,179,8,0.25)] sm:h-20 sm:w-20 sm:text-3xl">
+                  {user?.fullName?.charAt(0).toUpperCase() || "U"}
+                </div>
 
-                  <div className="min-w-0">
-                    <h2 className="truncate text-lg font-bold sm:text-2xl">
-                      {user?.fullName || "User"}
-                    </h2>
+                <div className="min-w-0 flex-1">
+                  <h2 className="truncate text-base font-extrabold text-gray-900 sm:text-2xl">
+                    {user?.fullName || "User"}
+                  </h2>
 
-                    <p className="mt-0.5 truncate text-[10px] text-gray-500 sm:text-sm">
-                      {user?.email || "Account Holder"}
-                    </p>
+                  <p className="mt-0.5 truncate text-[10px] text-gray-500 sm:text-sm">
+                    {user?.email || "Account Holder"}
+                  </p>
 
-                    <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                      <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[8px] font-semibold text-emerald-600 sm:px-2.5 sm:py-1 sm:text-[10px]">
-                        Active Account
-                      </span>
+                  <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                    <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[8px] font-bold text-emerald-600 sm:text-[10px]">
+                      Active Account
+                    </span>
 
-                      <span className="rounded-full border border-yellow-200 bg-yellow-50 px-2 py-0.5 text-[8px] font-semibold text-yellow-700 sm:px-2.5 sm:py-1 sm:text-[10px]">
-                        {user?.role || "USER"}
-                      </span>
-                    </div>
+                    <span className="rounded-full border border-yellow-300 bg-yellow-100 px-2.5 py-1 text-[8px] font-bold text-yellow-800 sm:text-[10px]">
+                      {user?.role || "USER"}
+                    </span>
                   </div>
                 </div>
               </div>
 
-              {/* User ID and Member Since */}
+              {/* User ID and Register Date */}
               <div className="mt-4 grid gap-2 sm:mt-5 sm:grid-cols-2 sm:gap-3">
-                <div className="rounded-xl border border-yellow-200 bg-yellow-50/70 p-3 sm:rounded-2xl sm:p-4">
-                  <p className="text-[8px] font-bold uppercase tracking-wider text-gray-500 sm:text-[10px]">
+                <div className="rounded-xl border border-yellow-300 bg-gradient-to-br from-yellow-50 to-amber-50 p-3 sm:rounded-2xl sm:p-4">
+                  <p className="text-[8px] font-bold uppercase tracking-wider text-yellow-700 sm:text-[10px]">
                     Your User ID
                   </p>
 
                   <div className="mt-1.5 flex items-center justify-between gap-2">
-                    <p className="truncate font-mono text-xs font-bold text-yellow-800 sm:text-sm">
+                    <p className="truncate font-mono text-xs font-extrabold text-yellow-900 sm:text-sm">
                       {user?.publicUserId || "—"}
                     </p>
 
@@ -158,16 +174,16 @@ export default function ProfilePage() {
                       onClick={() =>
                         copyValue(user?.publicUserId || "", "user")
                       }
-                      className="shrink-0 rounded-lg border border-yellow-300 bg-white px-2.5 py-1 text-[9px] font-bold text-yellow-700 transition hover:bg-yellow-100 sm:px-3 sm:py-1.5 sm:text-[10px]"
+                      className="shrink-0 rounded-lg border border-yellow-400 bg-white px-2.5 py-1 text-[9px] font-bold text-yellow-800 transition hover:bg-yellow-100 sm:px-3 sm:py-1.5 sm:text-[10px]"
                     >
                       {copied === "user" ? "Copied!" : "Copy"}
                     </button>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-gray-100 bg-[#fffdf9] p-3 sm:rounded-2xl sm:p-4">
-                  <p className="text-[8px] font-bold uppercase tracking-wider text-gray-500 sm:text-[10px]">
-                    Member Since
+                <div className="rounded-xl border border-yellow-200 bg-white p-3 sm:rounded-2xl sm:p-4">
+                  <p className="text-[8px] font-bold uppercase tracking-wider text-yellow-700 sm:text-[10px]">
+                    Register Date
                   </p>
 
                   <p className="mt-1.5 text-xs font-bold text-gray-800 sm:text-sm">
