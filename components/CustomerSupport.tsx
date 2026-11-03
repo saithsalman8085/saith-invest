@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const MESSENGER_LINK = "https://www.facebook.com/share/1MQySnw6AS/?mibextid=wwXIfr";
+const MESSENGER_LINK = "https://web.facebook.com/profile.php?id=61593841790409";
 
 const DEFAULT_POSITION = {
   right: 18,
@@ -87,32 +87,24 @@ export default function CustomerSupport() {
       className="fixed z-[60] flex h-10 w-10 touch-none items-center justify-center rounded-full bg-[#0084ff] text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 active:scale-95"
     >
       <svg
-  width="23"
-  height="23"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="1.8"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  aria-hidden="true"
->
-  {/* Headset */}
-  <path d="M4 13a8 8 0 0 1 16 0" />
-
-  <path d="M4 13v3a2 2 0 0 0 2 2h1v-5H4Z" />
-  <path d="M20 13v3a2 2 0 0 1-2 2h-1v-5h3Z" />
-
-  {/* Chat bubble */}
-  <path d="M8.5 18.5c.8 1.1 2.1 1.7 3.5 1.7 1.2 0 2.3-.4 3.1-1.1" />
-
-  {/* Sparkle */}
-  <path d="M18.2 4.2v2.4" />
-  <path d="M17 5.4h2.4" />
-
-  {/* Small dot */}
-  <circle cx="12" cy="15" r="0.8" fill="currentColor" stroke="none" />
-</svg>
+        width="23"
+        height="23"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M4 13a8 8 0 0 1 16 0" />
+        <path d="M4 13v3a2 2 0 0 0 2 2h1v-5H4Z" />
+        <path d="M20 13v3a2 2 0 0 1-2 2h-1v-5h3Z" />
+        <path d="M8.5 18.5c.8 1.1 2.1 1.7 3.5 1.7 1.2 0 2.3-.4 3.1-1.1" />
+        <path d="M18.2 4.2v2.4" />
+        <path d="M17 5.4h2.4" />
+        <circle cx="12" cy="15" r="0.8" fill="currentColor" stroke="none" />
+      </svg>
     </button>
   );
 }
