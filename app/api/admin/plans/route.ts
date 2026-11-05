@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
@@ -48,21 +47,39 @@ function getPlanData(body: any) {
   let expiresAt: Date | null = null;
 
   if (category === "LIMITED_TIME") {
-    if (!body.expiresAt) {
-      throw new Error(
-        "Expiry date and time are required for Limited Time plans."
+    // New hours-based expiry
+    if (body.offerHours !== undefined && body.offerHours !== null) {
+      const offerHours = Number(body.offerHours);
+
+      if (
+        !Number.isInteger(offerHours) ||
+        offerHours < 1
+      ) {
+        throw new Error(
+          "Limited Time offer duration must be at least 1 hour."
+        );
+      }
+
+      expiresAt = new Date(
+        Date.now() + offerHours * 60 * 60 * 1000
       );
-    }
+    } else if (body.expiresAt) {
+      // Preserve compatibility with existing plans and
+      // Publish/Unpublish requests.
+      expiresAt = new Date(body.expiresAt);
 
-    expiresAt = new Date(body.expiresAt);
+      if (!Number.isFinite(expiresAt.getTime())) {
+        throw new Error("Invalid Limited Time expiry date.");
+      }
 
-    if (!Number.isFinite(expiresAt.getTime())) {
-      throw new Error("Invalid Limited Time expiry date.");
-    }
-
-    if (expiresAt.getTime() <= Date.now()) {
+      if (expiresAt.getTime() <= Date.now()) {
+        throw new Error(
+          "Limited Time expiry must be in the future."
+        );
+      }
+    } else {
       throw new Error(
-        "Limited Time expiry must be in the future."
+        "Offer duration in hours is required for Limited Time plans."
       );
     }
   }

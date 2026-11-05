@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -39,23 +38,9 @@ const emptyForm = {
   maxPurchasesPerUser: "1",
   referralBonusUSD: "0",
   category: "NORMAL" as PlanCategory,
-  expiresAt: "",
+  offerHours: "",
   status: "DRAFT" as PlanStatus,
 };
-
-function toLocalDateTime(value?: string | Date | null) {
-  if (!value) return "";
-
-  const date = new Date(value);
-
-  if (!Number.isFinite(date.getTime())) return "";
-
-  const offset = date.getTimezoneOffset() * 60000;
-
-  return new Date(date.getTime() - offset)
-    .toISOString()
-    .slice(0, 16);
-}
 
 function categoryLabel(category?: PlanCategory) {
   switch (category) {
@@ -140,20 +125,19 @@ export default function AdminPlansPage() {
       return;
     }
 
-    if (
-      form.category === "LIMITED_TIME" &&
-      !form.expiresAt
-    ) {
-      setError("Expiry date and time are required for Limited Time plans.");
-      return;
-    }
+    let expiresAt: string | null = null;
 
-    if (
-      form.category === "LIMITED_TIME" &&
-      new Date(form.expiresAt).getTime() <= Date.now()
-    ) {
-      setError("Expiry date and time must be in the future.");
-      return;
+    if (form.category === "LIMITED_TIME") {
+      const hours = Number(form.offerHours);
+
+      if (!Number.isInteger(hours) || hours < 1) {
+        setError("Limited Time offer duration must be at least 1 hour.");
+        return;
+      }
+
+      expiresAt = new Date(
+        Date.now() + hours * 60 * 60 * 1000
+      ).toISOString();
     }
 
     const maxPurchases = Number(form.maxPurchasesPerUser);
@@ -186,10 +170,7 @@ export default function AdminPlansPage() {
         maxPurchasesPerUser: maxPurchases,
         referralBonusUSD: referralBonus,
         category: form.category,
-        expiresAt:
-          form.category === "LIMITED_TIME"
-            ? new Date(form.expiresAt).toISOString()
-            : null,
+        expiresAt,
         isSpecial: form.category === "PREMIUM",
         status: form.status,
       };
@@ -230,6 +211,18 @@ export default function AdminPlansPage() {
       plan.category ||
       (plan.isSpecial ? "PREMIUM" : "NORMAL");
 
+    let remainingHours = "";
+
+    if (category === "LIMITED_TIME" && plan.expiresAt) {
+      const remaining =
+        new Date(plan.expiresAt).getTime() - Date.now();
+
+      remainingHours =
+        remaining > 0
+          ? String(Math.ceil(remaining / (60 * 60 * 1000)))
+          : "0";
+    }
+
     setEditingId(plan.id);
 
     setForm({
@@ -245,7 +238,7 @@ export default function AdminPlansPage() {
       maxPurchasesPerUser: String(plan.maxPurchasesPerUser ?? 1),
       referralBonusUSD: String(plan.referralBonusUSD ?? 0),
       category,
-      expiresAt: toLocalDateTime(plan.expiresAt),
+      offerHours: remainingHours,
       status: plan.status,
     });
 
@@ -400,8 +393,8 @@ export default function AdminPlansPage() {
             </h2>
 
             <p className="mt-1 text-sm text-slate-400">
-              Configure plan category, expiry, deposit, profit, duration,
-              earnings and referral settings.
+              Configure plan category, offer duration, deposit, profit,
+              investment duration, earnings and referral settings.
             </p>
           </div>
 
@@ -438,17 +431,23 @@ export default function AdminPlansPage() {
             {form.category === "LIMITED_TIME" && (
               <div>
                 <label className="mb-2 block text-sm font-medium text-amber-300">
-                  Offer Expiry Date & Time
+                  Offer Duration (Hours)
                 </label>
+
                 <input
-                  type="datetime-local"
-                  value={form.expiresAt}
-                  min={toLocalDateTime(new Date())}
-                  onChange={(e) => updateField("expiresAt", e.target.value)}
+                  type="number"
+                  min="1"
+                  step="1"
+                  value={form.offerHours}
+                  onChange={(e) =>
+                    updateField("offerHours", e.target.value)
+                  }
+                  placeholder="e.g. 24"
                   className="w-full rounded-xl border border-amber-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-amber-500"
                 />
+
                 <p className="mt-1 text-xs text-slate-500">
-                  The offer will automatically expire at this time.
+                  Countdown starts as soon as you create the plan.
                 </p>
               </div>
             )}
@@ -495,6 +494,9 @@ export default function AdminPlansPage() {
                 placeholder="40"
                 className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-cyan-500"
               />
+              <p className="mt-1 text-xs text-slate-500">
+                This is the user's investment duration, not the offer timer.
+              </p>
             </div>
 
             <div>
@@ -527,24 +529,24 @@ export default function AdminPlansPage() {
               />
             </div>
 
-            {(["level1Percent", "level2Percent", "level3Percent"] as const).map(
-              (field, index) => (
-                <div key={field}>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">
-                    Level {index + 1} Referral (%)
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.01"
-                    value={form[field]}
-                    onChange={(e) => updateField(field, e.target.value)}
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-cyan-500"
-                  />
-                </div>
-              )
-            )}
+            {(
+              ["level1Percent", "level2Percent", "level3Percent"] as const
+            ).map((field, index) => (
+              <div key={field}>
+                <label className="mb-2 block text-sm font-medium text-slate-300">
+                  Level {index + 1} Referral (%)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  value={form[field]}
+                  onChange={(e) => updateField(field, e.target.value)}
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-cyan-500"
+                />
+              </div>
+            ))}
 
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
@@ -616,26 +618,32 @@ export default function AdminPlansPage() {
             <div className="mt-4 grid gap-4 sm:grid-cols-4">
               <div>
                 <p className="text-xs text-slate-500">Category</p>
-                <p className="mt-1 font-bold">{categoryLabel(form.category)}</p>
+                <p className="mt-1 font-bold">
+                  {categoryLabel(form.category)}
+                </p>
               </div>
+
               <div>
                 <p className="text-xs text-slate-500">Deposit</p>
                 <p className="mt-1 text-lg font-bold">
                   ${previewDeposit.toFixed(2)}
                 </p>
               </div>
+
               <div>
                 <p className="text-xs text-slate-500">Profit</p>
                 <p className="mt-1 text-lg font-bold text-emerald-400">
                   ${previewProfit.toFixed(2)}
                 </p>
               </div>
+
               <div>
                 <p className="text-xs text-slate-500">Total Return</p>
                 <p className="mt-1 text-lg font-bold text-cyan-400">
                   ${previewTotal.toFixed(2)}
                 </p>
               </div>
+
               <div>
                 <p className="text-xs text-slate-500">Instant Referral</p>
                 <p className="mt-1 text-lg font-bold text-amber-400">
@@ -720,6 +728,7 @@ export default function AdminPlansPage() {
                             {categoryLabel(category)}
                           </span>
                         </div>
+
                         <p className="mt-1 text-sm text-slate-500">
                           {plan.durationDays} days
                         </p>
@@ -800,19 +809,22 @@ export default function AdminPlansPage() {
                         <p className="mb-3 text-xs text-slate-500">
                           Referral Rates
                         </p>
+
                         <div className="grid grid-cols-3 gap-2 text-center">
-                          {[plan.level1Percent, plan.level2Percent, plan.level3Percent].map(
-                            (rate, index) => (
-                              <div key={index}>
-                                <p className="text-xs text-slate-500">
-                                  L{index + 1}
-                                </p>
-                                <p className="mt-1 font-semibold text-cyan-400">
-                                  {Number(rate)}%
-                                </p>
-                              </div>
-                            )
-                          )}
+                          {[
+                            plan.level1Percent,
+                            plan.level2Percent,
+                            plan.level3Percent,
+                          ].map((rate, index) => (
+                            <div key={index}>
+                              <p className="text-xs text-slate-500">
+                                L{index + 1}
+                              </p>
+                              <p className="mt-1 font-semibold text-cyan-400">
+                                {Number(rate)}%
+                              </p>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -848,6 +860,7 @@ export default function AdminPlansPage() {
 
         <section className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <h2 className="text-lg font-semibold">Plan Rules</h2>
+
           <div className="mt-4 grid gap-3 text-sm text-slate-400 md:grid-cols-2">
             <p>• Plans are controlled by admin.</p>
             <p>• All plans use USD.</p>
