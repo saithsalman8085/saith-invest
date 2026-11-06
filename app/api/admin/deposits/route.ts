@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
@@ -29,10 +30,15 @@ export async function GET() {
         userId: deposit.userId,
         amountPKR: String(deposit.amountPKR),
         exchangeRate: String(deposit.exchangeRate),
-        creditAmountUSD:
-          String(deposit.creditAmountUSD),
+        creditAmountUSD: String(deposit.creditAmountUSD),
         paymentMethod: deposit.paymentMethod,
-        transactionId: deposit.transactionId,
+
+        // Legacy deposits may still have transaction IDs.
+        transactionId: deposit.transactionId || null,
+
+        // New deposits contain screenshot URLs.
+        screenshotUrl: deposit.screenshotUrl || null,
+
         status: deposit.status,
         submittedAt: String(deposit.submittedAt),
         approvedAt: deposit.approvedAt
@@ -41,10 +47,8 @@ export async function GET() {
         rejectedAt: deposit.rejectedAt
           ? String(deposit.rejectedAt)
           : null,
-        rejectionReason:
-          deposit.rejectionReason || null,
-        reviewedById:
-          deposit.reviewedById || null,
+        rejectionReason: deposit.rejectionReason || null,
+        reviewedById: deposit.reviewedById || null,
       }));
 
     return NextResponse.json({
@@ -59,17 +63,13 @@ export async function GET() {
     );
 
     return NextResponse.json(
-      {
-        error: "Unable to load deposits.",
-      },
+      { error: "Unable to load deposits." },
       { status: 500 }
     );
   }
 }
 
-export async function PATCH(
-  request: NextRequest
-) {
+export async function PATCH(request: NextRequest) {
   try {
     const admin = await requireAdmin();
 
@@ -100,13 +100,9 @@ export async function PATCH(
       );
     }
 
-    const depositId = String(
-      body.depositId || ""
-    ).trim();
+    const depositId = String(body.depositId || "").trim();
 
-    const action = String(
-      body.action || ""
-    )
+    const action = String(body.action || "")
       .trim()
       .toUpperCase();
 
@@ -121,9 +117,7 @@ export async function PATCH(
       );
     }
 
-    if (
-      !["APPROVE", "REJECT"].includes(action)
-    ) {
+    if (!["APPROVE", "REJECT"].includes(action)) {
       return NextResponse.json(
         { error: "Invalid deposit action." },
         { status: 400 }
@@ -132,9 +126,7 @@ export async function PATCH(
 
     const deposit =
       await db.orm.public.Deposit
-        .where((item) =>
-          item.id.eq(depositId)
-        )
+        .where((item) => item.id.eq(depositId))
         .first();
 
     if (!deposit) {
@@ -147,8 +139,7 @@ export async function PATCH(
     if (deposit.status !== "PENDING") {
       return NextResponse.json(
         {
-          error:
-            "This deposit has already been reviewed.",
+          error: "This deposit has already been reviewed.",
         },
         { status: 400 }
       );
@@ -156,21 +147,15 @@ export async function PATCH(
 
     if (action === "REJECT") {
       const finalReason =
-        rejectionReason ||
-        "Deposit rejected by admin.";
+        rejectionReason || "Deposit rejected by admin.";
 
       await db.orm.public.Deposit
-        .where((item) =>
-          item.id.eq(depositId)
-        )
+        .where((item) => item.id.eq(depositId))
         .update({
           status: "REJECTED",
-          rejectedAt:
-            Temporal.PlainDateTime.from(
-              new Date()
-                .toISOString()
-                .slice(0, 19)
-            ),
+          rejectedAt: Temporal.PlainDateTime.from(
+            new Date().toISOString().slice(0, 19)
+          ),
           rejectionReason: finalReason,
           reviewedById: admin.id,
         } as any);
@@ -179,8 +164,7 @@ export async function PATCH(
         action: "DEPOSIT_REJECT",
         adminId: admin.id,
         targetUserId: deposit.userId,
-        description:
-          "Deposit rejected by administrator.",
+        description: "Deposit rejected by administrator.",
         metadata: {
           depositId,
           rejectionReason: finalReason,
@@ -189,25 +173,21 @@ export async function PATCH(
 
       return NextResponse.json({
         success: true,
-        message:
-          "Deposit rejected successfully.",
+        message: "Deposit rejected successfully.",
       });
     }
 
     const existingTransaction =
       await db.orm.public.Transaction
         .where((item) =>
-          item.referenceId.eq(
-            `DEPOSIT:${deposit.id}`
-          )
+          item.referenceId.eq(`DEPOSIT:${deposit.id}`)
         )
         .first();
 
     if (existingTransaction) {
       return NextResponse.json(
         {
-          error:
-            "This deposit has already been credited.",
+          error: "This deposit has already been credited.",
         },
         { status: 400 }
       );
@@ -215,9 +195,7 @@ export async function PATCH(
 
     const userTransactions =
       await db.orm.public.Transaction
-        .where((item) =>
-          item.userId.eq(deposit.userId)
-        )
+        .where((item) => item.userId.eq(deposit.userId))
         .all();
 
     const creditTypes = new Set([
@@ -236,9 +214,7 @@ export async function PATCH(
     let balance = 0;
 
     for (const transaction of userTransactions) {
-      const amount = Number(
-        transaction.amountUSD || 0
-      );
+      const amount = Number(transaction.amountUSD || 0);
 
       if (creditTypes.has(transaction.type)) {
         balance += amount;
@@ -249,25 +225,16 @@ export async function PATCH(
       }
     }
 
-    const creditAmount = Number(
-      deposit.creditAmountUSD || 0
-    );
+    const creditAmount = Number(deposit.creditAmountUSD || 0);
 
-    if (
-      !Number.isFinite(creditAmount) ||
-      creditAmount <= 0
-    ) {
+    if (!Number.isFinite(creditAmount) || creditAmount <= 0) {
       return NextResponse.json(
-        {
-          error:
-            "Invalid deposit credit amount.",
-        },
+        { error: "Invalid deposit credit amount." },
         { status: 400 }
       );
     }
 
-    const newBalance =
-      balance + creditAmount;
+    const newBalance = balance + creditAmount;
 
     await db.orm.public.Transaction.create({
       userId: deposit.userId,
@@ -276,25 +243,18 @@ export async function PATCH(
       amountUSD: String(creditAmount),
       balanceBefore: String(balance),
       balanceAfter: String(newBalance),
-      referenceId:
-        `DEPOSIT:${deposit.id}`,
-      description:
-        `Deposit approved - ${deposit.paymentMethod}`,
+      referenceId: `DEPOSIT:${deposit.id}`,
+      description: `Deposit approved - ${deposit.paymentMethod}`,
       depositId: deposit.id,
     } as any);
 
     await db.orm.public.Deposit
-      .where((item) =>
-        item.id.eq(depositId)
-      )
+      .where((item) => item.id.eq(depositId))
       .update({
         status: "APPROVED",
-        approvedAt:
-          Temporal.PlainDateTime.from(
-            new Date()
-              .toISOString()
-              .slice(0, 19)
-          ),
+        approvedAt: Temporal.PlainDateTime.from(
+          new Date().toISOString().slice(0, 19)
+        ),
         reviewedById: admin.id,
       } as any);
 
@@ -302,8 +262,7 @@ export async function PATCH(
       action: "DEPOSIT_APPROVE",
       adminId: admin.id,
       targetUserId: deposit.userId,
-      description:
-        "Deposit approved and wallet credited.",
+      description: "Deposit approved and wallet credited.",
       metadata: {
         depositId,
         creditedUSD: creditAmount,
@@ -314,8 +273,7 @@ export async function PATCH(
 
     return NextResponse.json({
       success: true,
-      message:
-        "Deposit approved and wallet credited.",
+      message: "Deposit approved and wallet credited.",
       creditedUSD: creditAmount,
       balanceAfter: newBalance,
     });

@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'fa10d5890654bcd6bcf8310d41d31de686d29383622874cc75f5a36cefede67a'>;
+  StorageHashBase<'706cab294cca5ca019580bdf0a014e41bdb365ccd00fcca759ad905a6b0dcc8a'>;
 export type ExecutionHash =
   ExecutionHashBase<'13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825'>;
 export type ProfileHash =
@@ -309,9 +309,10 @@ export type FieldOutputTypes = {
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['output'] | null;
       readonly reviewedById: CodecTypes['pg/text@1']['output'] | null;
+      readonly screenshotUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
       readonly submittedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
-      readonly transactionId: CodecTypes['pg/text@1']['output'];
+      readonly transactionId: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
@@ -531,9 +532,10 @@ export type FieldInputTypes = {
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['input'] | null;
       readonly reviewedById: CodecTypes['pg/text@1']['input'] | null;
+      readonly screenshotUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
       readonly submittedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
-      readonly transactionId: CodecTypes['pg/text@1']['input'];
+      readonly transactionId: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
@@ -753,9 +755,10 @@ export type StorageColumnTypes = {
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['output'] | null;
       readonly reviewedById: CodecTypes['pg/text@1']['output'] | null;
+      readonly screenshotUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
       readonly submittedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
-      readonly transactionId: CodecTypes['pg/text@1']['output'];
+      readonly transactionId: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
@@ -975,9 +978,10 @@ export type StorageColumnInputTypes = {
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['input'] | null;
       readonly reviewedById: CodecTypes['pg/text@1']['input'] | null;
+      readonly screenshotUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly status: 'PENDING' | 'APPROVED' | 'REJECTED';
       readonly submittedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
-      readonly transactionId: CodecTypes['pg/text@1']['input'];
+      readonly transactionId: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
@@ -1204,9 +1208,10 @@ export namespace Models {
     rejectedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
     rejectionReason: CodecTypes['pg/text@1']['output'] | null;
     reviewedById: CodecTypes['pg/text@1']['output'] | null;
+    screenshotUrl: CodecTypes['pg/text@1']['output'] | null;
     status: 'PENDING' | 'APPROVED' | 'REJECTED';
     submittedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
-    transactionId: CodecTypes['pg/text@1']['output'];
+    transactionId: CodecTypes['pg/text@1']['output'] | null;
     updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     userId: CodecTypes['pg/text@1']['output'];
     transactions: public_Transaction[];
@@ -1789,6 +1794,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
                 };
+                readonly screenshotUrl: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
                 readonly status: {
                   readonly nativeType: 'DepositStatus';
                   readonly codecId: 'pg/enum@1';
@@ -1809,7 +1819,7 @@ type ContractBase = Omit<
                 readonly transactionId: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
+                  readonly nullable: true;
                 };
                 readonly updatedAt: {
                   readonly nativeType: 'timestamp';
@@ -3565,6 +3575,10 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly screenshotUrl: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly status: {
                 readonly nullable: false;
                 readonly type: {
@@ -3582,7 +3596,7 @@ type ContractBase = Omit<
                 };
               };
               readonly transactionId: {
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly updatedAt: {
@@ -3634,6 +3648,7 @@ type ContractBase = Omit<
                 readonly rejectedAt: { readonly column: 'rejectedAt' };
                 readonly rejectionReason: { readonly column: 'rejectionReason' };
                 readonly reviewedById: { readonly column: 'reviewedById' };
+                readonly screenshotUrl: { readonly column: 'screenshotUrl' };
                 readonly status: { readonly column: 'status' };
                 readonly submittedAt: { readonly column: 'submittedAt' };
                 readonly transactionId: { readonly column: 'transactionId' };

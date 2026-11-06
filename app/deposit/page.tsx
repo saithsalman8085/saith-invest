@@ -17,7 +17,7 @@ type DepositRecord = {
   amountPKR: string | number;
   creditAmountUSD: string | number;
   paymentMethod: string;
-  transactionId: string;
+  transactionId?: string | null;
   status: string;
   submittedAt: string;
   rejectionReason?: string | null;
@@ -28,7 +28,7 @@ const DEFAULT_SETTINGS: DepositSettings = {
   accountName: "ClaudeInvest",
   accountNumber: "",
   instructions:
-    "Send payment to the account above and enter your transaction ID.",
+    "Send payment to the account above, then upload a clear screenshot of your payment.",
   exchangeRate: "300",
 };
 
@@ -37,7 +37,8 @@ export default function DepositPage() {
     useState<DepositSettings>(DEFAULT_SETTINGS);
 
   const [amountPKR, setAmountPKR] = useState("");
-  const [transactionId, setTransactionId] = useState("");
+  const [screenshotFile, setScreenshotFile] = useState<File | null>(null);
+  const [screenshotPreview, setScreenshotPreview] = useState("");
 
   const [deposits, setDeposits] = useState<DepositRecord[]>([]);
 
@@ -81,7 +82,7 @@ export default function DepositPage() {
 
         instructions:
           data.settings.instructions ||
-          "Send payment to the account above and enter your transaction ID.",
+          "Send payment to the account above, then upload a clear screenshot of your payment.",
 
         exchangeRate:
           data.settings.exchangeRate || "300",
@@ -150,21 +151,19 @@ export default function DepositPage() {
         return;
       }
 
-      if (!transactionId.trim()) {
-        setError("Please enter your transaction ID.");
+      if (!screenshotFile) {
+        setError("Please upload your payment screenshot.");
         return;
       }
 
+      const formData = new FormData();
+      formData.append("amountPKR", String(pkr));
+      formData.append("paymentMethod", settings.paymentMethod);
+      formData.append("screenshot", screenshotFile);
+
       const response = await fetch("/api/deposit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amountPKR: pkr,
-          transactionId: transactionId.trim(),
-          paymentMethod: settings.paymentMethod,
-        }),
+        body: formData,
       });
 
       const data = await response.json();
@@ -180,7 +179,8 @@ export default function DepositPage() {
       );
 
       setAmountPKR("");
-      setTransactionId("");
+      setScreenshotFile(null);
+      setScreenshotPreview("");
 
       await loadDeposits();
     } catch (err) {
@@ -369,14 +369,14 @@ export default function DepositPage() {
                   </h2>
 
                   <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-sm sm:leading-5">
-                    Enter your payment amount and transaction ID here.
+                    Enter your payment amount and upload its screenshot here.
                   </p>
                 </div>
               </div>
 
               <div className="mt-3 rounded-xl border border-yellow-300 bg-white/70 px-3 py-2.5 sm:mt-4 sm:px-4 sm:py-3">
                 <p className="text-[10px] font-semibold text-yellow-800 sm:text-xs">
-                  ⚠ Make sure the transaction ID belongs to the payment you just sent.
+                  ⚠ Upload a clear screenshot showing the successful payment.
                 </p>
               </div>
             </div>
@@ -428,31 +428,74 @@ export default function DepositPage() {
                   </p>
                 </div>
 
-                {/* TRANSACTION ID */}
+                {/* PAYMENT SCREENSHOT */}
                 <div className="rounded-2xl border-2 border-yellow-200 bg-yellow-50/50 p-3.5 sm:p-4">
                   <label className="mb-2 block text-xs font-bold text-gray-900 sm:text-sm">
-                    Transaction ID
+                    Payment Screenshot
                     <span className="ml-1 text-red-500">*</span>
                   </label>
 
                   <p className="mb-2.5 text-[10px] leading-4 text-gray-600 sm:text-xs sm:leading-5">
-                    Copy the transaction ID from your payment app and paste it below.
+                    Upload a clear screenshot of your successful payment. JPG, PNG or WEBP; maximum 5 MB.
                   </p>
 
                   <input
-                    value={transactionId}
-                    onChange={(e) => setTransactionId(e.target.value)}
-                    placeholder="Enter payment transaction ID"
-                    className={inputClass}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+
+                      if (!file) {
+                        setScreenshotFile(null);
+                        setScreenshotPreview("");
+                        return;
+                      }
+
+                      const allowedTypes = [
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp",
+                      ];
+
+                      if (!allowedTypes.includes(file.type)) {
+                        setError("Please select a JPG, PNG or WEBP image.");
+                        event.target.value = "";
+                        return;
+                      }
+
+                      if (file.size > 5 * 1024 * 1024) {
+                        setError("Screenshot must be 5 MB or smaller.");
+                        event.target.value = "";
+                        return;
+                      }
+
+                      setError("");
+                      setScreenshotFile(file);
+                      setScreenshotPreview(URL.createObjectURL(file));
+                    }}
+                    className={`${inputClass} file:mr-3 file:rounded-lg file:border-0 file:bg-yellow-100 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-yellow-800`}
                   />
 
-                  <div className="mt-2.5 flex items-start gap-2 rounded-lg bg-white px-2.5 py-2">
-                    <span className="text-xs text-yellow-600">
-                      ✓
-                    </span>
+                  {screenshotPreview && (
+                    <div className="mt-3 rounded-xl border border-yellow-200 bg-white p-2.5">
+                      <p className="mb-2 text-[10px] font-semibold text-gray-600">
+                        Screenshot preview
+                      </p>
+                      <img
+                        src={screenshotPreview}
+                        alt="Payment screenshot preview"
+                        className="max-h-64 w-full rounded-lg object-contain"
+                      />
+                      <p className="mt-2 break-all text-[10px] text-gray-500">
+                        {screenshotFile?.name}
+                      </p>
+                    </div>
+                  )}
 
+                  <div className="mt-2.5 flex items-start gap-2 rounded-lg bg-white px-2.5 py-2">
+                    <span className="text-xs text-yellow-600">✓</span>
                     <p className="text-[9px] leading-4 text-gray-500 sm:text-xs">
-                      This ID is used by admin to verify your payment.
+                      Admin will review this screenshot before approving your deposit.
                     </p>
                   </div>
                 </div>
@@ -465,7 +508,7 @@ export default function DepositPage() {
 
                   <p className="mt-1.5 text-[10px] leading-4 text-gray-700 sm:text-xs sm:leading-5">
                     Make the payment first, then enter the exact amount and
-                    transaction ID here. Your wallet is credited after admin approval.
+                    upload its screenshot. Your wallet is credited after admin approval.
                   </p>
                 </div>
 
@@ -580,17 +623,7 @@ export default function DepositPage() {
                           </p>
                         </div>
 
-                        <div className="col-span-2">
-                          <p className="text-[7px] uppercase text-gray-400">
-                            Transaction ID
-                          </p>
-
-                          <p className="mt-0.5 truncate text-[9px] text-gray-600">
-                            {deposit.transactionId}
-                          </p>
-                        </div>
-
-                        {deposit.status.toUpperCase() === "REJECTED" &&
+                         {deposit.status.toUpperCase() === "REJECTED" &&
                           deposit.rejectionReason && (
                             <div className="col-span-2 rounded-lg border border-red-200 bg-red-50 px-2 py-1.5">
                               <p className="text-[7px] font-semibold uppercase text-red-600">
@@ -624,11 +657,7 @@ export default function DepositPage() {
                           USD Credit
                         </th>
 
-                        <th className="px-4 py-3">
-                          Transaction ID
-                        </th>
-
-                        <th className="px-4 py-3">
+                         <th className="px-4 py-3">
                           Status
                         </th>
                       </tr>
@@ -658,11 +687,7 @@ export default function DepositPage() {
                             ).toFixed(2)}
                           </td>
 
-                          <td className="px-4 py-4 text-sm text-gray-600">
-                            {deposit.transactionId}
-                          </td>
-
-                          <td className="px-4 py-4">
+                           <td className="px-4 py-4">
                             <div className="flex flex-col items-start gap-2">
                               <span
                                 className={`inline-flex rounded-full border px-3 py-1 text-xs font-medium ${statusClass(

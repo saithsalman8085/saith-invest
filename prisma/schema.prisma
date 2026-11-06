@@ -304,24 +304,22 @@ model EarningCollection {
 
 model Deposit {
   id String @id @default(cuid())
-
   userId String
-  user   User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
 
-  amountPKR       Decimal @db.Decimal(18, 2)
-  exchangeRate    Decimal @db.Decimal(18, 4)
+  amountPKR Decimal @db.Decimal(18, 2)
+  exchangeRate Decimal @db.Decimal(18, 4)
   creditAmountUSD Decimal @db.Decimal(18, 2)
 
   paymentMethod String @default("Easypaisa")
-  transactionId String
+  transactionId String?
+  screenshotUrl String?
 
   status DepositStatus @default(PENDING)
-
   submittedAt DateTime @default(now())
-  approvedAt  DateTime?
-  rejectedAt  DateTime?
-
-  reviewedById    String?
+  approvedAt DateTime?
+  rejectedAt DateTime?
+  reviewedById String?
   rejectionReason String?
 
   createdAt DateTime @default(now())

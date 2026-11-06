@@ -541,6 +541,13 @@
                   "kind": "scalar"
                 }
               },
+              "screenshotUrl": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "status": {
                 "nullable": false,
                 "type": {
@@ -562,7 +569,7 @@
                 }
               },
               "transactionId": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -650,6 +657,9 @@
                 },
                 "reviewedById": {
                   "column": "reviewedById"
+                },
+                "screenshotUrl": {
+                  "column": "screenshotUrl"
                 },
                 "status": {
                   "column": "status"
@@ -3289,6 +3299,11 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "screenshotUrl": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "status": {
                   "codecId": "pg/enum@1",
                   "default": {
@@ -3322,7 +3337,7 @@
                 "transactionId": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": true
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamp-temporal@1",
@@ -5172,7 +5187,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "fa10d5890654bcd6bcf8310d41d31de686d29383622874cc75f5a36cefede67a"
+    "storageHash": "706cab294cca5ca019580bdf0a014e41bdb365ccd00fcca759ad905a6b0dcc8a"
   },
   "execution": {
     "executionHash": "13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825",
