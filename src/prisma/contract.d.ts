@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'706cab294cca5ca019580bdf0a014e41bdb365ccd00fcca759ad905a6b0dcc8a'>;
+  StorageHashBase<'8f26feb0be87631da530d0e1f1301ed83566c4a0413aa2f43bcd69fe2ad126df'>;
 export type ExecutionHash =
   ExecutionHashBase<'13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825'>;
 export type ProfileHash =
@@ -442,6 +442,7 @@ export type FieldOutputTypes = {
     };
     readonly Withdrawal: {
       readonly accountName: CodecTypes['pg/text@1']['output'];
+      readonly accountNumber: CodecTypes['pg/text@1']['output'] | null;
       readonly amountUSD: Numeric<18, 2>;
       readonly approvedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['output'];
@@ -451,6 +452,7 @@ export type FieldOutputTypes = {
       readonly feeUSD: Numeric<18, 2>;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly netAmountUSD: Numeric<18, 2>;
+      readonly paymentMethod: CodecTypes['pg/text@1']['output'] | null;
       readonly payoutPKR: Numeric<18, 2>;
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['output'] | null;
@@ -461,11 +463,13 @@ export type FieldOutputTypes = {
     };
     readonly WithdrawalProfile: {
       readonly accountName: CodecTypes['pg/text@1']['output'];
+      readonly accountNumber: CodecTypes['pg/text@1']['output'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly easypaisaNumber: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly isLocked: CodecTypes['pg/bool@1']['output'];
+      readonly paymentMethod: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
@@ -665,6 +669,7 @@ export type FieldInputTypes = {
     };
     readonly Withdrawal: {
       readonly accountName: CodecTypes['pg/text@1']['input'];
+      readonly accountNumber: CodecTypes['pg/text@1']['input'] | null;
       readonly amountUSD: CodecTypes['pg/numeric@1']['input'];
       readonly approvedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['input'];
@@ -674,6 +679,7 @@ export type FieldInputTypes = {
       readonly feeUSD: CodecTypes['pg/numeric@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly netAmountUSD: CodecTypes['pg/numeric@1']['input'];
+      readonly paymentMethod: CodecTypes['pg/text@1']['input'] | null;
       readonly payoutPKR: CodecTypes['pg/numeric@1']['input'];
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['input'] | null;
@@ -684,11 +690,13 @@ export type FieldInputTypes = {
     };
     readonly WithdrawalProfile: {
       readonly accountName: CodecTypes['pg/text@1']['input'];
+      readonly accountNumber: CodecTypes['pg/text@1']['input'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly easypaisaNumber: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly isLocked: CodecTypes['pg/bool@1']['input'];
+      readonly paymentMethod: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
@@ -888,6 +896,7 @@ export type StorageColumnTypes = {
     };
     readonly Withdrawal: {
       readonly accountName: CodecTypes['pg/text@1']['output'];
+      readonly accountNumber: CodecTypes['pg/text@1']['output'] | null;
       readonly amountUSD: Numeric<18, 2>;
       readonly approvedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['output'];
@@ -897,6 +906,7 @@ export type StorageColumnTypes = {
       readonly feeUSD: Numeric<18, 2>;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly netAmountUSD: Numeric<18, 2>;
+      readonly paymentMethod: CodecTypes['pg/text@1']['output'] | null;
       readonly payoutPKR: Numeric<18, 2>;
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['output'] | null;
@@ -907,11 +917,13 @@ export type StorageColumnTypes = {
     };
     readonly WithdrawalProfile: {
       readonly accountName: CodecTypes['pg/text@1']['output'];
+      readonly accountNumber: CodecTypes['pg/text@1']['output'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly easypaisaNumber: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly isLocked: CodecTypes['pg/bool@1']['output'];
+      readonly paymentMethod: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
@@ -1111,6 +1123,7 @@ export type StorageColumnInputTypes = {
     };
     readonly Withdrawal: {
       readonly accountName: CodecTypes['pg/text@1']['input'];
+      readonly accountNumber: CodecTypes['pg/text@1']['input'] | null;
       readonly amountUSD: CodecTypes['pg/numeric@1']['input'];
       readonly approvedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['input'];
@@ -1120,6 +1133,7 @@ export type StorageColumnInputTypes = {
       readonly feeUSD: CodecTypes['pg/numeric@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly netAmountUSD: CodecTypes['pg/numeric@1']['input'];
+      readonly paymentMethod: CodecTypes['pg/text@1']['input'] | null;
       readonly payoutPKR: CodecTypes['pg/numeric@1']['input'];
       readonly rejectedAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
       readonly rejectionReason: CodecTypes['pg/text@1']['input'] | null;
@@ -1130,11 +1144,13 @@ export type StorageColumnInputTypes = {
     };
     readonly WithdrawalProfile: {
       readonly accountName: CodecTypes['pg/text@1']['input'];
+      readonly accountNumber: CodecTypes['pg/text@1']['input'] | null;
       readonly cnicNumber: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly easypaisaNumber: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly isLocked: CodecTypes['pg/bool@1']['input'];
+      readonly paymentMethod: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
@@ -1389,6 +1405,7 @@ export namespace Models {
   };
   export type public_Withdrawal = {
     accountName: CodecTypes['pg/text@1']['output'];
+    accountNumber: CodecTypes['pg/text@1']['output'] | null;
     amountUSD: Numeric<18, 2>;
     approvedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
     cnicNumber: CodecTypes['pg/text@1']['output'];
@@ -1398,6 +1415,7 @@ export namespace Models {
     feeUSD: Numeric<18, 2>;
     id: CodecTypes['pg/text@1']['output'];
     netAmountUSD: Numeric<18, 2>;
+    paymentMethod: CodecTypes['pg/text@1']['output'] | null;
     payoutPKR: Numeric<18, 2>;
     rejectedAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
     rejectionReason: CodecTypes['pg/text@1']['output'] | null;
@@ -1411,11 +1429,13 @@ export namespace Models {
   };
   export type public_WithdrawalProfile = {
     accountName: CodecTypes['pg/text@1']['output'];
+    accountNumber: CodecTypes['pg/text@1']['output'] | null;
     cnicNumber: CodecTypes['pg/text@1']['output'];
     createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     easypaisaNumber: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
     isLocked: CodecTypes['pg/bool@1']['output'];
+    paymentMethod: CodecTypes['pg/text@1']['output'] | null;
     updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     userId: CodecTypes['pg/text@1']['output'];
     user: public_User;
@@ -2920,6 +2940,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
+                readonly accountNumber: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
                 readonly amountUSD: {
                   readonly nativeType: 'numeric';
                   readonly codecId: 'pg/numeric@1';
@@ -2970,6 +2995,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
                   readonly typeParams: { readonly precision: 18; readonly scale: 2 };
+                };
+                readonly paymentMethod: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
                 };
                 readonly payoutPKR: {
                   readonly nativeType: 'numeric';
@@ -3057,6 +3087,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
+                readonly accountNumber: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
                 readonly cnicNumber: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
@@ -3087,6 +3122,11 @@ type ContractBase = Omit<
                     readonly kind: 'literal';
                     readonly value: DefaultLiteralValue<'pg/bool@1', false>;
                   };
+                };
+                readonly paymentMethod: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
                 };
                 readonly updatedAt: {
                   readonly nativeType: 'timestamp';
@@ -4710,6 +4750,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly accountNumber: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly amountUSD: {
                 readonly nullable: false;
                 readonly type: {
@@ -4769,6 +4813,10 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/numeric@1';
                   readonly typeParams: { readonly precision: 18; readonly scale: 2 };
                 };
+              };
+              readonly paymentMethod: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly payoutPKR: {
                 readonly nullable: false;
@@ -4842,6 +4890,7 @@ type ContractBase = Omit<
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly accountName: { readonly column: 'accountName' };
+                readonly accountNumber: { readonly column: 'accountNumber' };
                 readonly amountUSD: { readonly column: 'amountUSD' };
                 readonly approvedAt: { readonly column: 'approvedAt' };
                 readonly cnicNumber: { readonly column: 'cnicNumber' };
@@ -4851,6 +4900,7 @@ type ContractBase = Omit<
                 readonly feeUSD: { readonly column: 'feeUSD' };
                 readonly id: { readonly column: 'id' };
                 readonly netAmountUSD: { readonly column: 'netAmountUSD' };
+                readonly paymentMethod: { readonly column: 'paymentMethod' };
                 readonly payoutPKR: { readonly column: 'payoutPKR' };
                 readonly rejectedAt: { readonly column: 'rejectedAt' };
                 readonly rejectionReason: { readonly column: 'rejectionReason' };
@@ -4865,6 +4915,10 @@ type ContractBase = Omit<
             readonly fields: {
               readonly accountName: {
                 readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly accountNumber: {
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly cnicNumber: {
@@ -4890,6 +4944,10 @@ type ContractBase = Omit<
               readonly isLocked: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly paymentMethod: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly updatedAt: {
                 readonly nullable: false;
@@ -4920,11 +4978,13 @@ type ContractBase = Omit<
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly accountName: { readonly column: 'accountName' };
+                readonly accountNumber: { readonly column: 'accountNumber' };
                 readonly cnicNumber: { readonly column: 'cnicNumber' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly easypaisaNumber: { readonly column: 'easypaisaNumber' };
                 readonly id: { readonly column: 'id' };
                 readonly isLocked: { readonly column: 'isLocked' };
+                readonly paymentMethod: { readonly column: 'paymentMethod' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
                 readonly userId: { readonly column: 'userId' };
               };

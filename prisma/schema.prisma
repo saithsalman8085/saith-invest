@@ -173,7 +173,10 @@ model WithdrawalProfile {
 
   cnicNumber      String
   easypaisaNumber String
-  accountName     String
+
+  paymentMethod String?
+  accountNumber String?
+  accountName   String
 
   isLocked Boolean @default(false)
 
@@ -354,10 +357,12 @@ model Withdrawal {
   exchangeRate Decimal @db.Decimal(18, 4)
   payoutPKR    Decimal @db.Decimal(18, 2)
 
-  // Snapshot of KYC details at withdrawal request time
   cnicNumber      String
   easypaisaNumber String
-  accountName     String
+
+  paymentMethod String?
+  accountNumber String?
+  accountName   String
 
   status WithdrawalStatus @default(PENDING)
 

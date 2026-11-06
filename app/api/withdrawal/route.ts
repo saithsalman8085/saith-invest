@@ -411,24 +411,28 @@ String(withdrawal.status) !== "REJECTED"
       );
     }
 
-    const withdrawalData = {
-      userId,
-      amountUSD: amountUSDValue,
-      feePercent:
-        withdrawalFeePercent.toFixed(4),
-      feeUSD: feeUSD.toFixed(2),
-      netAmountUSD:
-        netAmountUSD.toFixed(2),
-      exchangeRate:
-        usdRate.toFixed(4),
-      payoutPKR:
-        payoutPKR.toFixed(2),
-      cnicNumber: profile.cnicNumber,
-      easypaisaNumber:
-        profile.easypaisaNumber,
-      accountName: profile.accountName,
-      status: "PENDING",
-    } as any;
+    
+const withdrawalData = {
+  userId,
+  amountUSD: amountUSDValue,
+  feePercent: withdrawalFeePercent.toFixed(4),
+  feeUSD: feeUSD.toFixed(2),
+  netAmountUSD: netAmountUSD.toFixed(2),
+  exchangeRate: usdRate.toFixed(4),
+  payoutPKR: payoutPKR.toFixed(2),
+
+  // Legacy fields retained for existing database records
+  cnicNumber: profile.cnicNumber,
+  easypaisaNumber: profile.easypaisaNumber,
+
+  // New withdrawal payment details
+  paymentMethod: profile.paymentMethod,
+  accountNumber: profile.accountNumber,
+  accountName: profile.accountName,
+
+  status: "PENDING",
+} as any;
+
 
     const withdrawal =
       await db.orm.public.Withdrawal.create(

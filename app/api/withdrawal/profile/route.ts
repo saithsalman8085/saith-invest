@@ -1,19 +1,23 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/session";
 
+const PAYMENT_METHODS = [
+  "JazzCash",
+  "Easypaisa",
+  "NayaPay",
+  "SadaPay",
+];
+
 async function getUser() {
   const userId = await getCurrentUserId();
 
-  if (!userId) {
-    return null;
-  }
+  if (!userId) return null;
 
-  const user = await db.orm.public.User
+  return await db.orm.public.User
     .where((item) => item.id.eq(userId))
     .first();
-
-  return user;
 }
 
 export async function GET() {
@@ -38,18 +42,31 @@ export async function GET() {
       });
     }
 
+    let isLocked = Boolean(profile.isLocked);
+
+    // Unlock old profiles once so users can enter new payment details.
+    if (!profile.paymentMethod && isLocked) {
+      await db.orm.public.WithdrawalProfile
+        .where((item) => item.userId.eq(user.id))
+        .update({
+          isLocked: false,
+        } as any);
+
+      isLocked = false;
+    }
+
     return NextResponse.json({
       success: true,
       profile: {
         id: profile.id,
-        cnicNumber: profile.cnicNumber,
-        easypaisaNumber: profile.easypaisaNumber,
+        paymentMethod: profile.paymentMethod || "",
+        accountNumber: profile.accountNumber || "",
         accountName: profile.accountName,
-        isLocked: Boolean(profile.isLocked),
+        isLocked,
       },
     });
   } catch (error) {
-    console.error("KYC_PROFILE_GET_ERROR:", error);
+    console.error("WITHDRAWAL_PROFILE_GET_ERROR:", error);
 
     return NextResponse.json(
       { error: "Unable to load withdrawal profile." },
@@ -71,18 +88,35 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    const cnicNumber = String(body.cnicNumber || "").trim();
-    const easypaisaNumber = String(
-      body.easypaisaNumber || ""
+    const paymentMethod = String(
+      body.paymentMethod || ""
     ).trim();
-    const accountName = String(body.accountName || "").trim();
 
-    if (!cnicNumber || !easypaisaNumber || !accountName) {
+    const accountNumber = String(
+      body.accountNumber || ""
+    ).trim();
+
+    const accountName = String(
+      body.accountName || ""
+    ).trim();
+
+    if (!PAYMENT_METHODS.includes(paymentMethod)) {
       return NextResponse.json(
-        {
-          error:
-            "CNIC, Easypaisa number and account name are required.",
-        },
+        { error: "Please select a valid payment method." },
+        { status: 400 }
+      );
+    }
+
+    if (!accountNumber || !/^[0-9+\-\s]{7,20}$/.test(accountNumber)) {
+      return NextResponse.json(
+        { error: "Please enter a valid account/mobile number." },
+        { status: 400 }
+      );
+    }
+
+    if (!accountName || accountName.length < 3) {
+      return NextResponse.json(
+        { error: "Please enter a valid account holder name." },
         { status: 400 }
       );
     }
@@ -92,70 +126,71 @@ export async function POST(request: NextRequest) {
         .where((item) => item.userId.eq(user.id))
         .first();
 
-    if (existingProfile) {
-      if (Boolean(existingProfile.isLocked)) {
-        return NextResponse.json(
-          {
-            error:
-              "Your withdrawal details are locked. Contact support to make changes.",
-          },
-          { status: 400 }
-        );
-      }
-
-      const updatedProfile =
-        await db.orm.public.WithdrawalProfile
-          .where((item) => item.userId.eq(user.id))
-          .update({
-            cnicNumber,
-            easypaisaNumber,
-            accountName,
-            isLocked: true,
-          } as any);
-
-      await db.orm.public.AuditLog.create({
-        action: "KYC_LOCK",
-        targetUserId: user.id,
-        description:
-          "Withdrawal profile updated and locked by user.",
-        metadata: {
-          method: "USER_SUBMISSION",
+    if (existingProfile && Boolean(existingProfile.isLocked)) {
+      return NextResponse.json(
+        {
+          error:
+            "Your withdrawal details are locked. Contact support to make changes.",
         },
-      } as any);
-
-      return NextResponse.json({
-        success: true,
-        message: "Withdrawal details saved and locked.",
-        profile: updatedProfile,
-      });
+        { status: 400 }
+      );
     }
 
-    const profile =
+    const profileData = {
+      paymentMethod,
+      accountNumber,
+      accountName,
+      isLocked: true,
+    };
+
+    if (existingProfile) {
+      await db.orm.public.WithdrawalProfile
+        .where((item) => item.userId.eq(user.id))
+        .update(profileData as any);
+    } else {
       await db.orm.public.WithdrawalProfile.create({
         userId: user.id,
-        cnicNumber,
-        easypaisaNumber,
-        accountName,
-        isLocked: true,
+        cnicNumber: "",
+        easypaisaNumber: "",
+        ...profileData,
       } as any);
+    }
+
+    const savedProfile =
+      await db.orm.public.WithdrawalProfile
+        .where((item) => item.userId.eq(user.id))
+        .first();
+
+    if (!savedProfile) {
+      return NextResponse.json(
+        { error: "Unable to load saved withdrawal details." },
+        { status: 500 }
+      );
+    }
 
     await db.orm.public.AuditLog.create({
       action: "KYC_LOCK",
       targetUserId: user.id,
       description:
-        "Withdrawal profile submitted and locked by user.",
+        "Withdrawal payment details saved and locked by user.",
       metadata: {
-        method: "USER_SUBMISSION",
+        method: paymentMethod,
       },
     } as any);
 
     return NextResponse.json({
       success: true,
       message: "Withdrawal details saved and locked.",
-      profile,
+      profile: {
+        id: savedProfile.id,
+        paymentMethod: savedProfile.paymentMethod,
+        accountNumber: savedProfile.accountNumber,
+        accountName: savedProfile.accountName,
+        isLocked: Boolean(savedProfile.isLocked),
+      },
     });
   } catch (error) {
-    console.error("KYC_PROFILE_POST_ERROR:", error);
+    console.error("WITHDRAWAL_PROFILE_POST_ERROR:", error);
 
     return NextResponse.json(
       {

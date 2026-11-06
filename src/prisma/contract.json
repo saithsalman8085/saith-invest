@@ -2339,6 +2339,13 @@
                   "kind": "scalar"
                 }
               },
+              "accountNumber": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "amountUSD": {
                 "nullable": false,
                 "type": {
@@ -2423,6 +2430,13 @@
                     "precision": 18,
                     "scale": 2
                   }
+                }
+              },
+              "paymentMethod": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
                 }
               },
               "payoutPKR": {
@@ -2526,6 +2540,9 @@
                 "accountName": {
                   "column": "accountName"
                 },
+                "accountNumber": {
+                  "column": "accountNumber"
+                },
                 "amountUSD": {
                   "column": "amountUSD"
                 },
@@ -2552,6 +2569,9 @@
                 },
                 "netAmountUSD": {
                   "column": "netAmountUSD"
+                },
+                "paymentMethod": {
+                  "column": "paymentMethod"
                 },
                 "payoutPKR": {
                   "column": "payoutPKR"
@@ -2583,6 +2603,13 @@
             "fields": {
               "accountName": {
                 "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "accountNumber": {
+                "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -2623,6 +2650,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "paymentMethod": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
               },
@@ -2667,6 +2701,9 @@
                 "accountName": {
                   "column": "accountName"
                 },
+                "accountNumber": {
+                  "column": "accountNumber"
+                },
                 "cnicNumber": {
                   "column": "cnicNumber"
                 },
@@ -2681,6 +2718,9 @@
                 },
                 "isLocked": {
                   "column": "isLocked"
+                },
+                "paymentMethod": {
+                  "column": "paymentMethod"
                 },
                 "updatedAt": {
                   "column": "updatedAt"
@@ -4785,6 +4825,11 @@
                   "nativeType": "text",
                   "nullable": false
                 },
+                "accountNumber": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "amountUSD": {
                   "codecId": "pg/numeric@1",
                   "nativeType": "numeric",
@@ -4852,6 +4897,11 @@
                     "precision": 18,
                     "scale": 2
                   }
+                },
+                "paymentMethod": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
                 },
                 "payoutPKR": {
                   "codecId": "pg/numeric@1",
@@ -4973,6 +5023,11 @@
                   "nativeType": "text",
                   "nullable": false
                 },
+                "accountNumber": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "cnicNumber": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -5008,6 +5063,11 @@
                   },
                   "nativeType": "bool",
                   "nullable": false
+                },
+                "paymentMethod": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamp-temporal@1",
@@ -5187,7 +5247,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "706cab294cca5ca019580bdf0a014e41bdb365ccd00fcca759ad905a6b0dcc8a"
+    "storageHash": "8f26feb0be87631da530d0e1f1301ed83566c4a0413aa2f43bcd69fe2ad126df"
   },
   "execution": {
     "executionHash": "13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825",
