@@ -99,8 +99,10 @@ export default function TransactionsPage() {
     loadTransactions();
   }, []);
 
-  const TRANSACTION_SUMMARY_RESET_AT =
-  "2026-10-10T11:32:00+05:00";
+  
+const TRANSACTION_SUMMARY_RESET_AT =
+  "2026-11-11T22:47:33+05:00";
+
 
   const totals = useMemo(() => {
   let moneyIn = 0;

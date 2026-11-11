@@ -16,8 +16,17 @@ export async function GET() {
       );
     }
 
-    const deposits =
-      await db.orm.public.Deposit.all();
+    const deposits = await db.orm.public.Deposit.all();
+
+    // Get public 6-digit IDs for all existing and new users.
+    const users = await db.orm.public.User.all();
+
+    const publicUserIds = new Map(
+      users.map((user) => [
+        user.id,
+        String(user.publicUserId || ""),
+      ])
+    );
 
     const sorted = [...deposits]
       .sort(
@@ -27,18 +36,14 @@ export async function GET() {
       )
       .map((deposit) => ({
         id: deposit.id,
-        userId: deposit.userId,
+        // Return the user's 6-digit public ID, never the internal database ID.
+        userId: publicUserIds.get(deposit.userId) || "—",
         amountPKR: String(deposit.amountPKR),
         exchangeRate: String(deposit.exchangeRate),
         creditAmountUSD: String(deposit.creditAmountUSD),
         paymentMethod: deposit.paymentMethod,
-
-        // Legacy deposits may still have transaction IDs.
         transactionId: deposit.transactionId || null,
-
-        // New deposits contain screenshot URLs.
         screenshotUrl: deposit.screenshotUrl || null,
-
         status: deposit.status,
         submittedAt: String(deposit.submittedAt),
         approvedAt: deposit.approvedAt

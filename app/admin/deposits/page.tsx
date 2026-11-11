@@ -124,7 +124,6 @@ export default function AdminDepositsPage() {
     return deposits.filter((deposit) => {
       const matchesSearch =
         !query ||
-        deposit.id.toLowerCase().includes(query) ||
         deposit.userId.toLowerCase().includes(query) ||
         (deposit.transactionId || "").toLowerCase().includes(query) ||
         deposit.paymentMethod.toLowerCase().includes(query);
@@ -179,7 +178,7 @@ export default function AdminDepositsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <input
               type="text"
-              placeholder="Search user ID, deposit ID or transaction ID..."
+              placeholder="Search 6-digit user ID or transaction ID..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-cyan-400"
@@ -211,7 +210,6 @@ export default function AdminDepositsPage() {
                 <table className="w-full text-left text-sm">
                   <thead className="border-b border-slate-800 bg-slate-900/70">
                     <tr>
-                      <th className="px-5 py-4">Deposit ID</th>
                       <th className="px-5 py-4">User ID</th>
                       <th className="px-5 py-4">Amount</th>
                       <th className="px-5 py-4">Payment</th>
@@ -232,10 +230,6 @@ export default function AdminDepositsPage() {
                           key={deposit.id}
                           className="border-b border-slate-800 last:border-0"
                         >
-                          <td className="px-5 py-4 font-medium text-cyan-400">
-                            {deposit.id}
-                          </td>
-
                           <td className="px-5 py-4 font-medium">
                             {deposit.userId}
                           </td>
@@ -328,10 +322,7 @@ export default function AdminDepositsPage() {
                     key={deposit.id}
                     className="rounded-2xl border border-slate-800 bg-[#0f172a] p-5"
                   >
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="font-semibold text-cyan-400">
-                        {deposit.id}
-                      </span>
+                    <div className="mb-4 flex items-center justify-end">
                       <StatusBadge status={deposit.status} />
                     </div>
 
