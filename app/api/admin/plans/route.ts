@@ -1,12 +1,22 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
+import "temporal-polyfill/full/global";
+import { Temporal } from "temporal-polyfill";
 
 const PLAN_CATEGORIES = [
   "NORMAL",
   "PREMIUM",
   "LIMITED_TIME",
 ] as const;
+
+function toKarachiPlainDateTime(date: Date) {
+  return Temporal.Instant
+    .fromEpochMilliseconds(date.getTime())
+    .toZonedDateTimeISO("Asia/Karachi")
+    .toPlainDateTime();
+}
 
 function getPlanData(body: any) {
   const name = String(body.name || "").trim();
@@ -44,10 +54,9 @@ function getPlanData(body: any) {
       ? "PUBLISHED"
       : "DRAFT";
 
-  let expiresAt: Date | null = null;
+  let expiresAt: any = null;
 
   if (category === "LIMITED_TIME") {
-    // New hours-based expiry
     if (body.offerHours !== undefined && body.offerHours !== null) {
       const offerHours = Number(body.offerHours);
 
@@ -60,23 +69,25 @@ function getPlanData(body: any) {
         );
       }
 
-      expiresAt = new Date(
+      const expiryDate = new Date(
         Date.now() + offerHours * 60 * 60 * 1000
       );
-    } else if (body.expiresAt) {
-      // Preserve compatibility with existing plans and
-      // Publish/Unpublish requests.
-      expiresAt = new Date(body.expiresAt);
 
-      if (!Number.isFinite(expiresAt.getTime())) {
+      expiresAt = toKarachiPlainDateTime(expiryDate);
+    } else if (body.expiresAt) {
+      const expiryDate = new Date(body.expiresAt);
+
+      if (!Number.isFinite(expiryDate.getTime())) {
         throw new Error("Invalid Limited Time expiry date.");
       }
 
-      if (expiresAt.getTime() <= Date.now()) {
+      if (expiryDate.getTime() <= Date.now()) {
         throw new Error(
           "Limited Time expiry must be in the future."
         );
       }
+
+      expiresAt = toKarachiPlainDateTime(expiryDate);
     } else {
       throw new Error(
         "Offer duration in hours is required for Limited Time plans."
