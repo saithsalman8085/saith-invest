@@ -280,7 +280,7 @@ export default function DepositPage() {
 
           {/* PAYMENT DETAILS */}
           <section className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-sm">
-            <div className="border-b border-yellow-100 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 sm:p-6">
+            <div className="border-b border-yellow-100 bg-linear-to-r from-yellow-50 to-orange-50 p-4 sm:p-6">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-400 text-lg font-bold text-black shadow-sm">
                   $
@@ -357,7 +357,7 @@ export default function DepositPage() {
           <section className="overflow-hidden rounded-2xl border-2 border-yellow-300 bg-white shadow-[0_5px_25px_rgba(234,179,8,0.12)]">
 
             {/* FORM HEADER */}
-            <div className="border-b border-yellow-200 bg-gradient-to-r from-yellow-100 via-yellow-50 to-orange-50 p-4 sm:p-6">
+            <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 p-4 sm:p-6">
               <div className="flex items-start gap-3">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yellow-400 text-lg font-bold text-black shadow-sm">
                   +
@@ -406,7 +406,7 @@ export default function DepositPage() {
                 </div>
 
                 {/* USD CREDIT */}
-                <div className="rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 sm:p-5">
+                <div className="rounded-2xl border border-yellow-300 bg-linear-to-r from-yellow-50 to-orange-50 p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-wide text-yellow-700 sm:text-xs">
@@ -642,7 +642,7 @@ export default function DepositPage() {
 
                 {/* DESKTOP HISTORY */}
                 <div className="hidden overflow-x-auto sm:block">
-                  <table className="w-full min-w-[650px] text-left">
+                  <table className="w-full min-w-162.5 text-left">
                     <thead>
                       <tr className="border-b border-gray-200 text-xs uppercase tracking-wide text-gray-400">
                         <th className="px-4 py-3">

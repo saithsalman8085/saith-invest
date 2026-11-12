@@ -291,7 +291,7 @@ export default function DashboardPage() {
 </div>
 
 
-  <div className="relative z-10 h-1.5 bg-gradient-to-r from-[#f5a313] via-[#f3bb55] to-[#ffead5]" />
+  <div className="relative z-10 h-1.5 bg-linear-to-r from-[#f5a313] via-[#f3bb55] to-[#ffead5]" />
 
   <div className="relative z-10 px-3 py-4 text-center sm:px-5 sm:py-5">
     <Link
@@ -466,7 +466,7 @@ export default function DashboardPage() {
                 <div className="bg-white p-3.5 sm:p-5">
                   <Link
                     href="/plans"
-                    className="inline-block rounded-xl bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-2.5 text-[11px] font-bold text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] sm:px-5 sm:py-3 sm:text-xs"
+                    className="inline-block rounded-xl bg-linear-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-2.5 text-[11px] font-bold text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] sm:px-5 sm:py-3 sm:text-xs"
                   >
                     View Investment Plans
                   </Link>
@@ -489,7 +489,7 @@ export default function DashboardPage() {
                   return (
                     <div
                       key={investment.id}
-                      className="overflow-hidden rounded-[15px] bg-white shadow-[0_3px_12px_rgba(0,0,0,0.07)] ring-1 ring-gray-100 sm:rounded-[24px]"
+                      className="overflow-hidden rounded-[15px] bg-white shadow-[0_3px_12px_rgba(0,0,0,0.07)] ring-1 ring-gray-100 sm:rounded-3xl"
                     >
                       {/* Investment Card */}
                       <div className="bg-[#ffead5] px-2.5 py-3 sm:px-5 sm:py-5">
@@ -539,7 +539,7 @@ export default function DashboardPage() {
                             disabled={!canCollect}
                             className={`mt-3 w-full rounded-lg px-1.5 py-2.5 text-[8px] font-bold transition sm:rounded-xl sm:px-3 sm:py-3 sm:text-xs ${
                               canCollect
-                                ? "bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] text-[#3d2b15] shadow-sm hover:from-[#ffd09a] hover:to-[#edac36]"
+                                ? "bg-linear-to-r from-[#ffdbad] to-[#f3bb55] text-[#3d2b15] shadow-sm hover:from-[#ffd09a] hover:to-[#edac36]"
                                 : "cursor-not-allowed bg-gray-100 text-gray-400"
                             }`}
                           >
@@ -578,7 +578,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[480px] text-[11px] sm:text-xs">
+              <table className="w-full min-w-120 text-[11px] sm:text-xs">
                 <thead>
                   <tr className="border-b border-yellow-100 bg-white text-left text-[10px] text-gray-500 sm:text-[11px]">
                     <th className="px-3 py-2 sm:px-4 sm:py-2.5">
