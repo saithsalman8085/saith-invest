@@ -34,12 +34,12 @@ export async function GET() {
     let totalEarnings = 0;
 
     const creditTypes = [
-  "DEPOSIT",
-  "DAILY_EARNING",
-  "REFERRAL_COMMISSION",
-  "ACTIVE_USER_REWARD",
-  "ADMIN_ADJUSTMENT",
-];
+      "DEPOSIT",
+      "DAILY_EARNING",
+      "REFERRAL_COMMISSION",
+      "ACTIVE_USER_REWARD",
+      "ADMIN_ADJUSTMENT",
+    ];
 
     const debitTypes = [
       "INVESTMENT",
@@ -55,8 +55,8 @@ export async function GET() {
       const amount = Number(transaction.amountUSD);
 
       if (transaction.type === "WITHDRAWAL") {
-  totalWithdraw += amount;
-}
+        totalWithdraw += amount;
+      }
 
       if (creditTypes.includes(transaction.type)) {
         balance += amount;
@@ -79,13 +79,21 @@ export async function GET() {
       .where((investment) => investment.userId.eq(userId))
       .all();
 
-      console.log(
-  "DB NEXT COLLECTION:",
-  investments.map((investment) => ({
-    id: investment.id,
-    nextCollectionAt: String(investment.nextCollectionAt),
-  }))
-);
+    const earningCollections =
+      await db.orm.public.EarningCollection
+        .where((item) => item.userId.eq(userId))
+        .all();
+
+    const collectionCounts = new Map<string, number>();
+
+    for (const collection of earningCollections) {
+      const id = String(collection.investmentId);
+
+      collectionCounts.set(
+        id,
+        (collectionCounts.get(id) || 0) + 1
+      );
+    }
 
     const activeInvestments = investments
       .filter((investment) => investment.status === "ACTIVE")
@@ -94,17 +102,6 @@ export async function GET() {
           new Date(String(a.startedAt)).getTime() -
           new Date(String(b.startedAt)).getTime()
       );
-
-      console.log(
-  "NEXT CHECK:",
-  investments.map((investment) => ({
-    id: investment.id,
-    nextCollectionAt: String(investment.nextCollectionAt),
-    nextISO: investment.nextCollectionAt
-      ? new Date(`${String(investment.nextCollectionAt)}+05:00`).toISOString()
-      : null,
-  }))
-);
 
     const totalInvested = investments
       .filter(
@@ -143,30 +140,41 @@ export async function GET() {
         totalEarnings: Number(totalEarnings.toFixed(2)),
         totalWithdraw: Number(totalWithdraw.toFixed(2)),
       },
-      
 
       activeInvestments: activeInvestments.map(
-        (investment) => ({
-          id: investment.id,
-          amount: Number(investment.amount),
-          durationDays: investment.durationDays,
-          dailyReturn: Number(
-            Number(investment.dailyReturn).toFixed(2)
-          ),
-          startedAt: new Date(
-            String(investment.startedAt)
-          ).toISOString(),
-          endsAt: new Date(
-            String(investment.endsAt)
-          ).toISOString(),
-          nextCollectionAt:
-  investment.nextCollectionAt
-    ? new Date(
-        `${String(investment.nextCollectionAt)}+05:00`
-      ).toISOString()
-    : null,
-          status: investment.status,
-        })
+        (investment) => {
+          const durationDays = Number(investment.durationDays);
+
+          const collectedDays =
+            collectionCounts.get(String(investment.id)) || 0;
+
+          return {
+            id: investment.id,
+            amount: Number(investment.amount),
+            durationDays,
+            collectedDays,
+            remainingDays: Math.max(
+              0,
+              durationDays - collectedDays
+            ),
+            dailyReturn: Number(
+              Number(investment.dailyReturn).toFixed(2)
+            ),
+            startedAt: new Date(
+              String(investment.startedAt)
+            ).toISOString(),
+            endsAt: new Date(
+              String(investment.endsAt)
+            ).toISOString(),
+            nextCollectionAt:
+              investment.nextCollectionAt
+                ? new Date(
+                    `${String(investment.nextCollectionAt)}+05:00`
+                  ).toISOString()
+                : null,
+            status: investment.status,
+          };
+        }
       ),
 
       transactions: recentTransactions.map(
