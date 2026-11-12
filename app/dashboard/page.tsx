@@ -492,7 +492,7 @@ export default function DashboardPage() {
                       className="overflow-hidden rounded-[15px] bg-white shadow-[0_3px_12px_rgba(0,0,0,0.07)] ring-1 ring-gray-100 sm:rounded-3xl"
                     >
                       {/* Investment Card */}
-                      <div className="bg-[#ffead5] px-2.5 py-3 sm:px-5 sm:py-5">
+                      <div className="bg-[#ffead5] px-2.5 py-2 sm:px-5 sm:py-3">
 
                         <p className="text-[8px] font-semibold text-gray-600 sm:text-xs">
                           DAILY INCOME
@@ -502,7 +502,7 @@ export default function DashboardPage() {
                           {formatMoney(investment.dailyReturn)}
                         </h2>
 
-                        <div className="mt-4 border-t border-[#e9c9a9] pt-3 sm:mt-5 sm:pt-4">
+                        <div className="mt-2 border-t border-[#e9c9a9] pt-2 sm:mt-3 sm:pt-3">
                           <p className="text-[8px] font-medium text-gray-600 sm:text-xs">
                             MACHINE DURATION
                           </p>
@@ -518,8 +518,8 @@ export default function DashboardPage() {
                       </div>
 
                       {/* Countdown and Collect */}
-                      <div className="bg-white p-2 sm:p-4">
-                        <div className="rounded-xl border border-yellow-100 bg-[#fffaf2] p-2.5 text-center sm:rounded-2xl sm:p-4">
+                      <div className="bg-white p-1.5 sm:p-2.5">
+                        <div className="rounded-xl border border-yellow-100 bg-[#fffaf2] p-2 text-center sm:rounded-2xl sm:p-3">
 
                           <p className="text-[8px] font-medium text-gray-500 sm:text-[10px]">
                             {remaining > 0
