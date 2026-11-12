@@ -17,6 +17,9 @@ type UserProfile = {
   createdAt: string;
 };
 
+const WHATSAPP_CHANNEL =
+  "https://whatsapp.com/channel/0029Vb9LHaaIyPtJNWokxd2o";
+
 export default function ProfilePage() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -268,46 +271,86 @@ export default function ProfilePage() {
             </div>
 
             <div className="grid gap-2 sm:grid-cols-2 sm:gap-3">
+              {/* WhatsApp Channel */}
+              <a
+                href={WHATSAPP_CHANNEL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-xl border border-green-200 bg-white p-3 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-green-400 hover:bg-green-50 hover:shadow-md sm:rounded-2xl sm:p-4"
+              >
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-500 text-white transition group-hover:bg-green-600 sm:h-10 sm:w-10 sm:rounded-xl">
+                    <svg
+                      viewBox="0 0 32 32"
+                      className="h-6 w-6 sm:h-7 sm:w-7"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M16.02 3C8.86 3 3.04 8.8 3.04 15.94c0 2.29.6 4.53 1.74 6.52L3 29l6.73-1.76a13 13 0 0 0 6.28 1.6h.01c7.15 0 12.97-5.81 12.97-12.96A12.9 12.9 0 0 0 16.02 3Zm0 23.62h-.01a10.7 10.7 0 0 1-5.46-1.5l-.39-.23-4 .99 1.07-3.9-.25-.4a10.67 10.67 0 0 1-1.64-5.64c0-5.9 4.8-10.69 10.7-10.69 2.86 0 5.54 1.11 7.56 3.14a10.62 10.62 0 0 1 3.13 7.57c0 5.9-4.8 10.66-10.71 10.66Zm5.87-8c-.32-.16-1.9-.94-2.2-1.05-.3-.1-.51-.16-.73.16-.21.32-.83 1.05-1.02 1.27-.19.21-.38.24-.7.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.38.48-.56.16-.19.21-.32.32-.54.11-.21.05-.4-.03-.56-.08-.16-.73-1.75-1-2.4-.26-.63-.53-.54-.73-.55h-.62c-.21 0-.56.08-.86.4-.3.32-1.13 1.1-1.13 2.67 0 1.57 1.16 3.08 1.32 3.29.16.21 2.28 3.47 5.53 4.87.77.33 1.37.53 1.84.68.77.24 1.47.2 2.02.12.62-.1 1.9-.78 2.17-1.53.27-.75.27-1.4.19-1.53-.08-.14-.3-.22-.62-.38Z" />
+                    </svg>
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xs font-semibold text-gray-900 sm:text-sm">
+                      WhatsApp Channel
+                    </h3>
+                    <p className="mt-0.5 text-[9px] leading-4 text-gray-500 sm:mt-1 sm:text-[11px] sm:leading-5">
+                      Join our official channel for updates.
+                    </p>
+                  </div>
+
+                  <span className="text-gray-400 transition group-hover:translate-x-1 group-hover:text-green-600">
+                    →
+                  </span>
+                </div>
+              </a>
+
               <OptionCard
                 href="/withdraw"
-                icon="◈"
+                icon="💳"
                 title="Withdrawal & KYC"
                 description="Manage withdrawal details and verification."
+                iconStyle="bg-blue-50 border-blue-200"
               />
 
               <OptionCard
                 href="/invite"
-                icon="♧"
+                icon="👥"
                 title="Referral Network"
                 description="View your referral information and network."
+                iconStyle="bg-purple-50 border-purple-200"
               />
 
               <OptionCard
                 href="/dashboard"
-                icon="⌁"
+                icon="📊"
                 title="Account Activity"
                 description="View your dashboard and account overview."
+                iconStyle="bg-sky-50 border-sky-200"
               />
 
               <OptionCard
                 href="/deposit"
-                icon="▣"
+                icon="💰"
                 title="Wallet & Deposits"
                 description="Add funds and review wallet actions."
+                iconStyle="bg-emerald-50 border-emerald-200"
               />
 
               <OptionCard
                 href="/plans"
-                icon="↗"
+                icon="📈"
                 title="Investment Plans"
                 description="Explore available investment plans."
+                iconStyle="bg-amber-50 border-amber-200"
               />
 
               <OptionCard
                 href="/login"
-                icon="?"
+                icon="🎧"
                 title="Support"
                 description="Contact the platform administrator for help."
+                iconStyle="bg-pink-50 border-pink-200"
               />
             </div>
           </section>
@@ -359,11 +402,13 @@ function OptionCard({
   icon,
   title,
   description,
+  iconStyle,
 }: {
   href: string;
   icon: string;
   title: string;
   description: string;
+  iconStyle: string;
 }) {
   return (
     <Link
@@ -371,14 +416,14 @@ function OptionCard({
       className="group rounded-xl border border-yellow-100 bg-white p-3 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-yellow-400 hover:bg-yellow-50 hover:shadow-md sm:rounded-2xl sm:p-4"
     >
       <div className="flex items-center gap-2.5 sm:gap-3">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-yellow-200 bg-yellow-50 text-yellow-600 transition group-hover:border-yellow-300 group-hover:bg-yellow-400 group-hover:text-black sm:h-10 sm:w-10 sm:rounded-xl">
+        <div
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-lg transition sm:h-10 sm:w-10 sm:rounded-xl sm:text-xl ${iconStyle}`}
+        >
           {icon}
         </div>
 
         <div className="min-w-0 flex-1">
-          <h3 className="text-xs font-semibold sm:text-sm">
-            {title}
-          </h3>
+          <h3 className="text-xs font-semibold sm:text-sm">{title}</h3>
 
           <p className="mt-0.5 text-[9px] leading-4 text-gray-500 sm:mt-1 sm:text-[11px] sm:leading-5">
             {description}
