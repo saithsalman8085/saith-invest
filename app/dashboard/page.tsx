@@ -239,21 +239,30 @@ export default function DashboardPage() {
     }
 
     .floating-coin {
-  position: absolute;
-  font-size: 29px;
-  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffe9a3, #e6a92e, #c98a16);
+  border: 2px solid #d69b27;
+  color: #8a5a08;
+  font-size: 17px;
+  font-weight: 900;
+  opacity: 0.9;
   pointer-events: none;
   animation: coinFloat 3s ease-in-out infinite;
-  filter:
-    brightness(1.35)
-    saturate(1.8)
-    drop-shadow(0 0 5px rgba(255, 190, 0, 0.9))
-    drop-shadow(0 3px 5px rgba(180, 110, 0, 0.4));
+  box-shadow:
+    0 0 3px rgba(255, 190, 0, 0.54),
+    0 2px 4px rgba(180, 110, 0, 0.24);
 }
 
 @media (max-width: 640px) {
   .floating-coin {
-    font-size: 23px;
+    width: 23px;
+    height: 23px;
+    font-size: 14px;
   }
 }
   `}</style>
@@ -270,7 +279,7 @@ export default function DashboardPage() {
         className="floating-coin"
         style={{ position: "relative", animationDelay: delay }}
       >
-        🪙
+        $
       </span>
     ))}
   </div>
@@ -283,7 +292,7 @@ export default function DashboardPage() {
         className="floating-coin"
         style={{ position: "relative", animationDelay: delay }}
       >
-        🪙
+        $
       </span>
     ))}
   </div>
