@@ -238,24 +238,85 @@ export default function DashboardPage() {
       }
     }
 
-    .floating-coin {
+    
+.floating-coin {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 29px;
   height: 29px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #ffe9a3, #e6a92e, #c98a16);
-  border: 2px solid #d69b27;
-  color: #8a5a08;
+  background:
+    radial-gradient(circle at 30% 22%, #fff9c4 0%, transparent 25%),
+    linear-gradient(
+      145deg,
+      #fff6a6 0%,
+      #ffd700 18%,
+      #f5a900 42%,
+      #c47a00 68%,
+      #ffe36e 85%,
+      #a85f00 100%
+    );
+  border: 2px solid #a96b08;
+  color: #754000;
   font-size: 17px;
   font-weight: 900;
-  opacity: 0.9;
+  opacity: 1;
+  pointer-events: none;
+  animation: coinFloat 3s ease-in-out infinite;
+  text-shadow:
+    0 1px 0 #fff0a0,
+    0 -1px 1px rgba(90, 45, 0, 0.45);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 210, 0.95),
+    inset 0 -3px 4px rgba(105, 55, 0, 0.55),
+    0 0 7px rgba(255, 190, 0, 0.85),
+    0 3px 5px rgba(120, 70, 0, 0.4);
+}
+
+.floating-coin::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(255, 248, 175, 0.85);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 220, 0.7),
+    0 0 2px rgba(120, 65, 0, 0.5);
+  pointer-events: none;
+}
+
+
+.floating-coin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #ffff00 0%,
+    #ffed00 20%,
+    #ffd000 45%,
+    #ffb900 65%,
+    #fff200 85%,
+    #ffe600 100%
+  );
+  border: 2px solid #ffcc00;
+  color: #a66a00;
+  font-size: 17px;
+  font-weight: 900;
+  opacity: 1;
   pointer-events: none;
   animation: coinFloat 3s ease-in-out infinite;
   box-shadow:
-    0 0 3px rgba(255, 190, 0, 0.54),
-    0 2px 4px rgba(180, 110, 0, 0.24);
+    inset 0 2px 4px rgba(255,255,255,0.95),
+    inset 0 -2px 3px rgba(255,170,0,0.35),
+    0 0 8px rgba(255,215,0,0.9),
+    0 0 16px rgba(255,200,0,0.45),
+    0 3px 5px rgba(180,130,0,0.2);
 }
 
 @media (max-width: 640px) {
@@ -265,6 +326,7 @@ export default function DashboardPage() {
     font-size: 14px;
   }
 }
+
   `}</style>
 
   

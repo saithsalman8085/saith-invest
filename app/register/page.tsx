@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -88,20 +89,20 @@ export default function RegisterPage() {
         <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-orange-200/20 blur-3xl" />
       </div>
 
-      <div className="relative flex min-h-screen items-center justify-center px-4 py-8 sm:py-10">
+      <div className="relative flex min-h-screen items-center justify-center px-4 py-4 sm:py-6">
         <div className="w-full max-w-md">
 
-          {/* BRAND */}
+          {/* BRAND - UNCHANGED */}
           <div className="mb-6 text-center sm:mb-8">
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-2xl font-bold tracking-tight"
             >
               <img
-  src="/cloudeinvest-logo.svg"
-  alt="cloudeinvest logo"
-  className="h-10 w-10 rounded-xl object-contain"
-/>
+                src="/cloudeinvest-logo.svg"
+                alt="cloudeinvest logo"
+                className="h-10 w-10 rounded-xl object-contain"
+              />
 
               <span>
                 Claude<span className="text-yellow-500">Invest</span>
@@ -120,7 +121,7 @@ export default function RegisterPage() {
           {/* REGISTER CARD */}
           <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_10px_40px_rgba(234,179,8,0.10)] sm:rounded-3xl">
 
-            {/* CARD HEADER */}
+            {/* CARD HEADER - UNCHANGED */}
             <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 px-5 py-4 sm:px-7">
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-yellow-700">
                 Registration
@@ -135,12 +136,12 @@ export default function RegisterPage() {
               </p>
             </div>
 
-            <div className="p-5 sm:p-7">
-              <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="p-4 sm:p-6">
+              <form onSubmit={handleSubmit} className="space-y-3">
 
                 {/* FULL NAME */}
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">
                     Full Name
                   </label>
 
@@ -148,15 +149,14 @@ export default function RegisterPage() {
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Enter your full name"
                     autoComplete="name"
-                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3.5 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
+                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
                   />
                 </div>
 
                 {/* CONTACT */}
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">
                     Email or Phone Number
                   </label>
 
@@ -164,19 +164,16 @@ export default function RegisterPage() {
                     type="text"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    placeholder="Enter email or phone number"
                     autoComplete="username"
-                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3.5 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
+                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
                   />
 
-                  <p className="mt-2 text-xs text-gray-400">
-                    Use either your email address or phone number.
-                  </p>
+                  
                 </div>
 
                 {/* PASSWORD */}
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">
                     Password
                   </label>
 
@@ -185,9 +182,8 @@ export default function RegisterPage() {
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Create a password"
                       autoComplete="new-password"
-                      className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3.5 pr-20 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
+                      className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3 pr-20 text-sm text-black outline-none transition focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
                     />
 
                     <button
@@ -199,14 +195,14 @@ export default function RegisterPage() {
                     </button>
                   </div>
 
-                  <p className="mt-2 text-xs text-gray-400">
+                  <p className="mt-1.5 text-xs text-gray-400">
                     Password must be at least 8 characters.
                   </p>
                 </div>
 
                 {/* REFERRAL */}
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">
                     Referral Code
                     <span className="ml-2 text-xs font-normal text-gray-400">
                       Optional
@@ -217,14 +213,9 @@ export default function RegisterPage() {
                     type="text"
                     value={referralCode}
                     onChange={(e) => setReferralCode(e.target.value)}
-                    placeholder="Enter referral code"
                     autoComplete="off"
-                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3.5 text-sm uppercase text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
+                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3 text-sm uppercase text-black outline-none transition focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
                   />
-
-                  <p className="mt-2 text-xs text-gray-400">
-                    If someone invited you, enter their referral code here.
-                  </p>
                 </div>
 
                 {/* ERROR */}
@@ -259,14 +250,14 @@ export default function RegisterPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-xl bg-yellow-400 px-4 py-3.5 text-sm font-bold text-black shadow-md shadow-yellow-200 transition hover:bg-yellow-300 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
+                  className="w-full rounded-xl bg-yellow-400 px-4 py-3 text-sm font-bold text-black shadow-md shadow-yellow-200 transition hover:bg-yellow-300 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Creating Account..." : "Create Account"}
                 </button>
               </form>
 
               {/* DIVIDER */}
-              <div className="my-6 flex items-center gap-3">
+              <div className="my-4 flex items-center gap-3">
                 <div className="h-px flex-1 bg-yellow-100" />
 
                 <span className="text-xs font-medium text-gray-400">
@@ -290,7 +281,7 @@ export default function RegisterPage() {
           </div>
 
           {/* FOOTER */}
-          <p className="mt-5 text-center text-[10px] text-gray-400 sm:mt-6 sm:text-xs">
+          <p className="mt-3 text-center text-[10px] text-gray-400 sm:text-xs">
             cloudeinvest © 2025
           </p>
         </div>

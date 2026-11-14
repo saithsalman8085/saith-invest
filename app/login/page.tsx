@@ -120,61 +120,57 @@ export default function LoginPage() {
         <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-orange-200/20 blur-3xl" />
       </div>
 
-      <div className="relative flex min-h-screen items-center justify-center px-4 py-8 sm:py-10">
+      <div className="relative flex min-h-screen items-center justify-center px-4 py-4 sm:py-6">
         <div className="w-full max-w-md">
           <Link
             href="/"
-            className="mb-5 inline-flex items-center gap-2 text-xs font-semibold text-yellow-600 transition hover:text-yellow-700 sm:mb-7 sm:text-sm"
+            className="mb-3 inline-flex items-center gap-2 text-xs font-semibold text-yellow-600 transition hover:text-yellow-700 sm:text-sm"
           >
             ← Back to CloudeInvest
           </Link>
 
           <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_10px_40px_rgba(234,179,8,0.10)] sm:rounded-3xl">
-            <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 p-5 sm:p-7">
-              <div className="flex h-12 w-12 items-center justify-center">
-                
-<img
-  src="/cloudeinvest-logo.svg"
-  alt="CloudeInvest logo"
-  className="h-12 w-12 rounded-2xl object-contain"
-/>
+            <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 px-5 py-4 text-center sm:px-7 sm:py-5">
+              <div className="flex items-center justify-center gap-2">
+                <img
+                  src="/cloudeinvest-logo.svg"
+                  alt="CloudeInvest logo"
+                  width={44}
+                  height={44}
+                  className="h-11 w-11 rounded-xl object-contain"
+                />
 
-              </div>
-              <div className="mt-3 text-xl font-bold tracking-tight text-black">
-  CloudeInvest
-</div>
-
-              <div className="mt-4 inline-flex rounded-full border border-yellow-300 bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-700">
-                Secure Login
+                <div className="text-xl font-bold tracking-tight text-black sm:text-2xl">
+                  CloudeInvest
+                </div>
               </div>
 
               <h1 className="mt-3 text-2xl font-bold sm:text-3xl">
                 Welcome back
               </h1>
 
-              <p className="mt-2 text-xs text-gray-500 sm:text-sm">
+              <p className="mt-1 text-xs text-gray-500 sm:text-sm">
                 Sign in to your CloudeInvest account.
               </p>
             </div>
 
-            <div className="p-5 sm:p-7">
-              <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="p-4 sm:p-6">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">
                     Email or Phone Number
                   </label>
                   <input
                     type="text"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    placeholder="Enter email or phone number"
                     autoComplete="username"
-                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3.5 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
+                    className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3 text-sm text-black outline-none transition focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-700">
+                  <label className="mb-1.5 block text-sm font-semibold text-gray-700">
                     Password
                   </label>
                   <div className="relative">
@@ -182,10 +178,10 @@ export default function LoginPage() {
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
                       autoComplete="current-password"
-                      className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3.5 pr-20 text-sm text-black outline-none transition placeholder:text-gray-400 focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
+                      className="w-full rounded-xl border-2 border-yellow-100 bg-[#fffdf9] px-4 py-3 pr-20 text-sm text-black outline-none transition focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-100"
                     />
+
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
@@ -196,7 +192,7 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-4 py-1">
                   <label className="flex cursor-pointer items-center gap-2 text-xs font-medium text-gray-500 sm:text-sm">
                     <input
                       type="checkbox"
@@ -235,23 +231,24 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-xl bg-yellow-400 px-4 py-3.5 text-sm font-bold text-black shadow-md shadow-yellow-200 transition hover:bg-yellow-300 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
+                  className="w-full rounded-xl bg-yellow-400 px-4 py-3 text-sm font-bold text-black shadow-md shadow-yellow-200 transition hover:bg-yellow-300 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Signing in..." : "Sign In"}
                 </button>
               </form>
 
               {showAppeal && (
-                <div className="mt-6 rounded-2xl border border-yellow-200 bg-yellow-50 p-4 sm:p-5">
+                <div className="mt-4 rounded-2xl border border-yellow-200 bg-yellow-50 p-4">
                   <h2 className="text-lg font-bold text-gray-900">
                     Account Appeal
                   </h2>
-                  <p className="mt-2 text-sm text-gray-600">
+
+                  <p className="mt-1 text-sm text-gray-600">
                     Your account is suspended. Explain why you believe it
                     should be reactivated.
                   </p>
 
-                  <form onSubmit={handleAppealSubmit} className="mt-4 space-y-3">
+                  <form onSubmit={handleAppealSubmit} className="mt-3 space-y-2">
                     <textarea
                       value={appealMessage}
                       onChange={(e) => setAppealMessage(e.target.value)}
@@ -288,7 +285,7 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <div className="my-6 flex items-center gap-3">
+              <div className="my-4 flex items-center gap-3">
                 <div className="h-px flex-1 bg-yellow-100" />
                 <span className="text-xs font-medium text-gray-400">OR</span>
                 <div className="h-px flex-1 bg-yellow-100" />
@@ -306,7 +303,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <p className="mt-5 text-center text-[10px] text-gray-400 sm:mt-6 sm:text-xs">
+          <p className="mt-3 text-center text-[10px] text-gray-400 sm:text-xs">
             CloudeInvest © 2025
           </p>
         </div>
