@@ -105,7 +105,7 @@ export default function RegisterPage() {
               />
 
               <span>
-                Claude<span className="text-yellow-500">Invest</span>
+                Cloude<span className="text-yellow-500">Invest</span>
               </span>
             </Link>
 
