@@ -98,13 +98,13 @@ export default function ProfilePage() {
           >
             <Image
               src="/cloudeinvest-logo.svg"
-              alt="cloudeinvest logo"
+              alt="Cloudeinvest logo"
               width={34}
               height={34}
               className="h-8 w-8 object-contain"
             />
             <span className="text-lg font-extrabold tracking-tight text-yellow-600 sm:text-xl">
-              cloudeinvest
+              Cloudeinvest
             </span>
           </Link>
 
