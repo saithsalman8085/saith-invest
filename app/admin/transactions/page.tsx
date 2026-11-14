@@ -29,6 +29,15 @@ const OUTGOING_TYPES = new Set([
   "ACTIVE_USER_REWARD",
   "WITHDRAWAL",
 ]);
+const transactionTypes = [
+  "DEPOSIT",
+  "WITHDRAWAL",
+  "WITHDRAWAL_FEE",
+  "DAILY_EARNING",
+  "REFERRAL_COMMISSION",
+  "ACTIVE_USER_REWARD",
+  "ADMIN_ADJUSTMENT",
+];
 
 function isIncoming(transaction: Transaction) {
   if (transaction.type === "ADMIN_ADJUSTMENT") {
@@ -146,10 +155,12 @@ const TRANSACTION_SUMMARY_RESET_AT =
   };
 }, [transactions]);
 
-  const filteredTransactions = useMemo(() => {
-    const query = search.trim().toLowerCase();
+  
+const filteredTransactions = useMemo(() => {
+  const query = search.trim().toLowerCase();
 
-    return transactions.filter((transaction) => {
+  return transactions
+    .filter((transaction) => {
       const matchesSearch =
         !query ||
         transaction.id.toLowerCase().includes(query) ||
@@ -164,13 +175,14 @@ const TRANSACTION_SUMMARY_RESET_AT =
         statusFilter === "ALL" || transaction.status === statusFilter;
 
       return matchesSearch && matchesType && matchesStatus;
-    });
-  }, [transactions, search, typeFilter, statusFilter]);
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+    );
+}, [transactions, search, typeFilter, statusFilter]);
 
-  const transactionTypes = useMemo(
-    () => [...new Set(transactions.map((transaction) => transaction.type))],
-    [transactions]
-  );
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
