@@ -228,7 +228,7 @@ export default function PlansPage() {
             href="/"
             className="text-lg font-bold tracking-tight text-yellow-600 sm:text-2xl"
           >
-            ClaudeInvest
+            CloudeInvest
           </Link>
 
           <MainNav />
@@ -262,9 +262,9 @@ export default function PlansPage() {
                   key={tab.value}
                   type="button"
                   onClick={() => setActiveTab(tab.value)}
-                  className={`min-h-[44px] rounded-lg px-1.5 py-2 text-[10px] font-bold leading-tight transition sm:min-h-[50px] sm:rounded-xl sm:px-3 sm:text-sm ${
+                  className={`min-h-11 rounded-lg px-1.5 py-2 text-[10px] font-bold leading-tight transition sm:min-h-12.5 sm:rounded-xl sm:px-3 sm:text-sm ${
                     selected
-                      ? "bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] text-[#3d2b15] shadow-sm"
+                      ? "bg-linear-to-r from-[#ffdbad] to-[#f3bb55] text-[#3d2b15] shadow-sm"
                       : "bg-transparent text-gray-500 hover:bg-white hover:text-gray-800"
                   }`}
                 >
@@ -423,7 +423,7 @@ export default function PlansPage() {
                             ${deposit.toLocaleString()}
                           </span>
 
-                          <span className="rounded-lg bg-gradient-to-r from-[#ffdfb9] to-[#f4bd58] px-2 py-1 text-[10px] font-bold text-[#68451b] shadow-sm sm:text-sm">
+                          <span className="rounded-lg bg-linear-to-r from-[#ffdfb9] to-[#f4bd58] px-2 py-1 text-[10px] font-bold text-[#68451b] shadow-sm sm:text-sm">
                             {plan.name}
                           </span>
                         </div>
@@ -432,7 +432,7 @@ export default function PlansPage() {
                           type="button"
                           onClick={() => handleInvest(plan)}
                           disabled={investing === plan.id}
-                          className="w-full rounded-xl bg-gradient-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-2 text-sm font-medium text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 sm:w-[160px] sm:px-5 sm:py-2.5 sm:text-base"
+                          className="w-full rounded-xl bg-linear-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-2 text-sm font-medium text-[#3d2b15] shadow-sm transition hover:from-[#ffd09a] hover:to-[#edac36] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 sm:w-40 sm:px-5 sm:py-2.5 sm:text-base"
                         >
                           {investing === plan.id
                             ? "Processing..."
@@ -467,7 +467,7 @@ export default function PlansPage() {
 
           {/* Footer */}
           <div className="py-5 text-center text-[9px] text-gray-400 sm:py-7 sm:text-xs">
-            ClaudeInvest © 2025
+            CloudeInvest © 2025
           </div>
         </div>
       </section>

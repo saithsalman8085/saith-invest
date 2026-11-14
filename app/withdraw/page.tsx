@@ -421,14 +421,14 @@ export default function WithdrawPage() {
         <div className="mx-auto max-w-6xl">
           {/* HEADER */}
           <header className="mb-5 overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-sm">
-            <div className="border-b border-yellow-100 bg-gradient-to-r from-yellow-50 to-orange-50 px-4 py-4 sm:px-5">
+            <div className="border-b border-yellow-100 bg-linear-to-r from-yellow-50 to-orange-50 px-4 py-4 sm:px-5">
               <div className="flex items-center justify-between gap-4">
                 <div className="min-w-0">
                   <Link
                     href="/"
                     className="text-lg font-bold text-yellow-600 sm:text-xl"
                   >
-                    ClaudeInvest
+                    cloudeinvest
                   </Link>
 
                   <p className="mt-2 text-xs font-medium text-yellow-600">
@@ -480,7 +480,7 @@ export default function WithdrawPage() {
             {/* LEFT SIDE: BALANCE, FORM, DETAILS, SCHEDULE */}
             <section className="flex flex-col gap-4 lg:col-span-3">
               {/* BALANCE */}
-              <div className="rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 shadow-sm sm:p-5">
+              <div className="rounded-2xl border border-yellow-300 bg-linear-to-r from-yellow-50 to-orange-50 p-4 shadow-sm sm:p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-semibold uppercase tracking-wide text-yellow-700 sm:text-xs">
@@ -499,7 +499,7 @@ export default function WithdrawPage() {
 
               {/* WITHDRAWAL FORM */}
               <section className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_5px_25px_rgba(234,179,8,0.10)]">
-                <div className="border-b border-yellow-200 bg-gradient-to-r from-yellow-100 via-yellow-50 to-orange-50 p-4 sm:p-6">
+                <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 p-4 sm:p-6">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-[11px] font-medium text-yellow-700">
@@ -816,7 +816,7 @@ export default function WithdrawPage() {
                       </p>
                     </div>
                   ) : (
-                    <div className="max-h-[600px] space-y-3 overflow-y-auto pr-1">
+                    <div className="max-h-150 space-y-3 overflow-y-auto pr-1">
                       {withdrawalHistory.map((withdrawal) => {
                         const status = String(withdrawal.status).toUpperCase();
 
@@ -903,7 +903,7 @@ export default function WithdrawPage() {
                 </div>
 
                 <div className="p-4 sm:p-6">
-                  <div className="rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 text-center">
+                  <div className="rounded-2xl border border-yellow-300 bg-linear-to-r from-yellow-50 to-orange-50 p-4 text-center">
                     <p className="text-xs text-gray-500">Exchange Rate</p>
                     <p className="mt-2 text-xl font-extrabold text-yellow-700 sm:text-2xl">
                       1 USD = {settings.exchangeRate} PKR
@@ -919,7 +919,7 @@ export default function WithdrawPage() {
               </div>
 
               {/* VERIFICATION */}
-              <div className="hidden rounded-2xl border border-yellow-300 bg-gradient-to-r from-yellow-50 to-orange-50 p-4 shadow-sm sm:block">
+              <div className="hidden rounded-2xl border border-yellow-300 bg-linear-to-r from-yellow-50 to-orange-50 p-4 shadow-sm sm:block">
                 <p className="text-sm font-bold text-yellow-700">
                   Withdrawal Verification
                 </p>
@@ -931,7 +931,7 @@ export default function WithdrawPage() {
           </div>
 
           <div className="py-5 text-center text-[10px] text-gray-400 sm:text-xs">
-            ClaudeInvest © 2025
+            cloudeinvest © 2025
           </div>
         </div>
       </section>

@@ -7,7 +7,7 @@ import BottomNav from "@/components/BottomNav";
 export default function ReferralsPage() {
   const [copied, setCopied] = useState(false);
 
-  const referralLink = "https://claudeinvest.com/register?ref=SALMAN123";
+  const referralLink = "https://cloudeinvest.com/register?ref=SALMAN123";
 
   const copyLink = async () => {
     await navigator.clipboard.writeText(referralLink);
@@ -23,7 +23,7 @@ export default function ReferralsPage() {
       <header className="border-b border-slate-800 bg-slate-950">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
           <Link href="/" className="text-2xl font-bold text-cyan-400">
-            ClaudeInvest
+            cloudeinvest
           </Link>
 
           <Link

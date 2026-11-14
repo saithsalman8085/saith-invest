@@ -84,7 +84,7 @@ export default function CustomerSupport() {
         right: `${position.right}px`,
         bottom: `${position.bottom}px`,
       }}
-      className="fixed z-[60] flex h-10 w-10 touch-none items-center justify-center rounded-full bg-[#0084ff] text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 active:scale-95"
+      className="fixed z-60 flex h-10 w-10 touch-none items-center justify-center rounded-full bg-[#0084ff] text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 active:scale-95"
     >
       <svg
         width="23"

@@ -4038,7 +4038,7 @@
                   "codecId": "pg/text@1",
                   "default": {
                     "kind": "literal",
-                    "value": "ClaudeInvest"
+                    "value": "cloudeinvest"
                   },
                   "nativeType": "text",
                   "nullable": false
@@ -4137,7 +4137,7 @@
                   "codecId": "pg/text@1",
                   "default": {
                     "kind": "literal",
-                    "value": "ClaudeInvest"
+                    "value": "cloudeinvest"
                   },
                   "nativeType": "text",
                   "nullable": false

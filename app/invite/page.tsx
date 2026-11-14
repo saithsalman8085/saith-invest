@@ -96,7 +96,7 @@ export default function InvitePage() {
                   href="/"
                   className="text-base font-bold text-yellow-600 sm:text-xl"
                 >
-                  ClaudeInvest
+                  CloudeInvest
                 </Link>
 
                 <p className="mt-1.5 text-[10px] text-yellow-600 sm:mt-2 sm:text-xs">
@@ -117,7 +117,7 @@ export default function InvitePage() {
           </header>
 
           {/* Invite Hero */}
-          <div className="rounded-xl border border-yellow-300 bg-gradient-to-br from-yellow-50 via-white to-slate-50 p-3 sm:rounded-2xl sm:p-6">
+          <div className="rounded-xl border border-yellow-300 bg-linear-to-r from-yellow-50 via-white to-slate-50 p-3 sm:rounded-2xl sm:p-6">
             <div className="flex flex-col gap-3 sm:gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
                 <span className="inline-flex rounded-full border border-yellow-300 bg-yellow-100 px-2.5 py-1 text-[8px] font-semibold uppercase tracking-wider text-yellow-800 sm:px-3 sm:text-[10px]">
@@ -236,7 +236,7 @@ export default function InvitePage() {
             </p>
 
             <div className="mt-4 overflow-x-auto">
-              <table className="w-full min-w-[280px] text-left text-xs sm:text-sm">
+              <table className="w-full min-w-70 text-left text-xs sm:text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-500">
                     <th className="px-2 py-2 font-medium">Active Users</th>
@@ -453,7 +453,7 @@ export default function InvitePage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-slate-500 sm:py-5 sm:text-xs">
-            ClaudeInvest © 2025
+            CloudeInvest © 2025
           </div>
         </div>
       </section>

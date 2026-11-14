@@ -64,9 +64,9 @@ export default function LoginPage() {
       }
 
       if (rememberMe) {
-        localStorage.setItem("claudeinvest_remember", "true");
+        localStorage.setItem("cloudeinvest_remember", "true");
       } else {
-        localStorage.removeItem("claudeinvest_remember");
+        localStorage.removeItem("cloudeinvest_remember");
       }
 
       setMessage("Login successful. Redirecting...");
@@ -126,22 +126,22 @@ export default function LoginPage() {
             href="/"
             className="mb-5 inline-flex items-center gap-2 text-xs font-semibold text-yellow-600 transition hover:text-yellow-700 sm:mb-7 sm:text-sm"
           >
-            ← Back to ClaudeInvest
+            ← Back to CloudeInvest
           </Link>
 
           <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_10px_40px_rgba(234,179,8,0.10)] sm:rounded-3xl">
-            <div className="border-b border-yellow-200 bg-gradient-to-r from-yellow-100 via-yellow-50 to-orange-50 p-5 sm:p-7">
+            <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 p-5 sm:p-7">
               <div className="flex h-12 w-12 items-center justify-center">
                 
 <img
-  src="/claudeinvest-logo.svg"
-  alt="ClaudeInvest logo"
+  src="/cloudeinvest-logo.svg"
+  alt="CloudeInvest logo"
   className="h-12 w-12 rounded-2xl object-contain"
 />
 
               </div>
               <div className="mt-3 text-xl font-bold tracking-tight text-black">
-  ClaudeInvest
+  CloudeInvest
 </div>
 
               <div className="mt-4 inline-flex rounded-full border border-yellow-300 bg-white px-3 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-700">
@@ -153,7 +153,7 @@ export default function LoginPage() {
               </h1>
 
               <p className="mt-2 text-xs text-gray-500 sm:text-sm">
-                Sign in to your ClaudeInvest account.
+                Sign in to your CloudeInvest account.
               </p>
             </div>
 
@@ -307,7 +307,7 @@ export default function LoginPage() {
           </div>
 
           <p className="mt-5 text-center text-[10px] text-gray-400 sm:mt-6 sm:text-xs">
-            ClaudeInvest © 2025
+            CloudeInvest © 2025
           </p>
         </div>
       </div>

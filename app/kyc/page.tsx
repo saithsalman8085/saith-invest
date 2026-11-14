@@ -98,7 +98,7 @@ export default function KycPage() {
             href="/"
             className="text-xl font-bold tracking-tight text-cyan-400 sm:text-2xl"
           >
-            ClaudeInvest
+            cloudeinvest
           </Link>
 
           <MainNav />
@@ -126,7 +126,7 @@ export default function KycPage() {
           <div className="rounded-3xl border border-slate-800 bg-slate-900 p-5 shadow-xl sm:p-7">
 
             {loading ? (
-              <div className="flex min-h-[300px] items-center justify-center">
+              <div className="flex min-h-75 items-center justify-center">
                 <p className="text-sm text-slate-500">
                   Loading KYC details...
                 </p>
@@ -251,7 +251,7 @@ export default function KycPage() {
           </div>
 
           <div className="py-6 text-center text-[10px] text-slate-600 sm:text-xs">
-            ClaudeInvest © 2025
+            cloudeinvest © 2025
           </div>
         </div>
       </section>

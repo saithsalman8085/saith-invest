@@ -307,7 +307,7 @@ export default function DashboardPage() {
       href="/"
       className="text-xl font-bold tracking-tight text-yellow-600 sm:text-2xl"
     >
-      ClaudeInvest
+      CloudeInvest
     </Link>
 
     <p className="mt-2 text-xs text-gray-500 sm:text-sm">
@@ -666,7 +666,7 @@ export default function DashboardPage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[10px] text-gray-400 sm:py-5 sm:text-xs">
-            ClaudeInvest © 2025
+            CloudeInvest © 2025
           </div>
         </div>
       </section>

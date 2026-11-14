@@ -98,8 +98,8 @@ export default function RegisterPage() {
               className="inline-flex items-center gap-2 text-2xl font-bold tracking-tight"
             >
               <img
-  src="/claudeinvest-logo.svg"
-  alt="ClaudeInvest logo"
+  src="/cloudeinvest-logo.svg"
+  alt="cloudeinvest logo"
   className="h-10 w-10 rounded-xl object-contain"
 />
 
@@ -113,7 +113,7 @@ export default function RegisterPage() {
             </h1>
 
             <p className="mt-2 text-xs text-gray-500 sm:text-sm">
-              Join ClaudeInvest and start managing your investment account.
+              Join cloudeinvest and start managing your investment account.
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export default function RegisterPage() {
           <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_10px_40px_rgba(234,179,8,0.10)] sm:rounded-3xl">
 
             {/* CARD HEADER */}
-            <div className="border-b border-yellow-200 bg-gradient-to-r from-yellow-100 via-yellow-50 to-orange-50 px-5 py-4 sm:px-7">
+            <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 px-5 py-4 sm:px-7">
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-yellow-700">
                 Registration
               </p>
@@ -291,7 +291,7 @@ export default function RegisterPage() {
 
           {/* FOOTER */}
           <p className="mt-5 text-center text-[10px] text-gray-400 sm:mt-6 sm:text-xs">
-            ClaudeInvest © 2025
+            cloudeinvest © 2025
           </p>
         </div>
       </div>

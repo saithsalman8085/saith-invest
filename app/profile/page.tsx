@@ -97,14 +97,14 @@ export default function ProfilePage() {
             className="flex items-center justify-center gap-2 whitespace-nowrap"
           >
             <Image
-              src="/claudeinvest-logo.svg"
-              alt="ClaudeInvest logo"
+              src="/cloudeinvest-logo.svg"
+              alt="cloudeinvest logo"
               width={34}
               height={34}
               className="h-8 w-8 object-contain"
             />
             <span className="text-lg font-extrabold tracking-tight text-yellow-600 sm:text-xl">
-              ClaudeInvest
+              cloudeinvest
             </span>
           </Link>
 
@@ -125,9 +125,9 @@ export default function ProfilePage() {
 
           {/* Profile Hero */}
           <div className="overflow-hidden rounded-2xl border border-yellow-300 bg-white shadow-[0_6px_24px_rgba(234,179,8,0.13)] sm:rounded-3xl">
-            <div className="h-2 bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500" />
+            <div className="h-2 bg-linear-to-r from-yellow-400 via-amber-300 to-yellow-500" />
 
-            <div className="bg-gradient-to-b from-yellow-50 via-white to-white px-3.5 pb-4 pt-3.5 sm:px-7 sm:pb-6 sm:pt-5">
+            <div className="bg-linear-to-b from-yellow-50 via-white to-white px-3.5 pb-4 pt-3.5 sm:px-7 sm:pb-6 sm:pt-5">
               <div className="mb-3 text-center sm:mb-5">
                 <h1 className="text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl">
                   My Profile
@@ -136,7 +136,7 @@ export default function ProfilePage() {
               </div>
 
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-yellow-300 bg-gradient-to-br from-yellow-300 to-amber-400 text-xl font-extrabold text-black shadow-[0_4px_12px_rgba(234,179,8,0.25)] sm:h-20 sm:w-20 sm:text-3xl">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-yellow-300 bg-linear-to-br from-yellow-300 to-amber-400 text-xl font-extrabold text-black shadow-[0_4px_12px_rgba(234,179,8,0.25)] sm:h-20 sm:w-20 sm:text-3xl">
                   {user?.fullName?.charAt(0).toUpperCase() || "U"}
                 </div>
 
@@ -163,7 +163,7 @@ export default function ProfilePage() {
 
               {/* User ID and Register Date */}
               <div className="mt-4 grid gap-2 sm:mt-5 sm:grid-cols-2 sm:gap-3">
-                <div className="rounded-xl border border-yellow-300 bg-gradient-to-br from-yellow-50 to-amber-50 p-3 sm:rounded-2xl sm:p-4">
+                <div className="rounded-xl border border-yellow-300 bg-linear-to-br from-yellow-50 to-amber-50 p-3 sm:rounded-2xl sm:p-4">
                   <p className="text-[8px] font-bold uppercase tracking-wider text-yellow-700 sm:text-[10px]">
                     Your User ID
                   </p>
@@ -367,7 +367,7 @@ export default function ProfilePage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-gray-400 sm:py-6 sm:text-xs">
-            ClaudeInvest © 2025
+            cloudeinvest © 2025
           </div>
         </div>
       </section>
@@ -390,7 +390,7 @@ function InfoCard({
         {label}
       </p>
 
-      <p className="mt-1.5 break-words text-xs font-semibold text-gray-800 sm:mt-2 sm:text-sm">
+      <p className="mt-1.5 wrap-break-word text-xs font-semibold text-gray-800 sm:mt-2 sm:text-sm">
         {value}
       </p>
     </div>

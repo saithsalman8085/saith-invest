@@ -145,7 +145,7 @@ export default function TransactionsPage() {
             href="/"
             className="text-xl font-bold tracking-tight text-cyan-400 sm:text-2xl"
           >
-            ClaudeInvest
+            cloudeinvest
           </Link>
 
           <MainNav />
@@ -256,7 +256,7 @@ export default function TransactionsPage() {
 
             {/* Loading */}
             {loading && (
-              <div className="flex min-h-[300px] items-center justify-center px-5 py-12 text-center">
+              <div className="flex min-h-75 items-center justify-center px-5 py-12 text-center">
                 <p className="text-xs text-slate-500">
                   Loading transactions...
                 </p>
@@ -265,7 +265,7 @@ export default function TransactionsPage() {
 
             {/* Error */}
             {!loading && error && (
-              <div className="flex min-h-[300px] items-center justify-center px-5 py-12 text-center">
+              <div className="flex min-h-75 items-center justify-center px-5 py-12 text-center">
                 <div>
                   <p className="text-sm font-semibold text-red-400">
                     Unable to load transactions
@@ -282,7 +282,7 @@ export default function TransactionsPage() {
             {!loading &&
               !error &&
               filteredTransactions.length === 0 && (
-                <div className="flex min-h-[300px] flex-col items-center justify-center px-5 py-12 text-center">
+                <div className="flex min-h-75 flex-col items-center justify-center px-5 py-12 text-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950 text-2xl text-slate-700">
                     ↯
                   </div>
@@ -340,7 +340,7 @@ export default function TransactionsPage() {
 
           {/* Footer */}
           <div className="py-6 text-center text-[10px] text-slate-600 sm:text-xs">
-            ClaudeInvest © 2025
+            cloudeinvest © 2025
           </div>
         </div>
       </section>

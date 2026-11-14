@@ -42,10 +42,9 @@ export async function GET() {
     ];
 
     const debitTypes = [
-      "INVESTMENT",
-      "WITHDRAWAL",
-      "WITHDRAWAL_FEE",
-    ];
+  "INVESTMENT",
+  "WITHDRAWAL",
+];
 
     for (const transaction of transactions) {
       if (transaction.status !== "COMPLETED") {
