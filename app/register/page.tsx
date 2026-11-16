@@ -3,8 +3,10 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
@@ -66,14 +68,8 @@ export default function RegisterPage() {
         return;
       }
 
-      setMessage(
-        "Account created successfully. You can now continue to login."
-      );
-
-      setFullName("");
-      setContact("");
-      setPassword("");
-      setReferralCode("");
+      router.push("/dashboard");
+router.refresh();
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
