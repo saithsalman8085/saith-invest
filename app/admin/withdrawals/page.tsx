@@ -321,7 +321,7 @@ return ( <main className="min-h-screen bg-slate-950 text-white"> <div className=
 
         <div className="hidden overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 md:block">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[1100px] text-left text-sm">
+            <table className="w-full min-w-275 text-left text-sm">
               <thead className="border-b border-slate-800 bg-slate-950">
                 <tr>
                   <th className="px-5 py-4">

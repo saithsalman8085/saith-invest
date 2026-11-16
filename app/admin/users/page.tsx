@@ -521,7 +521,7 @@ export default function AdminUsersPage() {
           <>
             <div className="hidden overflow-hidden rounded-2xl border border-white/10 bg-slate-900 md:block">
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[1050px]">
+                <table className="w-full min-w-262.5">
                   <thead className="border-b border-white/10 bg-slate-950/50">
                     <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
                       <th className="px-5 py-4">User</th>
@@ -535,7 +535,7 @@ export default function AdminUsersPage() {
                   </thead>
                   <tbody className="divide-y divide-white/5">
                     {filteredUsers.map((user) => (
-                      <tr key={user.id} className="align-top hover:bg-white/[0.02]">
+                      <tr key={user.id} className="align-top hover:bg-white/2">
                         <td className="px-5 py-5">
                           <div className="font-semibold">{user.fullName}</div>
                           <div className="mt-1 text-xs text-slate-500">ID: {user.publicUserId}</div>

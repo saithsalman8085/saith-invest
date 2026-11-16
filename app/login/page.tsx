@@ -64,9 +64,9 @@ export default function LoginPage() {
       }
 
       if (rememberMe) {
-        localStorage.setItem("cloudeinvest_remember", "true");
+        localStorage.setItem("cloudinvest_remember", "true");
       } else {
-        localStorage.removeItem("cloudeinvest_remember");
+        localStorage.removeItem("cloudinvest_remember");
       }
 
       setMessage("Login successful. Redirecting...");
@@ -126,22 +126,22 @@ export default function LoginPage() {
             href="/"
             className="mb-3 inline-flex items-center gap-2 text-xs font-semibold text-yellow-600 transition hover:text-yellow-700 sm:text-sm"
           >
-            ← Back to CloudeInvest
+            ← Back to cloudinvest
           </Link>
 
           <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-[0_10px_40px_rgba(234,179,8,0.10)] sm:rounded-3xl">
             <div className="border-b border-yellow-200 bg-linear-to-r from-yellow-100 via-yellow-50 to-orange-50 px-5 py-4 text-center sm:px-7 sm:py-5">
               <div className="flex items-center justify-center gap-2">
                 <img
-                  src="/cloudeinvest-logo.svg"
-                  alt="CloudeInvest logo"
+                  src="/cloudinvest-logo.svg"
+                  alt="cloudinvest logo"
                   width={44}
                   height={44}
                   className="h-11 w-11 rounded-xl object-contain"
                 />
 
                 <div className="text-xl font-bold tracking-tight text-black sm:text-2xl">
-                  CloudeInvest
+                  cloudinvest
                 </div>
               </div>
 
@@ -150,7 +150,7 @@ export default function LoginPage() {
               </h1>
 
               <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-                Sign in to your CloudeInvest account.
+                Sign in to your cloudinvest account.
               </p>
             </div>
 
@@ -304,7 +304,7 @@ export default function LoginPage() {
           </div>
 
           <p className="mt-3 text-center text-[10px] text-gray-400 sm:text-xs">
-            CloudeInvest © 2025
+            cloudinvest © 2025
           </p>
         </div>
       </div>

@@ -2319,7 +2319,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly default: {
                     readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'cloudeinvest'>;
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'cloudinvest'>;
                   };
                 };
                 readonly depositAccountNumber: {
@@ -2418,7 +2418,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly default: {
                     readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'cloudeinvest'>;
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'cloudinvest'>;
                   };
                 };
                 readonly supportEmail: {

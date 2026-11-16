@@ -97,14 +97,14 @@ export default function ProfilePage() {
             className="flex items-center justify-center gap-2 whitespace-nowrap"
           >
             <Image
-              src="/cloudeinvest-logo.svg"
-              alt="Cloudeinvest logo"
+              src="/cloudinvest-logo.svg"
+              alt="cloudinvest logo"
               width={34}
               height={34}
               className="h-8 w-8 object-contain"
             />
             <span className="text-lg font-extrabold tracking-tight text-yellow-600 sm:text-xl">
-              Cloudeinvest
+              cloudinvest
             </span>
           </Link>
 
@@ -367,7 +367,7 @@ export default function ProfilePage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-gray-400 sm:py-6 sm:text-xs">
-            cloudeinvest © 2025
+            cloudinvest © 2025
           </div>
         </div>
       </section>

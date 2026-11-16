@@ -96,7 +96,7 @@ export default function InvitePage() {
                   href="/"
                   className="text-base font-bold text-yellow-600 sm:text-xl"
                 >
-                  CloudeInvest
+                  cloudinvest
                 </Link>
 
                 <p className="mt-1.5 text-[10px] text-yellow-600 sm:mt-2 sm:text-xs">
@@ -453,7 +453,7 @@ export default function InvitePage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-slate-500 sm:py-5 sm:text-xs">
-            CloudeInvest © 2025
+            cloudinvest © 2025
           </div>
         </div>
       </section>

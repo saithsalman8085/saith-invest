@@ -428,7 +428,7 @@ export default function WithdrawPage() {
                     href="/"
                     className="text-lg font-bold text-yellow-600 sm:text-xl"
                   >
-                    cloudeinvest
+                    cloudinvest
                   </Link>
 
                   <p className="mt-2 text-xs font-medium text-yellow-600">
@@ -931,7 +931,7 @@ export default function WithdrawPage() {
           </div>
 
           <div className="py-5 text-center text-[10px] text-gray-400 sm:text-xs">
-            cloudeinvest © 2025
+            cloudinvest © 2025
           </div>
         </div>
       </section>

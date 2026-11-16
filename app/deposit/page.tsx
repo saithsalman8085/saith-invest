@@ -25,7 +25,7 @@ type DepositRecord = {
 
 const DEFAULT_SETTINGS: DepositSettings = {
   paymentMethod: "Easypaisa",
-  accountName: "CloudeInvest",
+  accountName: "cloudinvest",
   accountNumber: "",
   instructions:
     "Send payment to the account above, then upload a clear screenshot of your payment.",
@@ -75,7 +75,7 @@ export default function DepositPage() {
           data.settings.paymentMethod || "Easypaisa",
 
         accountName:
-          data.settings.accountName || "CloudeInvest",
+          data.settings.accountName || "cloudinvest",
 
         accountNumber:
           data.settings.accountNumber || "",
@@ -237,7 +237,7 @@ export default function DepositPage() {
             </h1>
 
             <p className="mt-1 text-xs text-gray-500 sm:mt-2 sm:text-sm">
-              Add funds to your CloudeInvest wallet.
+              Add funds to your cloudinvest wallet.
             </p>
           </div>
 

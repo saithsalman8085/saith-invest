@@ -228,7 +228,7 @@ export default function PlansPage() {
             href="/"
             className="text-lg font-bold tracking-tight text-yellow-600 sm:text-2xl"
           >
-            CloudeInvest
+            cloudinvest
           </Link>
 
           <MainNav />
@@ -467,7 +467,7 @@ export default function PlansPage() {
 
           {/* Footer */}
           <div className="py-5 text-center text-[9px] text-gray-400 sm:py-7 sm:text-xs">
-            CloudeInvest © 2025
+            cloudinvest © 2025
           </div>
         </div>
       </section>

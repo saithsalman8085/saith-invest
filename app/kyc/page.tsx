@@ -98,7 +98,7 @@ export default function KycPage() {
             href="/"
             className="text-xl font-bold tracking-tight text-cyan-400 sm:text-2xl"
           >
-            cloudeinvest
+            cloudinvest
           </Link>
 
           <MainNav />
@@ -251,7 +251,7 @@ export default function KycPage() {
           </div>
 
           <div className="py-6 text-center text-[10px] text-slate-600 sm:text-xs">
-            cloudeinvest © 2025
+            cloudinvest © 2025
           </div>
         </div>
       </section>

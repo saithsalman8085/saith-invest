@@ -275,7 +275,7 @@ export default function AccountAppealsPage() {
                   <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                     Appeal Message
                   </p>
-                  <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-200">
+                  <p className="mt-2 whitespace-pre-wrap wrap-break-word text-sm leading-6 text-gray-200">
                     {appeal.message}
                   </p>
                 </div>

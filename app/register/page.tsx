@@ -99,13 +99,13 @@ export default function RegisterPage() {
               className="inline-flex items-center gap-2 text-2xl font-bold tracking-tight"
             >
               <img
-                src="/cloudeinvest-logo.svg"
-                alt="cloudeinvest logo"
+                src="/cloudinvest-logo.svg"
+                alt="cloudinvest logo"
                 className="h-10 w-10 rounded-xl object-contain"
               />
 
               <span>
-                Cloude<span className="text-yellow-500">Invest</span>
+                Cloud<span className="text-yellow-500">Invest</span>
               </span>
             </Link>
 
@@ -114,7 +114,7 @@ export default function RegisterPage() {
             </h1>
 
             <p className="mt-2 text-xs text-gray-500 sm:text-sm">
-              Join cloudeinvest and start managing your investment account.
+              Join cloudinvest and start managing your investment account.
             </p>
           </div>
 
@@ -282,7 +282,7 @@ export default function RegisterPage() {
 
           {/* FOOTER */}
           <p className="mt-3 text-center text-[10px] text-gray-400 sm:text-xs">
-            cloudeinvest © 2025
+            cloudinvest © 2025
           </p>
         </div>
       </div>
