@@ -96,6 +96,29 @@ export default function DashboardPage() {
   const [remainingSeconds, setRemainingSeconds] =
     useState<Record<string, number>>({});
 
+  const [showWhatsAppPopup, setShowWhatsAppPopup] =
+    useState(false);
+
+  // Show popup immediately unless dismissed in this session
+  useEffect(() => {
+  if (!data?.user?.referralCode) return;
+
+  const popupKey = `cloudinvest_whatsapp_popup_dismissed_${data.user.referralCode}`;
+
+  if (sessionStorage.getItem(popupKey) !== "true") {
+    setShowWhatsAppPopup(true);
+  }
+}, [data?.user?.referralCode]);
+
+function dismissWhatsAppPopup() {
+  if (data?.user?.referralCode) {
+    const popupKey = `cloudinvest_whatsapp_popup_dismissed_${data.user.referralCode}`;
+    sessionStorage.setItem(popupKey, "true");
+  }
+
+  setShowWhatsAppPopup(false);
+}
+
   async function loadDashboard() {
     try {
       setError("");
@@ -222,193 +245,264 @@ export default function DashboardPage() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#fffdf9] pb-24 text-black">
+      {/* WhatsApp Channel Popup */}
+      {showWhatsAppPopup && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 px-4 py-6 backdrop-blur-sm">
+          <div className="relative w-full max-w-sm overflow-hidden rounded-3xl border border-yellow-200 bg-white shadow-2xl">
+
+            {/* Popup Top Decoration */}
+            <div className="h-2 bg-linear-to-r from-yellow-400 via-amber-300 to-yellow-500" />
+
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={dismissWhatsAppPopup}
+              aria-label="Close popup"
+              className="absolute right-3 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-lg font-bold text-gray-500 transition hover:bg-gray-200 hover:text-black"
+            >
+              ×
+            </button>
+
+            <div className="px-6 pb-6 pt-7 text-center">
+
+              {/* Existing CloudInvest Logo */}
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border border-yellow-100 bg-[#fffaf0] shadow-sm">
+                <Image
+                  src="/cloudinvest-logo.svg"
+                  alt="CloudInvest Logo"
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 object-contain"
+                />
+              </div>
+
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-yellow-600">
+                CloudInvest Community
+              </p>
+
+              <h2 className="mt-2 text-2xl font-extrabold text-gray-900">
+                Join Our WhatsApp Channel
+              </h2>
+
+              <p className="mt-3 text-sm leading-6 text-gray-500">
+                Hamare WhatsApp channel ko join karein aur latest updates, announcements aur important information hasil karein.
+              </p>
+
+              {/* Join Button */}
+              <a
+                href="https://whatsapp.com/channel/0029Vb9LHaaIyPtJNWokxd2o"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={dismissWhatsAppPopup}
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-green-200 transition hover:bg-[#1ebe5d] active:scale-[0.98]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path d="M20.52 3.48A11.78 11.78 0 0 0 12.13 0C5.6 0 .28 5.32.28 11.85c0 2.09.55 4.13 1.59 5.93L.18 24l6.37-1.67a11.84 11.84 0 0 0 5.57 1.42h.01c6.53 0 11.85-5.32 11.85-11.85a11.78 11.78 0 0 0-3.46-8.42ZM12.13 21.75a9.83 9.83 0 0 1-5.01-1.37l-.36-.21-3.78.99 1.01-3.68-.23-.38a9.83 9.83 0 0 1-1.51-5.25c0-5.44 4.43-9.87 9.88-9.87a9.8 9.8 0 0 1 6.99 2.9 9.8 9.8 0 0 1 2.89 6.99c0 5.45-4.43 9.88-9.88 9.88Zm5.42-7.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.8-1.49-1.78-1.66-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.5 1.7.64.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z" />
+                </svg>
+
+                Join WhatsApp Channel
+              </a>
+
+              {/* Cancel Button */}
+              <button
+                type="button"
+                onClick={dismissWhatsAppPopup}
+                className="mt-3 w-full rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-500 transition hover:bg-gray-50 hover:text-gray-800"
+              >
+                Maybe Later
+              </button>
+
+              <p className="mt-4 text-[10px] text-gray-400">
+                Thank you for being part of CloudInvest.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <section className="w-full px-2.5 py-3 sm:px-5 sm:py-6">
         <div className="mx-auto max-w-6xl">
 
-          
-{/* Centered Header */}
-<header className="relative mb-3 overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-[0_4px_18px_rgba(0,0,0,0.05)] sm:mb-5 sm:rounded-3xl">
+          {/* Centered Header */}
+          <header className="relative mb-3 overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-[0_4px_18px_rgba(0,0,0,0.05)] sm:mb-5 sm:rounded-3xl">
 
-  <style jsx>{`
-    @keyframes coinFloat {
-      0%, 100% {
-        transform: translateY(0) rotate(-8deg);
-      }
-      50% {
-        transform: translateY(-13px) rotate(8deg);
-      }
-    }
+            <style jsx>{`
+              @keyframes coinFloat {
+                0%, 100% {
+                  transform: translateY(0) rotate(-8deg);
+                }
+                50% {
+                  transform: translateY(-13px) rotate(8deg);
+                }
+              }
 
-    
-.floating-coin {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 29px;
-  height: 29px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 22%, #fff9c4 0%, transparent 25%),
-    linear-gradient(
-      145deg,
-      #fff6a6 0%,
-      #ffd700 18%,
-      #f5a900 42%,
-      #c47a00 68%,
-      #ffe36e 85%,
-      #a85f00 100%
-    );
-  border: 2px solid #a96b08;
-  color: #754000;
-  font-size: 17px;
-  font-weight: 900;
-  opacity: 1;
-  pointer-events: none;
-  animation: coinFloat 3s ease-in-out infinite;
-  text-shadow:
-    0 1px 0 #fff0a0,
-    0 -1px 1px rgba(90, 45, 0, 0.45);
-  box-shadow:
-    inset 0 2px 3px rgba(255, 255, 210, 0.95),
-    inset 0 -3px 4px rgba(105, 55, 0, 0.55),
-    0 0 7px rgba(255, 190, 0, 0.85),
-    0 3px 5px rgba(120, 70, 0, 0.4);
-}
+              .floating-coin {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+                background:
+                  radial-gradient(circle at 30% 22%, #fff9c4 0%, transparent 25%),
+                  linear-gradient(
+                    145deg,
+                    #fff6a6 0%,
+                    #ffd700 18%,
+                    #f5a900 42%,
+                    #c47a00 68%,
+                    #ffe36e 85%,
+                    #a85f00 100%
+                  );
+                border: 2px solid #a96b08;
+                color: #754000;
+                font-size: 17px;
+                font-weight: 900;
+                opacity: 1;
+                pointer-events: none;
+                animation: coinFloat 3s ease-in-out infinite;
+                text-shadow:
+                  0 1px 0 #fff0a0,
+                  0 -1px 1px rgba(90, 45, 0, 0.45);
+                box-shadow:
+                  inset 0 2px 3px rgba(255, 255, 210, 0.95),
+                  inset 0 -3px 4px rgba(105, 55, 0, 0.55),
+                  0 0 7px rgba(255, 190, 0, 0.85),
+                  0 3px 5px rgba(120, 70, 0, 0.4);
+              }
 
-.floating-coin::before {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(255, 248, 175, 0.85);
-  border-radius: 50%;
-  box-shadow:
-    inset 0 1px 2px rgba(255, 255, 220, 0.7),
-    0 0 2px rgba(120, 65, 0, 0.5);
-  pointer-events: none;
-}
+              .floating-coin::before {
+                content: "";
+                position: absolute;
+                inset: 3px;
+                border: 1px solid rgba(255, 248, 175, 0.85);
+                border-radius: 50%;
+                box-shadow:
+                  inset 0 1px 2px rgba(255, 255, 220, 0.7),
+                  0 0 2px rgba(120, 65, 0, 0.5);
+                pointer-events: none;
+              }
 
+              .floating-coin {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 29px;
+                height: 29px;
+                border-radius: 50%;
+                background: linear-gradient(
+                  135deg,
+                  #ffff00 0%,
+                  #ffed00 20%,
+                  #ffd000 45%,
+                  #ffb900 65%,
+                  #fff200 85%,
+                  #ffe600 100%
+                );
+                border: 2px solid #ffcc00;
+                color: #a66a00;
+                font-size: 17px;
+                font-weight: 900;
+                opacity: 1;
+                pointer-events: none;
+                animation: coinFloat 3s ease-in-out infinite;
+                box-shadow:
+                  inset 0 2px 4px rgba(255,255,255,0.95),
+                  inset 0 -2px 3px rgba(255,170,0,0.35),
+                  0 0 8px rgba(255,215,0,0.9),
+                  0 0 16px rgba(255,200,0,0.45),
+                  0 3px 5px rgba(180,130,0,0.2);
+              }
 
-.floating-coin {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 29px;
-  height: 29px;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    #ffff00 0%,
-    #ffed00 20%,
-    #ffd000 45%,
-    #ffb900 65%,
-    #fff200 85%,
-    #ffe600 100%
-  );
-  border: 2px solid #ffcc00;
-  color: #a66a00;
-  font-size: 17px;
-  font-weight: 900;
-  opacity: 1;
-  pointer-events: none;
-  animation: coinFloat 3s ease-in-out infinite;
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.95),
-    inset 0 -2px 3px rgba(255,170,0,0.35),
-    0 0 8px rgba(255,215,0,0.9),
-    0 0 16px rgba(255,200,0,0.45),
-    0 3px 5px rgba(180,130,0,0.2);
-}
+              @media (max-width: 640px) {
+                .floating-coin {
+                  width: 23px;
+                  height: 23px;
+                  font-size: 14px;
+                }
+              }
+            `}</style>
 
-@media (max-width: 640px) {
-  .floating-coin {
-    width: 23px;
-    height: 23px;
-    font-size: 14px;
-  }
-}
+            {/* Floating Golden Coins */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
 
-  `}</style>
+              <div className="absolute left-0 right-0 top-[18%] flex justify-around px-2 sm:px-8">
+                {["0s", "0.7s", "1.3s", "0.4s", "1.8s", "0.9s"].map((delay, i) => (
+                  <span
+                    key={`top-${i}`}
+                    className="floating-coin"
+                    style={{ position: "relative", animationDelay: delay }}
+                  >
+                    $
+                  </span>
+                ))}
+              </div>
 
-  
-{/* Floating Golden Coins - Staggered Layout */}
-<div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute bottom-[14%] left-0 right-0 flex justify-around px-7 sm:px-16">
+                {["1.5s", "0.3s", "1.1s", "2s", "2.4s"].map((delay, i) => (
+                  <span
+                    key={`bottom-${i}`}
+                    className="floating-coin"
+                    style={{ position: "relative", animationDelay: delay }}
+                  >
+                    $
+                  </span>
+                ))}
+              </div>
+            </div>
 
-  {/* Top Row - 6 Coins */}
-  <div className="absolute left-0 right-0 top-[18%] flex justify-around px-2 sm:px-8">
-    {["0s", "0.7s", "1.3s", "0.4s", "1.8s", "0.9s"].map((delay, i) => (
-      <span
-        key={`top-${i}`}
-        className="floating-coin"
-        style={{ position: "relative", animationDelay: delay }}
-      >
-        $
-      </span>
-    ))}
-  </div>
+            <div className="relative z-10 h-1.5 bg-linear-to-r from-[#f5a313] via-[#f3bb55] to-[#ffead5]" />
 
-  {/* Bottom Row - 5 Coins */}
-  <div className="absolute left-0 right-0 bottom-[14%] flex justify-around px-7 sm:px-16">
-    {["1.5s", "0.3s", "1.1s", "2s", "2.4s"].map((delay, i) => (
-      <span
-        key={`bottom-${i}`}
-        className="floating-coin"
-        style={{ position: "relative", animationDelay: delay }}
-      >
-        $
-      </span>
-    ))}
-  </div>
+            <div className="relative z-10 px-3 py-4 text-center sm:px-5 sm:py-5">
+              <Link
+                href="/"
+                className="flex items-center justify-center gap-2 text-xl font-bold tracking-tight sm:text-2xl"
+              >
+                <Image
+                  src="/cloudinvest-logo.svg"
+                  alt="cloudinvest logo"
+                  width={34}
+                  height={34}
+                  className="h-8 w-8 object-contain"
+                />
 
-</div>
+                <span>
+                  <span className="text-black">Cloud</span>
+                  <span className="text-yellow-600">Invest</span>
+                </span>
+              </Link>
 
+              <p className="mt-2 text-xs text-gray-500 sm:text-sm">
+                Welcome back
+              </p>
 
-  <div className="relative z-10 h-1.5 bg-linear-to-r from-[#f5a313] via-[#f3bb55] to-[#ffead5]" />
+              <h1 className="mt-1 text-xl font-bold sm:text-2xl">
+                {loading ? (
+                  <span className="inline-block animate-pulse text-gray-400">
+                    Loading...
+                  </span>
+                ) : (
+                  `${data?.user.fullName || "User"} 👋`
+                )}
+              </h1>
 
-  <div className="relative z-10 px-3 py-4 text-center sm:px-5 sm:py-5">
-    <Link
-  href="/"
-  className="flex items-center justify-center gap-2 text-xl font-bold tracking-tight sm:text-2xl"
->
-  <Image
-    src="/cloudinvest-logo.svg"
-    alt="cloudinvest logo"
-    width={34}
-    height={34}
-    className="h-8 w-8 object-contain"
-  />
+              {data?.user.premiumBadge && (
+                <p className="mt-1 text-[10px] font-bold tracking-wider text-yellow-600 sm:text-xs">
+                  PREMIUM
+                </p>
+              )}
+            </div>
 
-  <span>
-    <span className="text-black">Cloud</span>
-    <span className="text-yellow-600">Invest</span>
-  </span>
-</Link>
-
-    <p className="mt-2 text-xs text-gray-500 sm:text-sm">
-      Welcome back
-    </p>
-
-    <h1 className="mt-1 text-xl font-bold sm:text-2xl">
-  {loading ? (
-    <span className="inline-block animate-pulse text-gray-400">
-      Loading...
-    </span>
-  ) : (
-    `${data?.user.fullName || "User"} 👋`
-  )}
-</h1>
-
-    {data?.user.premiumBadge && (
-      <p className="mt-1 text-[10px] font-bold tracking-wider text-yellow-600 sm:text-xs">
-        PREMIUM
-      </p>
-    )}
-  </div>
-
-  <div className="relative z-10 flex justify-center border-t border-yellow-100 px-2 py-2">
-    <MainNav />
-  </div>
-</header>
+            <div className="relative z-10 flex justify-center border-t border-yellow-100 px-2 py-2">
+              <MainNav />
+            </div>
+          </header>
 
           {/* Messages */}
           {error && (
@@ -741,10 +835,10 @@ export default function DashboardPage() {
           {/* Footer */}
           <div className="py-4 text-center text-[10px] text-gray-400 sm:py-5 sm:text-xs">
             <span className="font-bold">
-  <span className="text-black">Cloud</span>
-  <span className="text-yellow-600">Invest</span>
-</span>
-{" "}© 2025
+              <span className="text-black">Cloud</span>
+              <span className="text-yellow-600">Invest</span>
+            </span>
+            {" "}© 2025
           </div>
         </div>
       </section>

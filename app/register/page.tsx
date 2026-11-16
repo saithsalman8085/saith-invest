@@ -68,8 +68,9 @@ export default function RegisterPage() {
         return;
       }
 
-      router.push("/dashboard");
-router.refresh();
+      
+      window.location.replace("/dashboard");
+
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {

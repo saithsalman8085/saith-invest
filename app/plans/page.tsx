@@ -76,6 +76,7 @@ export default function PlansPage() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [investing, setInvesting] = useState<string | null>(null);
+  const [pendingPlan, setPendingPlan] = useState<Plan | null>(null);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<
     "success" | "error"
@@ -143,7 +144,7 @@ export default function PlansPage() {
     return () => window.clearInterval(timer);
   }, []);
 
-  async function handleInvest(plan: Plan) {
+  function handleInvest(plan: Plan) {
     // Extra frontend expiry protection.
     if (getPlanCategory(plan) === "LIMITED_TIME") {
       const expiry = getExpiryTimestamp(plan.expiresAt);
@@ -159,14 +160,31 @@ export default function PlansPage() {
       }
     }
 
-    const confirmed = window.confirm(
-      `Invest $${Number(plan.depositAmount).toLocaleString()} in ${plan.name}?`
-    );
+    setPendingPlan(plan);
+  }
 
-    if (!confirmed) {
-      return;
+  async function confirmInvest() {
+    if (!pendingPlan) return;
+
+    const plan = pendingPlan;
+
+    // Check Limited Time expiry again before investing.
+    if (getPlanCategory(plan) === "LIMITED_TIME") {
+      const expiry = getExpiryTimestamp(plan.expiresAt);
+
+      if (!expiry || expiry <= Date.now()) {
+        setPendingPlan(null);
+        setPlans((previousPlans) =>
+          previousPlans.filter((item) => item.id !== plan.id)
+        );
+
+        setMessageType("error");
+        setMessage("This Limited Time offer has expired.");
+        return;
+      }
     }
 
+    setPendingPlan(null);
     setInvesting(plan.id);
     setMessage("");
 
@@ -223,31 +241,31 @@ export default function PlansPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
       {/* Header */}
-<header className="border-b border-gray-200 bg-white">
-  <div className="relative mx-auto flex max-w-7xl items-center justify-center px-3 py-3 sm:px-5 sm:py-5">
-    <Link
-      href="/"
-      className="flex items-center justify-center gap-2"
-    >
-      <Image
-                    src="/cloudinvest-logo.svg"
-                    alt="cloudinvest logo"
-                    width={34}
-                    height={34}
-                    className="h-8 w-8 object-contain"
-                  />
+      <header className="border-b border-gray-200 bg-white">
+        <div className="relative mx-auto flex max-w-7xl items-center justify-center px-3 py-3 sm:px-5 sm:py-5">
+          <Link
+            href="/"
+            className="flex items-center justify-center gap-2"
+          >
+            <Image
+              src="/cloudinvest-logo.svg"
+              alt="cloudinvest logo"
+              width={34}
+              height={34}
+              className="h-8 w-8 object-contain"
+            />
 
-      <span className="text-xl font-bold tracking-tight sm:text-2xl">
-        <span className="text-black">Cloud</span>
-        <span className="text-yellow-600">Invest</span>
-      </span>
-    </Link>
+            <span className="text-xl font-bold tracking-tight sm:text-2xl">
+              <span className="text-black">Cloud</span>
+              <span className="text-yellow-600">Invest</span>
+            </span>
+          </Link>
 
-    <div className="absolute right-3 sm:right-5">
-      <MainNav />
-    </div>
-  </div>
-</header>
+          <div className="absolute right-3 sm:right-5">
+            <MainNav />
+          </div>
+        </div>
+      </header>
 
       <section className="px-2.5 py-4 sm:px-5 sm:py-10">
         <div className="mx-auto max-w-6xl">
@@ -482,13 +500,93 @@ export default function PlansPage() {
           {/* Footer */}
           <div className="py-5 text-center text-[9px] text-gray-400 sm:py-7 sm:text-xs">
             <span className="font-bold">
-  <span className="text-black">Cloud</span>
-  <span className="text-yellow-600">Invest</span>
-</span>
-{" "}© 2025
+              <span className="text-black">Cloud</span>
+              <span className="text-yellow-600">Invest</span>
+            </span>
+            {" "}© 2025
           </div>
         </div>
       </section>
+
+      {/* Custom Investment Confirmation Popup */}
+      {pendingPlan && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+          <div className="w-[40%] min-w-70 max-w-85 overflow-hidden rounded-2xl bg-white shadow-2xl">
+            <div className="bg-linear-to-r from-[#ffdbad] to-[#f3bb55] px-5 py-5 text-center">
+              <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/70 text-2xl">
+                💰
+              </div>
+
+              <h2 className="text-xl font-bold text-[#3d2b15]">
+                Confirm Investment
+              </h2>
+
+              <p className="mt-1 text-sm text-[#68451b]">
+                Please review your investment details.
+              </p>
+            </div>
+
+            <div className="space-y-4 p-5">
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-center">
+                <p className="text-sm text-gray-500">
+                  Selected Plan
+                </p>
+
+                <h3 className="mt-1 text-lg font-bold text-gray-900">
+                  {pendingPlan.name}
+                </h3>
+
+                <p className="mt-3 text-3xl font-bold text-[#ed8420]">
+                  ${Number(pendingPlan.depositAmount).toLocaleString()}
+                </p>
+
+                <p className="mt-1 text-xs text-gray-500">
+                  Investment Amount
+                </p>
+              </div>
+
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Daily Income</span>
+                <span className="font-bold text-gray-900">
+                  ${Number(pendingPlan.dailyEarning).toLocaleString()}
+                </span>
+              </div>
+
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Total Income</span>
+                <span className="font-bold text-gray-900">
+                  ${Number(pendingPlan.totalReturn).toLocaleString()}
+                </span>
+              </div>
+
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Contract Period</span>
+                <span className="font-bold text-gray-900">
+                  {pendingPlan.durationDays} Days
+                </span>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setPendingPlan(null)}
+                  className="flex-1 rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-bold text-gray-600 transition hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={confirmInvest}
+                  className="flex-1 rounded-xl bg-linear-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-3 text-sm font-bold text-[#3d2b15] shadow-sm transition hover:brightness-95"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <BottomNav />
     </main>
