@@ -57,7 +57,7 @@ export default function InvitePage() {
   const inviteCode = data?.user?.referralCode || "...";
 
   const inviteLink = data?.user?.referralCode
-    ? `https://cloudinvest.com/register?ref=${data.user.referralCode}`
+    ? `https://cloudinvest.site/register?ref=${data.user.referralCode}`
     : "...";
 
   const totalInvites = data?.stats?.totalInvites ?? 0;
