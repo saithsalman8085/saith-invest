@@ -2,7 +2,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import type { FormEvent } from "react";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
 
@@ -301,7 +303,7 @@ export default function WithdrawPage() {
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setMessage("");
@@ -420,34 +422,47 @@ export default function WithdrawPage() {
       <section className="px-3 py-4 sm:px-5 sm:py-6">
         <div className="mx-auto max-w-6xl">
           {/* HEADER */}
-          <header className="mb-5 overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-sm">
-            <div className="border-b border-yellow-100 bg-linear-to-r from-yellow-50 to-orange-50 px-4 py-4 sm:px-5">
-              <div className="flex items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <Link
-                    href="/"
-                    className="text-lg font-bold text-yellow-600 sm:text-xl"
-                  >
-                    cloudinvest
-                  </Link>
+          <header className="relative mb-5 overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-sm">
+  <div className="relative flex min-h-20 items-center justify-center border-b border-yellow-100 bg-linear-to-r from-yellow-50 to-orange-50 px-4 py-4">
 
-                  <p className="mt-2 text-xs font-medium text-yellow-600">
-                    Wallet
-                  </p>
+    <Link
+      href="/"
+      className="flex items-center justify-center gap-2"
+    >
+      <Image
+              src="/cloudinvest-logo.svg"
+              alt="cloudinvest logo"
+              width={34}
+              height={34}
+              className="h-8 w-8 object-contain"
+            />
 
-                  <h1 className="mt-1 text-xl font-bold sm:text-2xl">
-                    Withdraw Funds
-                  </h1>
+      <span className="text-xl font-extrabold sm:text-2xl">
+        <span className="text-black">Cloud</span>
+        <span className="text-yellow-600">Invest</span>
+      </span>
+    </Link>
 
-                  <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-                    Withdraw your available USD balance to your selected payment account in PKR.
-                  </p>
-                </div>
+    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+      <MainNav />
+    </div>
 
-                <MainNav />
-              </div>
-            </div>
-          </header>
+  </div>
+
+  <div className="px-4 py-4 text-center">
+    <p className="text-xs font-medium text-yellow-600">
+      Wallet
+    </p>
+
+    <h1 className="mt-1 text-xl font-bold sm:text-2xl">
+      Withdraw Funds
+    </h1>
+
+    <p className="mt-1 text-xs text-gray-500 sm:text-sm">
+      Withdraw your available USD balance to your selected payment account in PKR.
+    </p>
+  </div>
+</header>
 
           {/* WALLET TABS */}
           <div className="mb-4 grid grid-cols-2 gap-2.5">
@@ -931,7 +946,11 @@ export default function WithdrawPage() {
           </div>
 
           <div className="py-5 text-center text-[10px] text-gray-400 sm:text-xs">
-            cloudinvest © 2025
+            <span className="font-bold">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
+{" "}© 2025
           </div>
         </div>
       </section>

@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
 
@@ -366,11 +367,22 @@ export default function DashboardPage() {
 
   <div className="relative z-10 px-3 py-4 text-center sm:px-5 sm:py-5">
     <Link
-      href="/"
-      className="text-xl font-bold tracking-tight text-yellow-600 sm:text-2xl"
-    >
-      cloudinvest
-    </Link>
+  href="/"
+  className="flex items-center justify-center gap-2 text-xl font-bold tracking-tight sm:text-2xl"
+>
+  <Image
+    src="/cloudinvest-logo.svg"
+    alt="cloudinvest logo"
+    width={34}
+    height={34}
+    className="h-8 w-8 object-contain"
+  />
+
+  <span>
+    <span className="text-black">Cloud</span>
+    <span className="text-yellow-600">Invest</span>
+  </span>
+</Link>
 
     <p className="mt-2 text-xs text-gray-500 sm:text-sm">
       Welcome back
@@ -728,7 +740,11 @@ export default function DashboardPage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[10px] text-gray-400 sm:py-5 sm:text-xs">
-            cloudinvest © 2025
+            <span className="font-bold">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
+{" "}© 2025
           </div>
         </div>
       </section>

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
+import Image from "next/image";
 
 type ReferralData = {
   success: boolean;
@@ -88,33 +89,51 @@ export default function InvitePage() {
       <section className="px-2.5 py-3 sm:px-5 sm:py-6">
         <div className="mx-auto max-w-6xl">
 
-          {/* Header */}
-          <header className="mb-3 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm sm:mb-5 sm:rounded-2xl sm:px-5 sm:py-4">
-            <div className="flex items-center justify-between gap-3 sm:gap-4">
-              <div className="min-w-0">
-                <Link
-                  href="/"
-                  className="text-base font-bold text-yellow-600 sm:text-xl"
-                >
-                  cloudinvest
-                </Link>
+          
+{/* Header */}
+<header className="mb-3 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm sm:mb-5 sm:rounded-2xl sm:px-5 sm:py-4">
+  <div className="relative flex min-h-12 items-center justify-center">
 
-                <p className="mt-1.5 text-[10px] text-yellow-600 sm:mt-2 sm:text-xs">
-                  Invite & Earn
-                </p>
+    {/* Center Logo + Brand */}
+    <Link
+      href="/"
+      className="flex items-center justify-center gap-2"
+    >
+      <Image
+              src="/cloudinvest-logo.svg"
+              alt="cloudinvest logo"
+              width={34}
+              height={34}
+              className="h-8 w-8 object-contain"
+            />
 
-                <h1 className="mt-0.5 text-lg font-bold sm:mt-1 sm:text-2xl">
-                  Invite Friends
-                </h1>
+      <span className="text-xl font-bold tracking-tight sm:text-2xl">
+        <span className="text-black">Cloud</span>
+        <span className="text-yellow-600">Invest</span>
+      </span>
+    </Link>
 
-                <p className="mt-1 text-[10px] text-slate-500 sm:text-sm">
-                  Build your referral network with your unique invite link.
-                </p>
-              </div>
+    {/* Navigation */}
+    <div className="absolute right-0">
+      <MainNav />
+    </div>
+  </div>
 
-              <MainNav />
-            </div>
-          </header>
+  <div className="mt-2 text-center">
+    <p className="text-[10px] text-yellow-600 sm:text-xs">
+      Invite & Earn
+    </p>
+
+    <h1 className="mt-0.5 text-lg font-bold sm:text-2xl">
+      Invite Friends
+    </h1>
+
+    <p className="mt-1 text-[10px] text-slate-500 sm:text-sm">
+      Build your referral network with your unique invite link.
+    </p>
+  </div>
+</header>
+
 
           {/* Invite Hero */}
           <div className="rounded-xl border border-yellow-300 bg-linear-to-r from-yellow-50 via-white to-slate-50 p-3 sm:rounded-2xl sm:p-6">
@@ -453,7 +472,11 @@ export default function InvitePage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-slate-500 sm:py-5 sm:text-xs">
-            cloudinvest © 2025
+            <span className="font-bold">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
+{" "}© 2025
           </div>
         </div>
       </section>

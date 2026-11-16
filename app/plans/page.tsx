@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
+import Image from "next/image";
 
 type PlanCategory = "NORMAL" | "PREMIUM" | "LIMITED_TIME";
 
@@ -222,18 +223,31 @@ export default function PlansPage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-white pb-24 text-black">
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-3 sm:px-5 sm:py-5">
-          <Link
-            href="/"
-            className="text-lg font-bold tracking-tight text-yellow-600 sm:text-2xl"
-          >
-            cloudinvest
-          </Link>
+<header className="border-b border-gray-200 bg-white">
+  <div className="relative mx-auto flex max-w-7xl items-center justify-center px-3 py-3 sm:px-5 sm:py-5">
+    <Link
+      href="/"
+      className="flex items-center justify-center gap-2"
+    >
+      <Image
+                    src="/cloudinvest-logo.svg"
+                    alt="cloudinvest logo"
+                    width={34}
+                    height={34}
+                    className="h-8 w-8 object-contain"
+                  />
 
-          <MainNav />
-        </div>
-      </header>
+      <span className="text-xl font-bold tracking-tight sm:text-2xl">
+        <span className="text-black">Cloud</span>
+        <span className="text-yellow-600">Invest</span>
+      </span>
+    </Link>
+
+    <div className="absolute right-3 sm:right-5">
+      <MainNav />
+    </div>
+  </div>
+</header>
 
       <section className="px-2.5 py-4 sm:px-5 sm:py-10">
         <div className="mx-auto max-w-6xl">
@@ -467,7 +481,11 @@ export default function PlansPage() {
 
           {/* Footer */}
           <div className="py-5 text-center text-[9px] text-gray-400 sm:py-7 sm:text-xs">
-            cloudinvest © 2025
+            <span className="font-bold">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
+{" "}© 2025
           </div>
         </div>
       </section>

@@ -251,7 +251,11 @@ export default function KycPage() {
           </div>
 
           <div className="py-6 text-center text-[10px] text-slate-600 sm:text-xs">
-            cloudinvest © 2025
+            <span className="font-bold">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
+{" "}© 2025
           </div>
         </div>
       </section>

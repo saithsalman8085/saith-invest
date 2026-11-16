@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import BottomNav from "@/components/BottomNav";
+import Image from "next/image";
 
 type DepositSettings = {
   paymentMethod: string;
@@ -481,11 +482,13 @@ export default function DepositPage() {
                       <p className="mb-2 text-[10px] font-semibold text-gray-600">
                         Screenshot preview
                       </p>
-                      <img
-                        src={screenshotPreview}
-                        alt="Payment screenshot preview"
-                        className="max-h-64 w-full rounded-lg object-contain"
-                      />
+                      <Image
+              src="/cloudinvest-logo.svg"
+              alt="cloudinvest logo"
+              width={34}
+              height={34}
+              className="h-8 w-8 object-contain"
+            />
                       <p className="mt-2 break-all text-[10px] text-gray-500">
                         {screenshotFile?.name}
                       </p>

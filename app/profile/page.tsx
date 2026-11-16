@@ -103,9 +103,10 @@ export default function ProfilePage() {
               height={34}
               className="h-8 w-8 object-contain"
             />
-            <span className="text-lg font-extrabold tracking-tight text-yellow-600 sm:text-xl">
-              cloudinvest
-            </span>
+            <span className="text-lg font-extrabold tracking-tight sm:text-xl">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
           </Link>
 
           <div className="flex justify-end">
@@ -367,7 +368,11 @@ export default function ProfilePage() {
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-gray-400 sm:py-6 sm:text-xs">
-            cloudinvest © 2025
+            <span className="font-bold">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
+{" "}© 2025
           </div>
         </div>
       </section>

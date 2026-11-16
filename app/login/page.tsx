@@ -304,7 +304,11 @@ export default function LoginPage() {
           </div>
 
           <p className="mt-3 text-center text-[10px] text-gray-400 sm:text-xs">
-            cloudinvest © 2025
+            <span className="font-bold">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</span>
+{" "}© 2025
           </p>
         </div>
       </div>
