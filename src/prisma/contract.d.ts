@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'8f26feb0be87631da530d0e1f1301ed83566c4a0413aa2f43bcd69fe2ad126df'>;
+  StorageHashBase<'98a74e91fa63c0bcc70e6f4cfdbd04dea27a9f34b6c0d9447aad69e63fedb2d6'>;
 export type ExecutionHash =
   ExecutionHashBase<'13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825'>;
 export type ProfileHash =
@@ -437,6 +437,7 @@ export type FieldOutputTypes = {
       readonly referralCode: CodecTypes['pg/text@1']['output'];
       readonly referredById: CodecTypes['pg/text@1']['output'] | null;
       readonly role: 'USER' | 'ADMIN';
+      readonly sessionVersion: CodecTypes['pg/int4@1']['output'];
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     };
@@ -664,6 +665,7 @@ export type FieldInputTypes = {
       readonly referralCode: CodecTypes['pg/text@1']['input'];
       readonly referredById: CodecTypes['pg/text@1']['input'] | null;
       readonly role: 'USER' | 'ADMIN';
+      readonly sessionVersion: CodecTypes['pg/int4@1']['input'];
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
     };
@@ -891,6 +893,7 @@ export type StorageColumnTypes = {
       readonly referralCode: CodecTypes['pg/text@1']['output'];
       readonly referredById: CodecTypes['pg/text@1']['output'] | null;
       readonly role: 'USER' | 'ADMIN';
+      readonly sessionVersion: CodecTypes['pg/int4@1']['output'];
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     };
@@ -1118,6 +1121,7 @@ export type StorageColumnInputTypes = {
       readonly referralCode: CodecTypes['pg/text@1']['input'];
       readonly referredById: CodecTypes['pg/text@1']['input'] | null;
       readonly role: 'USER' | 'ADMIN';
+      readonly sessionVersion: CodecTypes['pg/int4@1']['input'];
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
     };
@@ -1373,6 +1377,7 @@ export namespace Models {
     referralCode: CodecTypes['pg/text@1']['output'];
     referredById: CodecTypes['pg/text@1']['output'] | null;
     role: 'USER' | 'ADMIN';
+    sessionVersion: CodecTypes['pg/int4@1']['output'];
     status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
     updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     accountAppeals: public_AccountAppeal[];
@@ -2319,7 +2324,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly default: {
                     readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'cloudinvest'>;
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'ClaudeInvest'>;
                   };
                 };
                 readonly depositAccountNumber: {
@@ -2418,7 +2423,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly default: {
                     readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'cloudinvest'>;
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'ClaudeInvest'>;
                   };
                 };
                 readonly supportEmail: {
@@ -2861,6 +2866,15 @@ type ContractBase = Omit<
                     readonly value: DefaultLiteralValue<'pg/enum@1', 'USER'>;
                   };
                   readonly typeParams: { readonly typeName: 'UserRole' };
+                };
+                readonly sessionVersion: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
                 };
                 readonly status: {
                   readonly nativeType: 'UserStatus';
@@ -4566,6 +4580,10 @@ type ContractBase = Omit<
                   readonly typeParams: { readonly typeName: 'UserRole' };
                 };
               };
+              readonly sessionVersion: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
               readonly status: {
                 readonly nullable: false;
                 readonly type: {
@@ -4739,6 +4757,7 @@ type ContractBase = Omit<
                 readonly referralCode: { readonly column: 'referralCode' };
                 readonly referredById: { readonly column: 'referredById' };
                 readonly role: { readonly column: 'role' };
+                readonly sessionVersion: { readonly column: 'sessionVersion' };
                 readonly status: { readonly column: 'status' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
               };

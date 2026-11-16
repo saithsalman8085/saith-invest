@@ -227,6 +227,12 @@ export default function AdminPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-400">
                   Security
                 </p>
+                <AdminCard
+  href="/admin/change-password"
+  icon="🔑"
+  title="Change Password"
+  text="Secure your administrator account with a new password."
+/>
 
                 <h2 className="mt-2 text-xl font-bold">
                   Administrator Access

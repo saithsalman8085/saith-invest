@@ -2064,6 +2064,13 @@
                   }
                 }
               },
+              "sessionVersion": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
               "status": {
                 "nullable": false,
                 "type": {
@@ -2318,6 +2325,9 @@
                 },
                 "role": {
                   "column": "role"
+                },
+                "sessionVersion": {
+                  "column": "sessionVersion"
                 },
                 "status": {
                   "column": "status"
@@ -4038,7 +4048,7 @@
                   "codecId": "pg/text@1",
                   "default": {
                     "kind": "literal",
-                    "value": "cloudinvest"
+                    "value": "ClaudeInvest"
                   },
                   "nativeType": "text",
                   "nullable": false
@@ -4137,7 +4147,7 @@
                   "codecId": "pg/text@1",
                   "default": {
                     "kind": "literal",
-                    "value": "cloudinvest"
+                    "value": "ClaudeInvest"
                   },
                   "nativeType": "text",
                   "nullable": false
@@ -4713,6 +4723,15 @@
                     "plane": "storage"
                   }
                 },
+                "sessionVersion": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
                 "status": {
                   "codecId": "pg/enum@1",
                   "default": {
@@ -5247,7 +5266,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "8f26feb0be87631da530d0e1f1301ed83566c4a0413aa2f43bcd69fe2ad126df"
+    "storageHash": "98a74e91fa63c0bcc70e6f4cfdbd04dea27a9f34b6c0d9447aad69e63fedb2d6"
   },
   "execution": {
     "executionHash": "13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825",

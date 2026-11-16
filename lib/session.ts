@@ -1,6 +1,6 @@
 
 import { cookies } from "next/headers";
-import { verifySession } from "./auth";
+import { verifySession, verifySessionVersion } from "./auth";
 import { db } from "@/lib/prisma";
 
 export async function getCurrentUserId() {
@@ -12,8 +12,9 @@ export async function getCurrentUserId() {
   }
 
   const userId = await verifySession(token);
+  const sessionVersion = await verifySessionVersion(token);
 
-  if (!userId) {
+  if (!userId || sessionVersion === null) {
     return null;
   }
 
@@ -21,7 +22,11 @@ export async function getCurrentUserId() {
     .where((item) => item.id.eq(userId))
     .first();
 
-  if (!user || String(user.status) !== "ACTIVE") {
+  if (
+    !user ||
+    String(user.status) !== "ACTIVE" ||
+    Number(user.sessionVersion ?? 0) !== sessionVersion
+  ) {
     return null;
   }
 

@@ -41,9 +41,10 @@ export async function GET() {
       "ADMIN_ADJUSTMENT",
     ];
 
-    const debitTypes = [
+   const debitTypes = [
   "INVESTMENT",
   "WITHDRAWAL",
+  "WITHDRAWAL_FEE",
 ];
 
     for (const transaction of transactions) {

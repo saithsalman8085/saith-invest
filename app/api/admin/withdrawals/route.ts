@@ -55,6 +55,7 @@ function calculateBalance(transactions: any[]) {
   return balance;
 }
 
+
 export async function GET() {
   try {
     const admin = await requireAdmin();
@@ -66,12 +67,60 @@ export async function GET() {
       );
     }
 
-    const withdrawals =
-      await db.orm.public.Withdrawal.all();
+    const [withdrawals, users] = await Promise.all([
+      db.orm.public.Withdrawal.all(),
+      db.orm.public.User.all(),
+    ]);
+
+    const usersMap = new Map(
+      users.map((user: any) => [
+        String(user.id),
+        user,
+      ])
+    );
+
+    const sortedWithdrawals = [...withdrawals].sort(
+      (a: any, b: any) =>
+        new Date(String(b.requestedAt)).getTime() -
+        new Date(String(a.requestedAt)).getTime()
+    );
+
+    const formattedWithdrawals = sortedWithdrawals.map(
+      (withdrawal: any) => {
+        const user = usersMap.get(
+          String(withdrawal.userId)
+        ) as any;
+
+        return {
+          ...withdrawal,
+
+          // User profile details
+          publicUserId: user?.publicUserId || "",
+          fullName: user?.fullName || "",
+
+          // Withdrawal account details
+          paymentMethod:
+            withdrawal.paymentMethod ||
+            (withdrawal.easypaisaNumber
+              ? "Easypaisa"
+              : ""),
+
+          accountNumber:
+            withdrawal.accountNumber ||
+            withdrawal.easypaisaNumber ||
+            "",
+
+          // Date compatibility
+          submittedAt: withdrawal.requestedAt
+            ? String(withdrawal.requestedAt)
+            : "",
+        };
+      }
+    );
 
     return NextResponse.json({
       success: true,
-      withdrawals,
+      withdrawals: formattedWithdrawals,
     });
   } catch (error) {
     console.error(
@@ -87,6 +136,7 @@ export async function GET() {
     );
   }
 }
+
 
 export async function PATCH(
   request: NextRequest

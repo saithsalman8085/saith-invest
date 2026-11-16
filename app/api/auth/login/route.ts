@@ -58,7 +58,10 @@ export async function POST(request: NextRequest) {
     }
 
     if (String(user.status) === "SUSPENDED") {
-      const sessionToken = await createSession(user.id);
+      const sessionToken = await createSession(
+  user.id,
+  Number(user.sessionVersion ?? 0)
+);
 
       const response = NextResponse.json(
         {
@@ -87,7 +90,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const sessionToken = await createSession(user.id);
+    const sessionToken = await createSession(
+  user.id,
+  Number(user.sessionVersion ?? 0)
+);
 
     const response = NextResponse.json({
       success: true,
