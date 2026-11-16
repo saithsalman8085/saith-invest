@@ -108,9 +108,8 @@ export default function TransactionsPage() {
     loadTransactions();
   }, []);
 
-  
-const TRANSACTION_SUMMARY_RESET_AT =
-  "2026-11-13T00:00:00+05:00";
+  const TRANSACTION_SUMMARY_RESET_AT =
+  "2026-11-16T15:19:00+05:00";
 
 
   const totals = useMemo(() => {
