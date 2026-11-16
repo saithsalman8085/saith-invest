@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -8,8 +9,8 @@ type KycProfile = {
   fullName: string;
   email?: string | null;
   phone?: string | null;
-  cnicNumber: string;
-  easypaisaNumber: string;
+  paymentMethod: string;
+  accountNumber: string;
   accountName: string;
   isLocked: boolean;
   createdAt: string;
@@ -147,10 +148,13 @@ export default function AdminKycPage() {
         profile.publicUserId
           .toLowerCase()
           .includes(value) ||
-        profile.cnicNumber
+        profile.paymentMethod
           .toLowerCase()
           .includes(value) ||
-        profile.easypaisaNumber
+        profile.accountNumber
+          .toLowerCase()
+          .includes(value) ||
+        profile.accountName
           .toLowerCase()
           .includes(value)
       );
@@ -190,7 +194,7 @@ export default function AdminKycPage() {
             onChange={(e) =>
               setSearch(e.target.value)
             }
-            placeholder="Search name, email, phone, user ID, CNIC..."
+            placeholder="Search name, email, phone, user ID, payment details..."
             className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-cyan-500/50"
           />
         </div>
@@ -216,11 +220,11 @@ export default function AdminKycPage() {
                       </th>
 
                       <th className="px-5 py-4">
-                        CNIC
+                        Payment Method
                       </th>
 
                       <th className="px-5 py-4">
-                        Easypaisa
+                        Account Number
                       </th>
 
                       <th className="px-5 py-4">
@@ -265,16 +269,16 @@ export default function AdminKycPage() {
                             </div>
                           </td>
 
+                          <td className="px-5 py-5 text-sm text-slate-300">
+                            {profile.paymentMethod || "—"}
+                          </td>
+
                           <td className="px-5 py-5 font-mono text-sm text-slate-300">
-                            {profile.cnicNumber}
+                            {profile.accountNumber || "—"}
                           </td>
 
                           <td className="px-5 py-5 text-sm text-slate-300">
-                            {profile.easypaisaNumber}
-                          </td>
-
-                          <td className="px-5 py-5 text-sm text-slate-300">
-                            {profile.accountName}
+                            {profile.accountName || "—"}
                           </td>
 
                           <td className="px-5 py-5">
@@ -295,9 +299,7 @@ export default function AdminKycPage() {
                             {profile.isLocked ? (
                               <button
                                 onClick={() =>
-                                  unlockKyc(
-                                    profile
-                                  )
+                                  unlockKyc(profile)
                                 }
                                 disabled={
                                   actionLoading ===
@@ -354,21 +356,21 @@ export default function AdminKycPage() {
                     <div className="mt-5 space-y-3 text-sm">
                       <div>
                         <p className="text-xs text-slate-500">
-                          CNIC
+                          Payment Method
                         </p>
 
-                        <p className="mt-1 font-mono text-slate-300">
-                          {profile.cnicNumber}
+                        <p className="mt-1 text-slate-300">
+                          {profile.paymentMethod || "—"}
                         </p>
                       </div>
 
                       <div>
                         <p className="text-xs text-slate-500">
-                          Easypaisa
+                          Account Number
                         </p>
 
-                        <p className="mt-1 text-slate-300">
-                          {profile.easypaisaNumber}
+                        <p className="mt-1 font-mono text-slate-300">
+                          {profile.accountNumber || "—"}
                         </p>
                       </div>
 
@@ -378,7 +380,7 @@ export default function AdminKycPage() {
                         </p>
 
                         <p className="mt-1 text-slate-300">
-                          {profile.accountName}
+                          {profile.accountName || "—"}
                         </p>
                       </div>
                     </div>
@@ -386,9 +388,7 @@ export default function AdminKycPage() {
                     {profile.isLocked && (
                       <button
                         onClick={() =>
-                          unlockKyc(
-                            profile
-                          )
+                          unlockKyc(profile)
                         }
                         disabled={
                           actionLoading ===

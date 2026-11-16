@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/admin";
@@ -58,9 +59,9 @@ export async function GET(request: NextRequest) {
         fullName: user.fullName,
         email: user.email,
         phone: user.phone,
-        cnicNumber: profile.cnicNumber,
-        easypaisaNumber: profile.easypaisaNumber,
-        accountName: profile.accountName,
+        paymentMethod: profile.paymentMethod || "",
+        accountNumber: profile.accountNumber || "",
+        accountName: profile.accountName || "",
         isLocked: Boolean(profile.isLocked),
         createdAt: profile.createdAt,
         updatedAt: profile.updatedAt,
@@ -141,8 +142,7 @@ export async function PATCH(request: NextRequest) {
     if (!Boolean(profile.isLocked)) {
       return NextResponse.json(
         {
-          error:
-            "This KYC profile is already unlocked.",
+          error: "This KYC profile is already unlocked.",
         },
         { status: 400 }
       );
