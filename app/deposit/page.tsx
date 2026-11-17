@@ -28,8 +28,7 @@ const DEFAULT_SETTINGS: DepositSettings = {
   paymentMethod: "Easypaisa",
   accountName: "cloudinvest",
   accountNumber: "",
-  instructions:
-    "Send payment to the account above, then upload a clear screenshot of your payment.",
+  instructions: "Send payment to the account above, then upload a clear screenshot of your payment.",
   exchangeRate: "300",
 };
 
@@ -374,12 +373,6 @@ export default function DepositPage() {
                   </p>
                 </div>
               </div>
-
-              <div className="mt-3 rounded-xl border border-yellow-300 bg-white/70 px-3 py-2.5 sm:mt-4 sm:px-4 sm:py-3">
-                <p className="text-[10px] font-semibold text-yellow-800 sm:text-xs">
-                  ⚠ Upload a clear screenshot showing the successful payment.
-                </p>
-              </div>
             </div>
 
             <div className="p-4 sm:p-6">
@@ -494,25 +487,6 @@ export default function DepositPage() {
                       </p>
                     </div>
                   )}
-
-                  <div className="mt-2.5 flex items-start gap-2 rounded-lg bg-white px-2.5 py-2">
-                    <span className="text-xs text-yellow-600">✓</span>
-                    <p className="text-[9px] leading-4 text-gray-500 sm:text-xs">
-                      Admin will review this screenshot before approving your deposit.
-                    </p>
-                  </div>
-                </div>
-
-                {/* IMPORTANT */}
-                <div className="rounded-xl border border-yellow-300 bg-yellow-50 p-3.5 sm:p-4">
-                  <p className="text-xs font-bold text-yellow-800 sm:text-sm">
-                    Important
-                  </p>
-
-                  <p className="mt-1.5 text-[10px] leading-4 text-gray-700 sm:text-xs sm:leading-5">
-                    Make the payment first, then enter the exact amount and
-                    upload its screenshot. Your wallet is credited after admin approval.
-                  </p>
                 </div>
 
                 {/* SUBMIT */}
@@ -526,10 +500,6 @@ export default function DepositPage() {
                     ? "Submitting..."
                     : "Submit Deposit"}
                 </button>
-
-                <p className="text-center text-[9px] text-gray-400 sm:text-xs">
-                  Your deposit will remain pending until approved by admin.
-                </p>
               </div>
             </div>
           </section>
