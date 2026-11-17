@@ -367,10 +367,6 @@ export default function DepositPage() {
                   <h2 className="text-lg font-bold sm:text-2xl">
                     Submit Deposit
                   </h2>
-
-                  <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-sm sm:leading-5">
-                    Enter your payment amount and upload its screenshot here.
-                  </p>
                 </div>
               </div>
             </div>
