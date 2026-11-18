@@ -562,9 +562,12 @@ export default function DepositPage() {
                               deposit.status
                             )}`}
                           >
-                            {deposit.status}
+                            {deposit.status.toUpperCase() === "APPROVED"
+  ? "Successful"
+  : deposit.status}
                           </span>
                         </div>
+
 
                         <div>
                           <p className="text-[7px] uppercase text-gray-400">

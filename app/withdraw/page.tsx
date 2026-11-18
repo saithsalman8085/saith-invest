@@ -403,11 +403,15 @@ export default function WithdrawPage() {
   }
 
   function formatStatus(status: string) {
-    return status.toLowerCase().replace(
-      /^./,
-      (letter) => letter.toUpperCase()
-    );
+  if (status.toUpperCase() === "APPROVED") {
+    return "Successful";
   }
+
+  return status.toLowerCase().replace(
+    /^./,
+    (letter) => letter.toUpperCase()
+  );
+}
 
   function formatDate(date: string) {
     try {
