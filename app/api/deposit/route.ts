@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { db } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/session";
+import { sendAdminPushNotification } from "@/lib/push-notifications";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -183,6 +184,12 @@ export async function POST(request: NextRequest) {
       transactionId: null,
       status: "PENDING",
     } as any);
+
+    await sendAdminPushNotification({
+  title: "New Deposit Request",
+  body: `A new deposit request of Rs. ${amountPKR} has been submitted.`,
+  url: "/admin",
+});
 
     return NextResponse.json(
       {

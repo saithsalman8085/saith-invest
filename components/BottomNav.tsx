@@ -167,11 +167,11 @@ export default function BottomNav() {
 
           {/* Colorful top glow */}
           <div className="pointer-events-none absolute left-[8%] right-[8%] top-0 h-1 overflow-hidden rounded-full">
-            <div className="h-full w-full bg-gradient-to-r from-blue-400 via-purple-400 via-yellow-400 via-emerald-400 to-pink-400 opacity-90" />
+            <div className="h-full w-full bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 opacity-90" />
           </div>
 
           {/* Soft bottom glow */}
-          <div className="pointer-events-none absolute -bottom-2 left-[10%] right-[10%] h-5 rounded-full bg-gradient-to-r from-blue-400/10 via-purple-400/10 via-yellow-400/10 via-emerald-400/10 to-pink-400/10 blur-xl" />
+          <div className="pointer-events-none absolute -bottom-2 left-[10%] right-[10%] h-5 rounded-full bg-linear-to-r from-blue-400/10 via-purple-400/10 to-pink-400/10 blur-xl" />
 
           <div className="grid grid-cols-5 items-end">
             {items.map((item) => {
@@ -225,7 +225,7 @@ export default function BottomNav() {
                   key={item.href}
                   href={item.href}
                   onClick={() => handleClick(item.href)}
-                  className="group relative flex min-h-[60px] flex-col items-center justify-end"
+                  className="group relative flex min-h-15 flex-col items-center justify-end"
                 >
                   {isClicked && (
                     <span
@@ -241,8 +241,8 @@ export default function BottomNav() {
                     <div
                       className={`absolute -top-7 flex h-14 w-14 items-center justify-center rounded-full border-4 border-white transition-all duration-200 ${
                         active
-                          ? "bg-gradient-to-br from-yellow-300 via-yellow-400 to-orange-400 text-black shadow-[0_0_28px_rgba(250,204,21,0.55)]"
-                          : "bg-gradient-to-br from-gray-100 to-white text-gray-500 shadow-[0_8px_20px_rgba(0,0,0,0.16)]"
+                          ? "bg-linear-to-br from-yellow-300 via-yellow-400 to-orange-400 text-black shadow-[0_0_28px_rgba(250,204,21,0.55)]"
+                          : "bg-linear-to-br from-gray-100 to-white text-gray-500 shadow-[0_8px_20px_rgba(0,0,0,0.16)]"
                       } ${
                         isClicked
                           ? "scale-75 rotate-12"

@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'98a74e91fa63c0bcc70e6f4cfdbd04dea27a9f34b6c0d9447aad69e63fedb2d6'>;
+  StorageHashBase<'d8257a07e988c4d1f130fe790fb7f0db2837b2ee7d6a6f1b4bc1b414277d8e6e'>;
 export type ExecutionHash =
-  ExecutionHashBase<'13168e941242ad5a0632e6b4e90b8c98f7dde1846ab5bd63b0aba21f89d0c825'>;
+  ExecutionHashBase<'565887259e3819b058ad8a831724c6470da884f75dcfd9327af9ef50ee858461'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -272,6 +272,15 @@ export type FieldOutputTypes = {
       readonly rewardAmount: Numeric<18, 2>;
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
+    readonly AdminPushSubscription: {
+      readonly adminId: CodecTypes['pg/text@1']['output'];
+      readonly auth: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly endpoint: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly p256dh: CodecTypes['pg/text@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    };
     readonly AuditLog: {
       readonly action:
         | 'PASSWORD_RESET'
@@ -499,6 +508,15 @@ export type FieldInputTypes = {
       readonly periodStart: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly rewardAmount: CodecTypes['pg/numeric@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly AdminPushSubscription: {
+      readonly adminId: CodecTypes['pg/text@1']['input'];
+      readonly auth: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly endpoint: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly p256dh: CodecTypes['pg/text@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
     };
     readonly AuditLog: {
       readonly action:
@@ -728,6 +746,15 @@ export type StorageColumnTypes = {
       readonly rewardAmount: Numeric<18, 2>;
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
+    readonly AdminPushSubscription: {
+      readonly adminId: CodecTypes['pg/text@1']['output'];
+      readonly auth: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly endpoint: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly p256dh: CodecTypes['pg/text@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    };
     readonly AuditLog: {
       readonly action:
         | 'PASSWORD_RESET'
@@ -955,6 +982,15 @@ export type StorageColumnInputTypes = {
       readonly periodStart: CodecTypes['pg/timestamp-temporal@1']['input'];
       readonly rewardAmount: CodecTypes['pg/numeric@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly AdminPushSubscription: {
+      readonly adminId: CodecTypes['pg/text@1']['input'];
+      readonly auth: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly endpoint: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly p256dh: CodecTypes['pg/text@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
     };
     readonly AuditLog: {
       readonly action:
@@ -1188,6 +1224,17 @@ export namespace Models {
     user: public_User;
     readonly [RelationKeys]?: 'user';
   };
+  export type public_AdminPushSubscription = {
+    adminId: CodecTypes['pg/text@1']['output'];
+    auth: CodecTypes['pg/text@1']['output'];
+    createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    endpoint: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/text@1']['output'];
+    p256dh: CodecTypes['pg/text@1']['output'];
+    updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    admin: public_User;
+    readonly [RelationKeys]?: 'admin';
+  };
   export type public_AuditLog = {
     action:
       | 'PASSWORD_RESET'
@@ -1382,6 +1429,7 @@ export namespace Models {
     updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     accountAppeals: public_AccountAppeal[];
     adminAuditLogs: public_AuditLog[];
+    adminPushSubscriptions: public_AdminPushSubscription[];
     auditLogs: public_AuditLog[];
     deposits: public_Deposit[];
     earningCollections: public_EarningCollection[];
@@ -1396,6 +1444,7 @@ export namespace Models {
     readonly [RelationKeys]?:
       | 'accountAppeals'
       | 'adminAuditLogs'
+      | 'adminPushSubscriptions'
       | 'auditLogs'
       | 'deposits'
       | 'earningCollections'
@@ -1452,6 +1501,7 @@ export declare const models: {
   public: {
     AccountAppeal: Models.public_AccountAppeal;
     ActiveUserReward: Models.public_ActiveUserReward;
+    AdminPushSubscription: Models.public_AdminPushSubscription;
     AuditLog: Models.public_AuditLog;
     Deposit: Models.public_Deposit;
     EarningCollection: Models.public_EarningCollection;
@@ -1655,6 +1705,76 @@ type ContractBase = Omit<
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'ActiveUserReward';
                     readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly AdminPushSubscription: {
+              columns: {
+                readonly adminId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly auth: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly typeParams: { readonly precision: 3 };
+                };
+                readonly endpoint: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly p256dh: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly updatedAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'AdminPushSubscription_adminId_idx';
+                  readonly columns: readonly ['adminId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'AdminPushSubscription_endpoint_key';
+                  readonly columns: readonly ['endpoint'];
+                  readonly unique: true;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'AdminPushSubscription';
+                    readonly columns: readonly ['adminId'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
@@ -3278,6 +3398,10 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ActiveUserReward';
     };
+    readonly AdminPushSubscription: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'AdminPushSubscription';
+    };
     readonly AuditLog: { readonly namespace: 'public' & NamespaceId; readonly model: 'AuditLog' };
     readonly Deposit: { readonly namespace: 'public' & NamespaceId; readonly model: 'Deposit' };
     readonly EarningCollection: {
@@ -3487,6 +3611,70 @@ type ContractBase = Omit<
                 readonly periodStart: { readonly column: 'periodStart' };
                 readonly rewardAmount: { readonly column: 'rewardAmount' };
                 readonly userId: { readonly column: 'userId' };
+              };
+            };
+          };
+          readonly AdminPushSubscription: {
+            readonly fields: {
+              readonly adminId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly auth: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly endpoint: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly p256dh: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+            };
+            readonly relations: {
+              readonly admin: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['adminId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'AdminPushSubscription';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly adminId: { readonly column: 'adminId' };
+                readonly auth: { readonly column: 'auth' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly endpoint: { readonly column: 'endpoint' };
+                readonly id: { readonly column: 'id' };
+                readonly p256dh: { readonly column: 'p256dh' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
               };
             };
           };
@@ -4624,6 +4812,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['adminId'];
                 };
               };
+              readonly adminPushSubscriptions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AdminPushSubscription';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['adminId'];
+                };
+              };
               readonly auditLogs: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -5060,6 +5259,23 @@ type ContractBase = Omit<
           readonly ref: {
             readonly entry: 'ActiveUserReward';
             readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'cuid2'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'AdminPushSubscription';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'plainDateTimeNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'plainDateTimeNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'AdminPushSubscription';
+            readonly field: 'updatedAt';
             readonly namespace: 'public';
           };
         },

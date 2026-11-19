@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/session";
+import { sendAdminPushNotification } from "@/lib/push-notifications";
 
 function isWithdrawalTimeAllowed(
   openingHour: number,
@@ -438,6 +439,12 @@ const withdrawalData = {
       await db.orm.public.Withdrawal.create(
         withdrawalData
       );
+
+      await sendAdminPushNotification({
+  title: "New Withdrawal Request",
+  body: `A new withdrawal request of $${amountUSD.toFixed(2)} has been submitted.`,
+  url: "/admin",
+});
 
     return NextResponse.json(
       {
