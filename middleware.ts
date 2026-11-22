@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
@@ -56,9 +57,13 @@ export async function middleware(
     await getSessionUserId(token);
 
   if (!userId) {
-    return NextResponse.redirect(
+    const response = NextResponse.redirect(
       new URL("/login", request.url)
     );
+
+    response.cookies.delete("claudeinvest_session");
+
+    return response;
   }
 
   if (isAdmin) {

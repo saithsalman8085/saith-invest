@@ -140,9 +140,10 @@ export default function LoginPage() {
                   className="h-11 w-11 rounded-xl object-contain"
                 />
 
-                <div className="text-xl font-bold tracking-tight text-black sm:text-2xl">
-                  cloudinvest
-                </div>
+                <div className="text-xl font-bold tracking-tight sm:text-2xl">
+  <span className="text-black">Cloud</span>
+  <span className="text-yellow-600">Invest</span>
+</div>
               </div>
 
               <h1 className="mt-3 text-2xl font-bold sm:text-3xl">

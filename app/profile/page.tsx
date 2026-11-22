@@ -166,7 +166,7 @@ export default function ProfilePage() {
               <div className="mt-4 grid gap-2 sm:mt-5 sm:grid-cols-2 sm:gap-3">
                 <div className="rounded-xl border border-yellow-300 bg-linear-to-br from-yellow-50 to-amber-50 p-3 sm:rounded-2xl sm:p-4">
                   <p className="text-[8px] font-bold uppercase tracking-wider text-yellow-700 sm:text-[10px]">
-                    Your User ID
+                    Your UID
                   </p>
 
                   <div className="mt-1.5 flex items-center justify-between gap-2">
@@ -357,14 +357,23 @@ export default function ProfilePage() {
           </section>
 
           {/* Logout */}
-          <div className="mt-5 text-center sm:mt-7">
-            <Link
-              href="/login"
-              className="inline-flex rounded-lg border border-red-200 bg-white px-4 py-2 text-[10px] font-semibold text-red-500 transition hover:border-red-300 hover:bg-red-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-xs"
-            >
-              Logout
-            </Link>
-          </div>
+<div className="mt-5 text-center sm:mt-7">
+  <button
+    type="button"
+    onClick={async () => {
+      try {
+        await fetch("/api/auth/logout", {
+          method: "POST",
+        });
+      } finally {
+        window.location.href = "/login";
+      }
+    }}
+    className="inline-flex rounded-lg border border-red-200 bg-white px-4 py-2 text-[10px] font-semibold text-red-500 transition hover:border-red-300 hover:bg-red-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-xs"
+  >
+    Logout
+  </button>
+</div>
 
           {/* Footer */}
           <div className="py-4 text-center text-[9px] text-gray-400 sm:py-6 sm:text-xs">
