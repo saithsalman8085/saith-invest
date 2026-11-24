@@ -5,6 +5,25 @@ import { requireAdmin } from "@/lib/admin";
 import "temporal-polyfill/full/global";
 import { Temporal } from "temporal-polyfill";
 
+async function sendDepositNotification(
+  userId: string,
+  title: string,
+  message: string,
+  type: string
+) {
+  try {
+    await db.orm.public.Notification.create({
+      userId,
+      title,
+      message,
+      type,
+      isRead: false,
+    } as any);
+  } catch (error) {
+    console.error("DEPOSIT_NOTIFICATION_ERROR:", error);
+  }
+}
+
 export async function GET() {
   try {
     const admin = await requireAdmin();
@@ -36,7 +55,6 @@ export async function GET() {
       )
       .map((deposit) => ({
         id: deposit.id,
-        // Return the user's 6-digit public ID, never the internal database ID.
         userId: publicUserIds.get(deposit.userId) || "—",
         amountPKR: String(deposit.amountPKR),
         exchangeRate: String(deposit.exchangeRate),
@@ -176,6 +194,13 @@ export async function PATCH(request: NextRequest) {
         },
       } as any);
 
+      await sendDepositNotification(
+        deposit.userId,
+        "Deposit Rejected",
+        `Your deposit request of PKR ${deposit.amountPKR} has been rejected. Reason: ${finalReason}`,
+        "DEPOSIT_REJECTED"
+      );
+
       return NextResponse.json({
         success: true,
         message: "Deposit rejected successfully.",
@@ -275,6 +300,13 @@ export async function PATCH(request: NextRequest) {
         balanceAfter: newBalance,
       },
     } as any);
+
+    await sendDepositNotification(
+      deposit.userId,
+      "Deposit Approved",
+      `Your deposit of PKR ${deposit.amountPKR} has been approved. $${creditAmount.toFixed(2)} has been added to your wallet.`,
+      "DEPOSIT_APPROVED"
+    );
 
     return NextResponse.json({
       success: true,

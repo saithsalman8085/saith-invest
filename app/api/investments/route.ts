@@ -366,12 +366,30 @@ export async function POST(request: NextRequest) {
           )
           .first();
 
+      
       if (!beneficiary) {
         break;
       }
 
+      // Notify this referral ancestor about the investment.
+      try {
+        await db.orm.public.Notification.create({
+          userId: beneficiary.id,
+          title: "Referral Investment",
+          message: `User ID ${buyer?.publicUserId || userId} has made a new investment through your ${referralLevels[index].replace("_", " ")} referral network.`,
+          type: "REFERRAL_INVESTMENT",
+          isRead: false,
+        } as any);
+      } catch (notificationError) {
+        console.error(
+          `REFERRAL_INVESTMENT_NOTIFICATION_LEVEL_${index + 1}_ERROR:`,
+          notificationError
+        );
+      }
+
       const percent =
         referralPercents[index] || 0;
+
 
       if (percent > 0) {
         const commissionAmount =

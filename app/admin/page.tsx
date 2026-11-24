@@ -212,11 +212,11 @@ export default function AdminPage() {
               />
 
               <AdminCard
-                href="/admin/audit-logs"
-                icon="🔐"
-                title="Audit Logs"
-                text="Review important administrative actions."
-              />
+  href="/admin/notifications"
+  icon="🔔"
+  title="Notifications"
+  text="Send notifications to individual users or all users."
+/>
             </div>
           </div>
 

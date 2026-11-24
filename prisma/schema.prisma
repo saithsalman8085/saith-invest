@@ -116,6 +116,7 @@ model User {
   phone        String?    @unique
   passwordHash String
   sessionVersion Int @default(0)
+  notifications Notification[]
 
   referralCode String     @unique
 
@@ -624,4 +625,18 @@ model AdminPushSubscription {
   updatedAt DateTime @updatedAt
 
   @@index([adminId])
+}
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String   @db.Text
+  type      String   @default("GENERAL")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userId, isRead])
 }

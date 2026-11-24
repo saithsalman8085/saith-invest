@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { Temporal } from "temporal-polyfill";
 import { db } from "@/lib/prisma";
@@ -23,6 +24,7 @@ function toPlainDateTime(date: Date) {
     })
   );
 }
+
 function plainDateTimeToDate(value: unknown) {
   const plain = Temporal.PlainDateTime.from(
     String(value)
@@ -126,9 +128,9 @@ export async function POST(request: NextRequest) {
     const now = new Date();
 
     const nextCollectionAt =
-  plainDateTimeToDate(
-    investment.nextCollectionAt
-  );
+      plainDateTimeToDate(
+        investment.nextCollectionAt
+      );
 
     const remainingMs =
       nextCollectionAt.getTime() - now.getTime();
@@ -270,6 +272,22 @@ export async function POST(request: NextRequest) {
           nextCollectionAt:
             nextCollectionTemporal,
         } as any);
+    }
+
+    // Notify only the user who collected the earning.
+    try {
+      await db.orm.public.Notification.create({
+        userId,
+        title: "Daily Earning Received",
+        message: `Your daily earning of $${earning.toFixed(2)} has been successfully collected and added to your wallet.`,
+        type: "EARNING",
+        isRead: false,
+      } as any);
+    } catch (notificationError) {
+      console.error(
+        "EARNING_NOTIFICATION_ERROR:",
+        notificationError
+      );
     }
 
     return NextResponse.json(

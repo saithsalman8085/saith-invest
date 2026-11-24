@@ -24,6 +24,53 @@ function isBlockedEmail(email: string) {
   return isDisposableEmail(email);
 }
 
+async function notifyReferralAncestors(
+  referredById: string | null,
+  newMemberPublicId: string
+) {
+  if (!referredById) return;
+
+  const levels = [
+    { level: 1, label: "Level 1" },
+    { level: 2, label: "Level 2" },
+    { level: 3, label: "Level 3" },
+  ];
+
+  let currentReferrerId: string | null = referredById;
+
+  for (const item of levels) {
+    if (!currentReferrerId) break;
+
+    try {
+      const referrer =
+        await db.orm.public.User
+          .where((user) =>
+            user.id.eq(currentReferrerId!)
+          )
+          .first();
+
+      if (!referrer) break;
+
+      await db.orm.public.Notification.create({
+        userId: referrer.id,
+        title: "New Referral Joined",
+        message: `A new member with User ID ${newMemberPublicId} has joined your referral network at ${item.label}.`,
+        type: "REFERRAL_JOINED",
+        isRead: false,
+      } as any);
+
+      currentReferrerId =
+        referrer.referredById || null;
+    } catch (error) {
+      console.error(
+        `REFERRAL_LEVEL_${item.level}_NOTIFICATION_ERROR:`,
+        error
+      );
+      break;
+    }
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -159,6 +206,12 @@ export async function POST(request: NextRequest) {
         description: "Welcome bonus",
       } as any);
     }
+
+    // Notify the user's Level 1, Level 2 and Level 3 referrers.
+    await notifyReferralAncestors(
+      referredById,
+      String(user.publicUserId)
+    );
 
     // Automatically create login session.
     const sessionToken = await createSession(

@@ -1,3 +1,4 @@
+
 import "temporal-polyfill/full/global";
 
 const Temporal = (globalThis as any).Temporal;
@@ -20,6 +21,28 @@ const DEBIT_TYPES = [
   "INVESTMENT",
   "WITHDRAWAL",
 ];
+
+async function sendWithdrawalNotification(
+  userId: string,
+  title: string,
+  message: string,
+  type: string
+) {
+  try {
+    await db.orm.public.Notification.create({
+      userId,
+      title,
+      message,
+      type,
+      isRead: false,
+    } as any);
+  } catch (error) {
+    console.error(
+      "WITHDRAWAL_NOTIFICATION_ERROR:",
+      error
+    );
+  }
+}
 
 function calculateBalance(transactions: any[]) {
   let balance = 0;
@@ -54,7 +77,6 @@ function calculateBalance(transactions: any[]) {
 
   return balance;
 }
-
 
 export async function GET() {
   try {
@@ -93,24 +115,17 @@ export async function GET() {
 
         return {
           ...withdrawal,
-
-          // User profile details
           publicUserId: user?.publicUserId || "",
           fullName: user?.fullName || "",
-
-          // Withdrawal account details
           paymentMethod:
             withdrawal.paymentMethod ||
             (withdrawal.easypaisaNumber
               ? "Easypaisa"
               : ""),
-
           accountNumber:
             withdrawal.accountNumber ||
             withdrawal.easypaisaNumber ||
             "",
-
-          // Date compatibility
           submittedAt: withdrawal.requestedAt
             ? String(withdrawal.requestedAt)
             : "",
@@ -136,7 +151,6 @@ export async function GET() {
     );
   }
 }
-
 
 export async function PATCH(
   request: NextRequest
@@ -250,6 +264,13 @@ export async function PATCH(
         },
       } as any);
 
+      await sendWithdrawalNotification(
+        withdrawal.userId,
+        "Withdrawal Rejected",
+        `Your withdrawal request of $${Number(withdrawal.amountUSD).toFixed(2)} has been rejected. Reason: ${rejectionReason}`,
+        "WITHDRAWAL_REJECTED"
+      );
+
       return NextResponse.json({
         success: true,
         message:
@@ -349,10 +370,10 @@ export async function PATCH(
     }
 
     const balanceAfterWithdrawal =
-  balance - requestedAmount;
+      balance - requestedAmount;
 
-const balanceAfterFee =
-  balanceAfterWithdrawal;
+    const balanceAfterFee =
+      balanceAfterWithdrawal;
 
     await db.orm.public.Transaction.create({
       userId: withdrawal.userId,
@@ -409,6 +430,13 @@ const balanceAfterFee =
         balanceAfter: balanceAfterFee,
       },
     } as any);
+
+    await sendWithdrawalNotification(
+      withdrawal.userId,
+      "Withdrawal Approved",
+      `Your withdrawal request of $${requestedAmount.toFixed(2)} has been approved successfully.`,
+      "WITHDRAWAL_APPROVED"
+    );
 
     return NextResponse.json({
       success: true,

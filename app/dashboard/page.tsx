@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import BottomNav from "@/components/BottomNav";
 import MainNav from "@/components/MainNav";
+import NotificationsBell from "@/components/NotificationsBell";
 
 type Investment = {
   id: string;
@@ -330,6 +331,9 @@ function dismissWhatsAppPopup() {
 
           {/* Centered Header */}
           <header className="relative mb-3 overflow-hidden rounded-2xl border border-yellow-100 bg-white shadow-[0_4px_18px_rgba(0,0,0,0.05)] sm:mb-5 sm:rounded-3xl">
+            <div className="absolute right-3 top-3 z-30">
+  <NotificationsBell />
+</div>
 
             <style jsx>{`
               @keyframes coinFloat {
