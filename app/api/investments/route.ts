@@ -18,6 +18,16 @@ const DEBIT_TYPES = [
   "WITHDRAWAL_FEE",
 ];
 
+// Is date ke baad register hone wale users daily referral system use karenge.
+const DAILY_REFERRAL_START_AT =
+  Temporal.PlainDateTime.from("2026-11-24T16:16:46");
+
+const REFERRAL_LEVELS = [
+  { level: "LEVEL_1", percentField: "level1Percent" },
+  { level: "LEVEL_2", percentField: "level2Percent" },
+  { level: "LEVEL_3", percentField: "level3Percent" },
+] as const;
+
 function toPlainDateTime(date: Date) {
   return Temporal.PlainDateTime.from(
     date.toLocaleString("sv-SE", {
@@ -53,6 +63,123 @@ async function getWalletBalance(userId: string) {
   }
 
   return balance;
+}
+
+// First-day earning par naye users ke referrers ko commission.
+async function payFirstDayReferralCommissions({
+  buyer,
+  investment,
+  earning,
+  earningCollectionId,
+}: {
+  buyer: any;
+  investment: any;
+  earning: number;
+  earningCollectionId: string;
+}) {
+  try {
+    if (
+      !buyer ||
+      Temporal.PlainDateTime.compare(
+        buyer.createdAt,
+        DAILY_REFERRAL_START_AT
+      ) < 0
+    ) {
+      return;
+    }
+
+    let currentReferrerId = buyer.referredById;
+
+    for (const referralLevel of REFERRAL_LEVELS) {
+      if (!currentReferrerId) break;
+
+      const beneficiary =
+        await db.orm.public.User
+          .where((user) =>
+            user.id.eq(currentReferrerId)
+          )
+          .first();
+
+      if (!beneficiary) break;
+
+      const percent = Number(
+        investment[referralLevel.percentField]
+      );
+
+      const commissionAmount = Number(
+        (earning * (percent / 100)).toFixed(2)
+      );
+
+      if (
+        Number.isFinite(percent) &&
+        percent > 0 &&
+        commissionAmount > 0
+      ) {
+        const referenceId =
+          `DAILY_REFERRAL:${earningCollectionId}:${referralLevel.level}`;
+
+        const existingTransaction =
+          await db.orm.public.Transaction
+            .where((transaction) =>
+              transaction.referenceId.eq(referenceId)
+            )
+            .first();
+
+        if (!existingTransaction) {
+          const balance =
+            await getWalletBalance(beneficiary.id);
+
+          const balanceAfter =
+            balance + commissionAmount;
+
+          await db.orm.public.ReferralCommission.create({
+            beneficiaryId: beneficiary.id,
+            sourceUserId: buyer.id,
+            investmentId: investment.id,
+            level: referralLevel.level,
+            percent: String(percent),
+            investmentAmount: String(earning),
+            commissionAmount: commissionAmount.toFixed(2),
+          } as any);
+
+          await db.orm.public.Transaction.create({
+            userId: beneficiary.id,
+            type: "REFERRAL_COMMISSION",
+            status: "COMPLETED",
+            amountUSD: commissionAmount.toFixed(2),
+            balanceBefore: balance.toFixed(2),
+            balanceAfter: balanceAfter.toFixed(2),
+            referenceId,
+            description:
+              `First day referral commission from user UID ${buyer.publicUserId}`,
+          } as any);
+
+          try {
+            await db.orm.public.Notification.create({
+              userId: beneficiary.id,
+              title: "Daily Referral Earning",
+              message:
+                `User UID ${buyer.publicUserId} se first day earning ka $${commissionAmount.toFixed(2)} commission mila (${referralLevel.level.replace("_", " ")} - ${percent}%).`,
+              type: "REFERRAL",
+              isRead: false,
+            } as any);
+          } catch (notificationError) {
+            console.error(
+              "FIRST_DAY_REFERRAL_NOTIFICATION_ERROR:",
+              notificationError
+            );
+          }
+        }
+      }
+
+      currentReferrerId = beneficiary.referredById;
+    }
+  } catch (error) {
+    console.error(
+      "FIRST_DAY_REFERRAL_COMMISSION_ERROR:",
+      error
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -264,6 +391,8 @@ export async function POST(request: NextRequest) {
     const firstDayEarning =
       Number(plan.dailyEarning);
 
+    let firstDayEarningCollectionId: string | null = null;
+
     if (
       Number.isFinite(firstDayEarning) &&
       firstDayEarning > 0
@@ -291,19 +420,38 @@ export async function POST(request: NextRequest) {
             `First day earning from ${plan.name}`,
         } as any);
 
-      await db.orm.public.EarningCollection.create({
-        investmentId: investment.id,
-        userId,
-        amount: String(firstDayEarning),
-        collectedAt: nowTemporal,
-        transactionId: earningTransaction.id,
-      } as any);
+      const firstDayCollection =
+        await db.orm.public.EarningCollection.create({
+          investmentId: investment.id,
+          userId,
+          amount: String(firstDayEarning),
+          collectedAt: nowTemporal,
+          transactionId: earningTransaction.id,
+        } as any);
+
+      firstDayEarningCollectionId =
+        firstDayCollection.id;
     }
 
     const buyer =
       await db.orm.public.User
         .where((user) => user.id.eq(userId))
         .first();
+
+    // First-day earning par naye users ki referral commission.
+    if (
+      buyer &&
+      firstDayEarningCollectionId &&
+      Number.isFinite(firstDayEarning) &&
+      firstDayEarning > 0
+    ) {
+      await payFirstDayReferralCommissions({
+        buyer,
+        investment,
+        earning: firstDayEarning,
+        earningCollectionId: firstDayEarningCollectionId,
+      });
+    }
 
     let directReferralBonus = 0;
 
@@ -343,9 +491,7 @@ export async function POST(request: NextRequest) {
       Number(plan.level3Percent),
     ];
 
-    let currentUserId:
-      | string
-      | null =
+    let currentUserId: string | null =
       buyer?.referredById || null;
 
     const referralLevels = [
@@ -366,17 +512,17 @@ export async function POST(request: NextRequest) {
           )
           .first();
 
-      
       if (!beneficiary) {
         break;
       }
 
-      // Notify this referral ancestor about the investment.
+      // Referral investment notification.
       try {
         await db.orm.public.Notification.create({
           userId: beneficiary.id,
           title: "Referral Investment",
-          message: `User ID ${buyer?.publicUserId || userId} has made a new investment through your ${referralLevels[index].replace("_", " ")} referral network.`,
+          message:
+            `User ID ${buyer?.publicUserId || userId} has made a new investment through your ${referralLevels[index].replace("_", " ")} referral network.`,
           type: "REFERRAL_INVESTMENT",
           isRead: false,
         } as any);
@@ -390,16 +536,21 @@ export async function POST(request: NextRequest) {
       const percent =
         referralPercents[index] || 0;
 
-
-      if (percent > 0) {
+      // Sirf purane users ko purchase par percentage commission.
+      if (
+        percent > 0 &&
+        buyer &&
+        Temporal.PlainDateTime.compare(
+          buyer.createdAt,
+          DAILY_REFERRAL_START_AT
+        ) < 0
+      ) {
         const commissionAmount =
           amount * (percent / 100);
 
         if (commissionAmount > 0) {
           const beneficiaryBalance =
-            await getWalletBalance(
-              beneficiary.id
-            );
+            await getWalletBalance(beneficiary.id);
 
           const beneficiaryBalanceAfter =
             beneficiaryBalance +
