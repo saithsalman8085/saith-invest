@@ -119,7 +119,7 @@ export default function NotificationsBell() {
 
     if (Number.isNaN(date.getTime())) return "";
 
-    return date.toLocaleString();
+    return date.toLocaleDateString();
   }
 
   return (
@@ -146,19 +146,19 @@ export default function NotificationsBell() {
           }`}
         >
           <path
-  stroke="#facc15"
-  strokeWidth="1.8"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-/>
+            stroke="#facc15"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+          />
           <path
-  stroke="#ffffff"
-  strokeWidth="1.8"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  d="M10 21h4"
-/>
+            stroke="#ffffff"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10 21h4"
+          />
         </svg>
 
         {unreadCount > 0 && (
@@ -190,12 +190,26 @@ export default function NotificationsBell() {
 
               {unreadCount > 0 && (
                 <button
-                  type="button"
-                  onClick={markAllAsRead}
-                  className="text-[10px] font-semibold text-blue-600 hover:text-blue-800"
-                >
-                  Mark all read
-                </button>
+  type="button"
+  onClick={markAllAsRead}
+  className="inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-blue-600 to-blue-700 px-3 py-1.5 text-[10px] font-bold text-white shadow-sm shadow-blue-500/20 transition-all duration-200 hover:scale-105 hover:from-blue-700 hover:to-blue-800 active:scale-95"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="h-3.5 w-3.5"
+  >
+    <path
+      d="M5 12l4 4L19 6"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+  Read All
+</button>
               )}
             </div>
 
@@ -239,11 +253,11 @@ export default function NotificationsBell() {
                       />
 
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs font-bold text-gray-900">
+                        <p className="text-xs font-bold text-yellow-500">
                           {notification.title}
                         </p>
 
-                        <p className="mt-1 whitespace-pre-wrap wrap-break-word text-xs leading-5 text-gray-600">
+                        <p className="mt-1 whitespace-pre-wrap wrap-break-word text-xs leading-5 text-blue-600">
                           {notification.message}
                         </p>
 
