@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     const type = String(body.type || "");
     const poolAmount = Number(body.poolAmount);
     const maxClaims = Number(body.maxClaims);
-    const expiryHoursInput = body.expiryHours ?? null;
+    const expiryMinutesInput = body.expiryMinutes ?? null;
     const publicUserId = String(body.publicUserId || "").trim();
 
     if (!["ALL_USERS", "SINGLE_USER"].includes(type)) {
@@ -151,18 +151,18 @@ export async function POST(request: NextRequest) {
 
     let expiresAt: Date | null = null;
 
-if (expiryHoursInput !== null && expiryHoursInput !== "") {
-  const hours = Number(expiryHoursInput);
+    if (expiryMinutesInput !== null && expiryMinutesInput !== "") {
+      const minutes = Number(expiryMinutesInput);
 
-  if (!Number.isInteger(hours) || hours <= 0) {
-    return NextResponse.json(
-      { error: "Expiry hours must be a positive integer." },
-      { status: 400 }
-    );
-  }
+      if (!Number.isInteger(minutes) || minutes <= 0) {
+        return NextResponse.json(
+          { error: "Expiry minutes must be a positive integer." },
+          { status: 400 }
+        );
+      }
 
-  expiresAt = new Date(Date.now() + hours * 60 * 60 * 1000);
-}
+      expiresAt = new Date(Date.now() + minutes * 60 * 1000);
+    }
 
     let code = "";
     let created = null;

@@ -37,11 +37,21 @@ export default function UsersBonusPage() {
   const [error, setError] = useState("");
   const [selectedCode, setSelectedCode] = useState<BonusCode | null>(null);
   const [generatedCode, setGeneratedCode] = useState("");
+  const [currentTime, setCurrentTime] = useState(Date.now());
 
   const allUserPerPerson =
     Number(poolAmount) > 0 && Number(maxUsers) > 0
       ? Number(poolAmount) / Number(maxUsers)
       : 0;
+
+  // Live countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   // Load bonus codes
   const loadCodes = async () => {
@@ -83,10 +93,7 @@ export default function UsersBonusPage() {
         return;
       }
 
-      if (
-        !Number.isInteger(Number(maxUsers)) ||
-        Number(maxUsers) <= 0
-      ) {
+      if (!Number.isInteger(Number(maxUsers)) || Number(maxUsers) <= 0) {
         setError("Maximum users ki valid quantity enter karein.");
         return;
       }
@@ -104,6 +111,11 @@ export default function UsersBonusPage() {
       }
     }
 
+    if (expiry && (!Number.isInteger(Number(expiry)) || Number(expiry) <= 0)) {
+      setError("Expiry minutes ki valid quantity enter karein.");
+      return;
+    }
+
     try {
       setCreating(true);
 
@@ -113,7 +125,7 @@ export default function UsersBonusPage() {
           mode === "ALL_USERS" ? Number(poolAmount) : Number(singleAmount),
         maxClaims: mode === "ALL_USERS" ? Number(maxUsers) : 1,
         publicUserId: mode === "SINGLE_USER" ? userId : undefined,
-        expiryHours: expiry ? Number(expiry) : null,
+        expiryMinutes: expiry ? Number(expiry) : null,
       };
 
       const response = await fetch("/api/admin/users-bonus", {
@@ -157,10 +169,6 @@ export default function UsersBonusPage() {
     0
   );
 
-  const activeCodes = codes.filter(
-    (code) => code.status === "ACTIVE"
-  ).length;
-
   const totalClaims = codes.reduce(
     (total, code) => total + Number(code.claimCount || 0),
     0
@@ -187,24 +195,47 @@ export default function UsersBonusPage() {
         Number(code.distributedAmount || 0)
     );
 
-  const getStatus = (code: BonusCode) => {
-    if (code.status === "COMPLETED") return "COMPLETED";
-    if (code.status === "INACTIVE") return "INACTIVE";
-    if (code.status === "EXPIRED") return "EXPIRED";
+  // Countdown display
+  const formatCountdown = (expiresAt?: string | null) => {
+    if (!expiresAt) return "No expiry";
 
-    if (code.expiresAt && new Date(code.expiresAt) < new Date()) {
-      return "EXPIRED";
-    }
+    const remaining = Math.max(
+      0,
+      Math.floor((new Date(expiresAt).getTime() - currentTime) / 1000)
+    );
 
-    if (
-      getRemaining(code) <= 0 ||
-      code.claimCount >= code.maxClaims
-    ) {
-      return "COMPLETED";
-    }
+    const hours = Math.floor(remaining / 3600);
+    const minutes = Math.floor((remaining % 3600) / 60);
+    const seconds = remaining % 60;
 
-    return code.status || "ACTIVE";
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
   };
+
+  const getStatus = (code: BonusCode) => {
+  if (code.status === "COMPLETED") return "COMPLETED";
+  if (code.status === "INACTIVE") return "INACTIVE";
+  if (code.status === "EXPIRED") return "EXPIRED";
+
+  if (
+    code.expiresAt &&
+    new Date(code.expiresAt).getTime() <= currentTime
+  ) {
+    return "EXPIRED";
+  }
+
+  if (
+    getRemaining(code) <= 0 ||
+    code.claimCount >= code.maxClaims
+  ) {
+    return "COMPLETED";
+  }
+
+  return code.status || "ACTIVE";
+};
+
+const activeCodes = codes.filter(
+  (code) => getStatus(code) === "ACTIVE"
+).length;
 
   const statusStyle = (status: string) => {
     switch (status) {
@@ -354,7 +385,10 @@ export default function UsersBonusPage() {
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <button
               type="button"
-              onClick={() => setMode("ALL_USERS")}
+              onClick={() => {
+                setMode("ALL_USERS");
+                setExpiry("");
+              }}
               className={`rounded-xl border p-4 text-left transition ${
                 mode === "ALL_USERS"
                   ? "border-blue-500 bg-blue-500/10"
@@ -371,7 +405,10 @@ export default function UsersBonusPage() {
 
             <button
               type="button"
-              onClick={() => setMode("SINGLE_USER")}
+              onClick={() => {
+                setMode("SINGLE_USER");
+                setExpiry("");
+              }}
               className={`rounded-xl border p-4 text-left transition ${
                 mode === "SINGLE_USER"
                   ? "border-purple-500 bg-purple-500/10"
@@ -425,21 +462,21 @@ export default function UsersBonusPage() {
 
                 <div>
                   <label className="mb-2 block text-sm font-medium">
-                    Expiry (Optional)
+                    Expiry Minutes (Optional)
                   </label>
 
                   <input
-  type="number"
-  min="1"
-  step="1"
-  placeholder="Example: 1 hour"
-  value={expiry}
-  onChange={(e) => setExpiry(e.target.value)}
-  className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 outline-none focus:border-blue-500"
-/>
+                    type="number"
+                    min="1"
+                    step="1"
+                    placeholder="Example: 1 minute"
+                    value={expiry}
+                    onChange={(e) => setExpiry(e.target.value)}
+                    className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 outline-none focus:border-blue-500"
+                  />
 
                   <p className="mt-1 text-xs text-gray-500">
-                    Code can also expire automatically when the pool is exhausted.
+                    Code automatically expires after the selected minutes.
                   </p>
                 </div>
               </div>
@@ -526,11 +563,14 @@ export default function UsersBonusPage() {
 
                 <div>
                   <label className="mb-2 block text-sm font-medium">
-                    Expiry (Optional)
+                    Expiry Minutes (Optional)
                   </label>
 
                   <input
-                    type="datetime-local"
+                    type="number"
+                    min="1"
+                    step="1"
+                    placeholder="Example: 1 minute"
                     value={expiry}
                     onChange={(e) => setExpiry(e.target.value)}
                     className="w-full rounded-xl border border-gray-700 bg-[#0b1220] px-4 py-3 outline-none focus:border-purple-500"
@@ -589,7 +629,7 @@ export default function UsersBonusPage() {
           </div>
 
           <div className="mt-6 overflow-x-auto">
-            <table className="w-full min-w-237.5 text-left text-sm">
+            <table className="w-full min-w-275 text-left text-sm">
               <thead>
                 <tr className="border-b border-gray-800 text-gray-400">
                   <th className="px-4 py-3">Bonus Code</th>
@@ -598,6 +638,7 @@ export default function UsersBonusPage() {
                   <th className="px-4 py-3">Claimed</th>
                   <th className="px-4 py-3">Distributed</th>
                   <th className="px-4 py-3">Remaining</th>
+                  <th className="px-4 py-3">Countdown</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Action</th>
                 </tr>
@@ -606,13 +647,13 @@ export default function UsersBonusPage() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={8} className="px-4 py-12 text-center text-gray-400">
+                    <td colSpan={9} className="px-4 py-12 text-center text-gray-400">
                       Loading bonus codes...
                     </td>
                   </tr>
                 ) : filteredCodes.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="px-4 py-12 text-center">
+                    <td colSpan={9} className="px-4 py-12 text-center">
                       <div className="text-3xl">🎁</div>
                       <p className="mt-3 font-medium text-gray-300">
                         {search ? "No matching bonus codes" : "No bonus codes yet"}
@@ -667,6 +708,20 @@ export default function UsersBonusPage() {
 
                         <td className="px-4 py-4 text-yellow-400">
                           {formatMoney(getRemaining(code))}
+                        </td>
+
+                        <td className="px-4 py-4 font-mono">
+                          {code.expiresAt ? (
+                            status === "EXPIRED" ? (
+                              <span className="text-red-400">EXPIRED</span>
+                            ) : (
+                              <span className="text-orange-400">
+                                {formatCountdown(code.expiresAt)}
+                              </span>
+                            )
+                          ) : (
+                            <span className="text-gray-500">No expiry</span>
+                          )}
                         </td>
 
                         <td className="px-4 py-4">
@@ -795,7 +850,9 @@ export default function UsersBonusPage() {
                 ) : (
                   <div className="py-10 text-center text-gray-400">
                     <div className="text-3xl">👥</div>
-                    <p className="mt-3">Abhi tak kisi user ne code claim nahi kiya.</p>
+                    <p className="mt-3">
+                      Abhi tak kisi user ne code claim nahi kiya.
+                    </p>
                   </div>
                 )}
               </div>
