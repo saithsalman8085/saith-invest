@@ -175,7 +175,13 @@ export default function UsersBonusPage() {
   );
 
   // Search
-  const filteredCodes = codes.filter((code) => {
+  const filteredCodes = [...codes]
+  .sort(
+    (a, b) =>
+      new Date(b.createdAt || 0).getTime() -
+      new Date(a.createdAt || 0).getTime()
+  )
+  .filter((code) => {
     const searchText = search.toLowerCase();
 
     return (
