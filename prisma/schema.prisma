@@ -101,6 +101,18 @@ enum AuditAction {
   SETTINGS_UPDATE
 }
 
+enum BonusCodeType {
+  ALL_USERS
+  SINGLE_USER
+}
+
+enum BonusCodeStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  COMPLETED
+}
+
 
 // =========================
 // USER
@@ -157,6 +169,10 @@ model User {
   adminAuditLogs AuditLog[] @relation("AuditAdmin")
   accountAppeals AccountAppeal[]
   adminPushSubscriptions AdminPushSubscription[]
+
+    bonusCodesCreated UserBonusCode[] @relation("BonusCodeCreator")
+  assignedBonusCodes UserBonusCode[] @relation("BonusCodeAssignedUser")
+  bonusClaims UserBonusClaim[]
 
   @@index([referredById])
   @@index([status])
@@ -639,4 +655,91 @@ model Notification {
 
   @@index([userId, createdAt])
   @@index([userId, isRead])
+}
+
+// =========================
+// USERS BONUS CODES
+// =========================
+
+model UserBonusCode {
+  id String @id @default(cuid())
+
+  code String @unique
+
+  type BonusCodeType
+  status BonusCodeStatus @default(ACTIVE)
+
+  // Total bonus pool
+  poolAmount Decimal @db.Decimal(18, 2)
+
+  // Total amount already distributed
+  distributedAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  // Claim limits
+  maxClaims Int
+  claimCount Int @default(0)
+
+  // For single-user bonus
+  assignedUserId String?
+  assignedUser User? @relation(
+    "BonusCodeAssignedUser",
+    fields: [assignedUserId],
+    references: [id],
+    onDelete: Restrict
+  )
+
+  // Admin who created this code
+  createdById String?
+  createdBy User? @relation(
+    "BonusCodeCreator",
+    fields: [createdById],
+    references: [id],
+    onDelete: SetNull
+  )
+
+  expiresAt DateTime?
+
+  claims UserBonusClaim[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([assignedUserId])
+  @@index([createdAt])
+}
+
+
+// =========================
+// USERS BONUS CLAIM HISTORY
+// =========================
+
+model UserBonusClaim {
+  id String @id @default(cuid())
+
+  bonusCodeId String
+  bonusCode UserBonusCode @relation(
+    fields: [bonusCodeId],
+    references: [id],
+    onDelete: Restrict
+  )
+
+  userId String
+  user User @relation(
+    fields: [userId],
+    references: [id],
+    onDelete: Restrict
+  )
+
+  amountUSD Decimal @db.Decimal(18, 2)
+
+  // Related wallet transaction
+  transactionId String? @unique
+
+  claimedAt DateTime @default(now())
+
+  @@unique([bonusCodeId, userId])
+  @@index([userId])
+  @@index([claimedAt])
 }

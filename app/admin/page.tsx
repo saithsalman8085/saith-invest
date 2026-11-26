@@ -178,6 +178,27 @@ export default function AdminPage() {
                 title="Transactions"
                 text="Review the platform transaction ledger."
               />
+
+              <AdminCard
+  href="/admin/users-bonus"
+  icon="🎁"
+  title="Users Bonus"
+  text="Create bonus codes, distribute rewards and view bonus redemption history."
+/>
+
+<AdminCard
+  href="/admin/notifications"
+  icon="🔔"
+  title="Notifications"
+  text="Send notifications to individual users or all users."
+/>
+
+<AdminCard
+  href="/admin/active-user-history"
+  icon="📋"
+  title="Active User History"
+  text="Search any user ID and view referral and active-user history."
+/>
             </div>
           </div>
 
@@ -195,14 +216,6 @@ export default function AdminPage() {
   text="Review suspended account appeals and approve or reject reactivation requests."
 />
 
-              
-<AdminCard
-  href="/admin/active-user-history"
-  icon="📋"
-  title="Active User History"
-  text="Search any user ID and view referral and active-user history."
-/>
-
 
               <AdminCard
                 href="/admin/settings"
@@ -210,13 +223,6 @@ export default function AdminPage() {
                 title="Platform Settings"
                 text="Manage exchange rate, fees and platform settings."
               />
-
-              <AdminCard
-  href="/admin/notifications"
-  icon="🔔"
-  title="Notifications"
-  text="Send notifications to individual users or all users."
-/>
             </div>
           </div>
 

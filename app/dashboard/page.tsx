@@ -93,6 +93,9 @@ export default function DashboardPage() {
     useState<string | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showBonusModal, setShowBonusModal] = useState(false);
+const [bonusCode, setBonusCode] = useState("");
+const [redeeming, setRedeeming] = useState(false);
 
   const [remainingSeconds, setRemainingSeconds] =
     useState<Record<string, number>>({});
@@ -189,7 +192,7 @@ function dismissWhatsAppPopup() {
     return () => clearInterval(timer);
   }, []);
 
-  async function collectEarnings(investmentId: string) {
+    async function collectEarnings(investmentId: string) {
     const investment = data?.activeInvestments.find(
       (item) => item.id === investmentId
     );
@@ -203,18 +206,15 @@ function dismissWhatsAppPopup() {
     setSuccess("");
 
     try {
-      const response = await fetch(
-        "/api/investments/earn",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            investmentId,
-          }),
-        }
-      );
+      const response = await fetch("/api/investments/earn", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          investmentId,
+        }),
+      });
 
       const result = await response.json();
 
@@ -239,6 +239,54 @@ function dismissWhatsAppPopup() {
       );
     } finally {
       setCollectingId(null);
+    }
+  }
+
+  async function redeemBonus() {
+    if (!bonusCode.trim()) {
+      setError("Please enter a bonus code.");
+      return;
+    }
+
+    setRedeeming(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await fetch("/api/bonus/redeem", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: bonusCode.trim().toUpperCase(),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.error || "Invalid bonus code."
+        );
+      }
+
+      setSuccess(
+        result.message || "Bonus successfully redeemed!"
+      );
+
+      setBonusCode("");
+      setShowBonusModal(false);
+
+      await loadDashboard();
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to redeem bonus."
+      );
+    } finally {
+      setRedeeming(false);
     }
   }
 
@@ -325,6 +373,66 @@ function dismissWhatsAppPopup() {
           </div>
         </div>
       )}
+
+      {/* Bonus Redeem Modal */}
+{showBonusModal && (
+  <div className="fixed inset-0 z-110 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+    <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-2xl">
+
+      <div className="h-2 bg-linear-to-r from-yellow-400 via-amber-300 to-yellow-500" />
+
+      <div className="p-5">
+
+        <div className="text-center">
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-yellow-50 text-3xl">
+            🎁
+          </div>
+
+          <h2 className="text-xl font-bold text-gray-900">
+            Redeem Bonus Code
+          </h2>
+
+          <p className="mt-1 text-sm text-gray-500">
+            Enter your bonus code below to claim your reward.
+          </p>
+        </div>
+
+        <input
+          type="text"
+          value={bonusCode}
+          onChange={(e) =>
+            setBonusCode(e.target.value.toUpperCase())
+          }
+          placeholder="Enter bonus code"
+          className="mt-5 w-full rounded-xl border border-yellow-200 bg-[#fffaf2] px-4 py-3 text-center text-sm font-bold uppercase tracking-wider text-black outline-none focus:border-yellow-500"
+        />
+
+        <button
+          type="button"
+          onClick={redeemBonus}
+          disabled={redeeming || !bonusCode.trim()}
+          className="mt-3 w-full rounded-xl bg-linear-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-3 text-sm font-bold text-[#3d2b15] shadow-sm transition disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {redeeming ? "Redeeming..." : "Claim Bonus"}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setShowBonusModal(false);
+            setBonusCode("");
+            setError("");
+          }}
+          disabled={redeeming}
+          className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-500 hover:bg-gray-50"
+        >
+          Cancel
+        </button>
+
+      </div>
+    </div>
+  </div>
+)}
 
       <section className="w-full px-2.5 py-3 sm:px-5 sm:py-6">
         <div className="mx-auto max-w-6xl">
@@ -537,6 +645,21 @@ function dismissWhatsAppPopup() {
               </div>
             </div>
           </div>
+
+          {/* Redeem Bonus Button */}
+<div className="mb-3 mt-3">
+  <button
+    type="button"
+    onClick={() => {
+      setError("");
+      setSuccess("");
+      setShowBonusModal(true);
+    }}
+    className="w-full rounded-xl bg-linear-to-r from-[#ffdbad] to-[#f3bb55] px-4 py-3 text-sm font-bold text-[#3d2b15] shadow-sm transition hover:brightness-105 active:scale-[0.98]"
+  >
+    🎁 Redeem Bonus Code
+  </button>
+</div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">

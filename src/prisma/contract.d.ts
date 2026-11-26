@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'8656bf636e67805f3dd5477187d5a268b40fc63fdc5935393fe6a8f2322f5a81'>;
+  StorageHashBase<'c8d31c4e345289dfb9514e714f809d664d7be1ae3419325e621a072a124e5874'>;
 export type ExecutionHash =
-  ExecutionHashBase<'f8088d14e002d2c70354061b0270817ffae7ea35c8a1cfacd70c39fdd1019ef5'>;
+  ExecutionHashBase<'c8ee96b214cfa153ba06615224d80695a0f8e864bb127ae92ac4dbcab398c2e6'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -459,6 +459,29 @@ export type FieldOutputTypes = {
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     };
+    readonly UserBonusClaim: {
+      readonly amountUSD: Numeric<18, 2>;
+      readonly bonusCodeId: CodecTypes['pg/text@1']['output'];
+      readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly transactionId: CodecTypes['pg/text@1']['output'] | null;
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
+    readonly UserBonusCode: {
+      readonly assignedUserId: CodecTypes['pg/text@1']['output'] | null;
+      readonly claimCount: CodecTypes['pg/int4@1']['output'];
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly createdById: CodecTypes['pg/text@1']['output'] | null;
+      readonly distributedAmount: Numeric<18, 2>;
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly maxClaims: CodecTypes['pg/int4@1']['output'];
+      readonly poolAmount: Numeric<18, 2>;
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'EXPIRED' | 'COMPLETED';
+      readonly type: 'ALL_USERS' | 'SINGLE_USER';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    };
     readonly Withdrawal: {
       readonly accountName: CodecTypes['pg/text@1']['output'];
       readonly accountNumber: CodecTypes['pg/text@1']['output'] | null;
@@ -703,6 +726,29 @@ export type FieldInputTypes = {
       readonly role: 'USER' | 'ADMIN';
       readonly sessionVersion: CodecTypes['pg/int4@1']['input'];
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+    };
+    readonly UserBonusClaim: {
+      readonly amountUSD: CodecTypes['pg/numeric@1']['input'];
+      readonly bonusCodeId: CodecTypes['pg/text@1']['input'];
+      readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly transactionId: CodecTypes['pg/text@1']['input'] | null;
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly UserBonusCode: {
+      readonly assignedUserId: CodecTypes['pg/text@1']['input'] | null;
+      readonly claimCount: CodecTypes['pg/int4@1']['input'];
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly createdById: CodecTypes['pg/text@1']['input'] | null;
+      readonly distributedAmount: CodecTypes['pg/numeric@1']['input'];
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly maxClaims: CodecTypes['pg/int4@1']['input'];
+      readonly poolAmount: CodecTypes['pg/numeric@1']['input'];
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'EXPIRED' | 'COMPLETED';
+      readonly type: 'ALL_USERS' | 'SINGLE_USER';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
     };
     readonly Withdrawal: {
@@ -951,6 +997,29 @@ export type StorageColumnTypes = {
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
     };
+    readonly UserBonusClaim: {
+      readonly amountUSD: Numeric<18, 2>;
+      readonly bonusCodeId: CodecTypes['pg/text@1']['output'];
+      readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly transactionId: CodecTypes['pg/text@1']['output'] | null;
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
+    readonly UserBonusCode: {
+      readonly assignedUserId: CodecTypes['pg/text@1']['output'] | null;
+      readonly claimCount: CodecTypes['pg/int4@1']['output'];
+      readonly code: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+      readonly createdById: CodecTypes['pg/text@1']['output'] | null;
+      readonly distributedAmount: Numeric<18, 2>;
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly maxClaims: CodecTypes['pg/int4@1']['output'];
+      readonly poolAmount: Numeric<18, 2>;
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'EXPIRED' | 'COMPLETED';
+      readonly type: 'ALL_USERS' | 'SINGLE_USER';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    };
     readonly Withdrawal: {
       readonly accountName: CodecTypes['pg/text@1']['output'];
       readonly accountNumber: CodecTypes['pg/text@1']['output'] | null;
@@ -1195,6 +1264,29 @@ export type StorageColumnInputTypes = {
       readonly role: 'USER' | 'ADMIN';
       readonly sessionVersion: CodecTypes['pg/int4@1']['input'];
       readonly status: 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
+      readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+    };
+    readonly UserBonusClaim: {
+      readonly amountUSD: CodecTypes['pg/numeric@1']['input'];
+      readonly bonusCodeId: CodecTypes['pg/text@1']['input'];
+      readonly claimedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly transactionId: CodecTypes['pg/text@1']['input'] | null;
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly UserBonusCode: {
+      readonly assignedUserId: CodecTypes['pg/text@1']['input'] | null;
+      readonly claimCount: CodecTypes['pg/int4@1']['input'];
+      readonly code: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamp-temporal@1']['input'];
+      readonly createdById: CodecTypes['pg/text@1']['input'] | null;
+      readonly distributedAmount: CodecTypes['pg/numeric@1']['input'];
+      readonly expiresAt: CodecTypes['pg/timestamp-temporal@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly maxClaims: CodecTypes['pg/int4@1']['input'];
+      readonly poolAmount: CodecTypes['pg/numeric@1']['input'];
+      readonly status: 'ACTIVE' | 'INACTIVE' | 'EXPIRED' | 'COMPLETED';
+      readonly type: 'ALL_USERS' | 'SINGLE_USER';
       readonly updatedAt: CodecTypes['pg/timestamp-temporal@1']['input'];
     };
     readonly Withdrawal: {
@@ -1477,7 +1569,10 @@ export namespace Models {
     accountAppeals: public_AccountAppeal[];
     adminAuditLogs: public_AuditLog[];
     adminPushSubscriptions: public_AdminPushSubscription[];
+    assignedBonusCodes: public_UserBonusCode[];
     auditLogs: public_AuditLog[];
+    bonusClaims: public_UserBonusClaim[];
+    bonusCodesCreated: public_UserBonusCode[];
     deposits: public_Deposit[];
     earningCollections: public_EarningCollection[];
     investments: public_Investment[];
@@ -1493,7 +1588,10 @@ export namespace Models {
       | 'accountAppeals'
       | 'adminAuditLogs'
       | 'adminPushSubscriptions'
+      | 'assignedBonusCodes'
       | 'auditLogs'
+      | 'bonusClaims'
+      | 'bonusCodesCreated'
       | 'deposits'
       | 'earningCollections'
       | 'investments'
@@ -1505,6 +1603,36 @@ export namespace Models {
       | 'walletTransactions'
       | 'withdrawalProfile'
       | 'withdrawals';
+  };
+  export type public_UserBonusClaim = {
+    amountUSD: Numeric<18, 2>;
+    bonusCodeId: CodecTypes['pg/text@1']['output'];
+    claimedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    id: CodecTypes['pg/text@1']['output'];
+    transactionId: CodecTypes['pg/text@1']['output'] | null;
+    userId: CodecTypes['pg/text@1']['output'];
+    bonusCode: public_UserBonusCode;
+    user: public_User;
+    readonly [RelationKeys]?: 'bonusCode' | 'user';
+  };
+  export type public_UserBonusCode = {
+    assignedUserId: CodecTypes['pg/text@1']['output'] | null;
+    claimCount: CodecTypes['pg/int4@1']['output'];
+    code: CodecTypes['pg/text@1']['output'];
+    createdAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    createdById: CodecTypes['pg/text@1']['output'] | null;
+    distributedAmount: Numeric<18, 2>;
+    expiresAt: CodecTypes['pg/timestamp-temporal@1']['output'] | null;
+    id: CodecTypes['pg/text@1']['output'];
+    maxClaims: CodecTypes['pg/int4@1']['output'];
+    poolAmount: Numeric<18, 2>;
+    status: 'ACTIVE' | 'INACTIVE' | 'EXPIRED' | 'COMPLETED';
+    type: 'ALL_USERS' | 'SINGLE_USER';
+    updatedAt: CodecTypes['pg/timestamp-temporal@1']['output'];
+    assignedUser: public_User | null;
+    claims: public_UserBonusClaim[];
+    createdBy: public_User | null;
+    readonly [RelationKeys]?: 'assignedUser' | 'claims' | 'createdBy';
   };
   export type public_Withdrawal = {
     accountName: CodecTypes['pg/text@1']['output'];
@@ -1561,6 +1689,8 @@ export declare const models: {
     ReferralCommission: Models.public_ReferralCommission;
     Transaction: Models.public_Transaction;
     User: Models.public_User;
+    UserBonusClaim: Models.public_UserBonusClaim;
+    UserBonusCode: Models.public_UserBonusCode;
     Withdrawal: Models.public_Withdrawal;
     WithdrawalProfile: Models.public_WithdrawalProfile;
   };
@@ -3194,6 +3324,237 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly UserBonusClaim: {
+              columns: {
+                readonly amountUSD: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 18; readonly scale: 2 };
+                };
+                readonly bonusCodeId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly claimedAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly typeParams: { readonly precision: 3 };
+                };
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly transactionId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'UserBonusClaim_bonusCodeId_userId_key';
+                  readonly columns: readonly ['bonusCodeId', 'userId'];
+                  readonly unique: true;
+                },
+                {
+                  readonly name: 'UserBonusClaim_claimedAt_idx';
+                  readonly columns: readonly ['claimedAt'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'UserBonusClaim_transactionId_key';
+                  readonly columns: readonly ['transactionId'];
+                  readonly unique: true;
+                },
+                {
+                  readonly name: 'UserBonusClaim_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'UserBonusClaim';
+                    readonly columns: readonly ['bonusCodeId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'UserBonusCode';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'UserBonusClaim';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly UserBonusCode: {
+              columns: {
+                readonly assignedUserId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly claimCount: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                };
+                readonly code: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly typeParams: { readonly precision: 3 };
+                };
+                readonly createdById: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly distributedAmount: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/numeric@1', '0'>;
+                  };
+                  readonly typeParams: { readonly precision: 18; readonly scale: 2 };
+                };
+                readonly expiresAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: true;
+                  readonly typeParams: { readonly precision: 3 };
+                };
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly maxClaims: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly poolAmount: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 18; readonly scale: 2 };
+                };
+                readonly status: {
+                  readonly nativeType: 'BonusCodeStatus';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'ACTIVE'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'BonusCodeStatus' };
+                };
+                readonly type: {
+                  readonly nativeType: 'BonusCodeType';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly typeName: 'BonusCodeType' };
+                };
+                readonly updatedAt: {
+                  readonly nativeType: 'timestamp';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'UserBonusCode_assignedUserId_idx';
+                  readonly columns: readonly ['assignedUserId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'UserBonusCode_code_key';
+                  readonly columns: readonly ['code'];
+                  readonly unique: true;
+                },
+                {
+                  readonly name: 'UserBonusCode_createdAt_idx';
+                  readonly columns: readonly ['createdAt'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'UserBonusCode_status_idx';
+                  readonly columns: readonly ['status'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'UserBonusCode_type_idx';
+                  readonly columns: readonly ['type'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'UserBonusCode';
+                    readonly columns: readonly ['assignedUserId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'UserBonusCode';
+                    readonly columns: readonly ['createdById'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
             readonly Withdrawal: {
               columns: {
                 readonly accountName: {
@@ -3453,6 +3814,14 @@ type ContractBase = Omit<
                 'SETTINGS_UPDATE',
               ];
             };
+            readonly BonusCodeStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['ACTIVE', 'INACTIVE', 'EXPIRED', 'COMPLETED'];
+            };
+            readonly BonusCodeType: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['ALL_USERS', 'SINGLE_USER'];
+            };
             readonly DepositStatus: {
               readonly kind: 'valueSet';
               readonly values: readonly ['PENDING', 'APPROVED', 'REJECTED'];
@@ -3560,6 +3929,14 @@ type ContractBase = Omit<
       readonly model: 'Transaction';
     };
     readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+    readonly UserBonusClaim: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'UserBonusClaim';
+    };
+    readonly UserBonusCode: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'UserBonusCode';
+    };
     readonly Withdrawal: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'Withdrawal';
@@ -5014,6 +5391,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['adminId'];
                 };
               };
+              readonly assignedBonusCodes: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserBonusCode';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['assignedUserId'];
+                };
+              };
               readonly auditLogs: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -5023,6 +5411,28 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['targetUserId'];
+                };
+              };
+              readonly bonusClaims: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserBonusClaim';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly bonusCodesCreated: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserBonusCode';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['createdById'];
                 };
               };
               readonly deposits: {
@@ -5160,6 +5570,211 @@ type ContractBase = Omit<
                 readonly role: { readonly column: 'role' };
                 readonly sessionVersion: { readonly column: 'sessionVersion' };
                 readonly status: { readonly column: 'status' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+              };
+            };
+          };
+          readonly UserBonusClaim: {
+            readonly fields: {
+              readonly amountUSD: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly typeParams: { readonly precision: 18; readonly scale: 2 };
+                };
+              };
+              readonly bonusCodeId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly claimedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly transactionId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly bonusCode: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserBonusCode';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['bonusCodeId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'UserBonusClaim';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly amountUSD: { readonly column: 'amountUSD' };
+                readonly bonusCodeId: { readonly column: 'bonusCodeId' };
+                readonly claimedAt: { readonly column: 'claimedAt' };
+                readonly id: { readonly column: 'id' };
+                readonly transactionId: { readonly column: 'transactionId' };
+                readonly userId: { readonly column: 'userId' };
+              };
+            };
+          };
+          readonly UserBonusCode: {
+            readonly fields: {
+              readonly assignedUserId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly claimCount: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly code: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly createdById: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly distributedAmount: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly typeParams: { readonly precision: 18; readonly scale: 2 };
+                };
+              };
+              readonly expiresAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly maxClaims: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly poolAmount: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly typeParams: { readonly precision: 18; readonly scale: 2 };
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'BonusCodeStatus' };
+                };
+              };
+              readonly type: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'BonusCodeType' };
+                };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamp-temporal@1';
+                  readonly typeParams: { readonly precision: 3 };
+                };
+              };
+            };
+            readonly relations: {
+              readonly assignedUser: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['assignedUserId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly claims: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'UserBonusClaim';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['bonusCodeId'];
+                };
+              };
+              readonly createdBy: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['createdById'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'UserBonusCode';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly assignedUserId: { readonly column: 'assignedUserId' };
+                readonly claimCount: { readonly column: 'claimCount' };
+                readonly code: { readonly column: 'code' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly createdById: { readonly column: 'createdById' };
+                readonly distributedAmount: { readonly column: 'distributedAmount' };
+                readonly expiresAt: { readonly column: 'expiresAt' };
+                readonly id: { readonly column: 'id' };
+                readonly maxClaims: { readonly column: 'maxClaims' };
+                readonly poolAmount: { readonly column: 'poolAmount' };
+                readonly status: { readonly column: 'status' };
+                readonly type: { readonly column: 'type' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
               };
             };
@@ -5602,6 +6217,31 @@ type ContractBase = Omit<
           readonly onUpdate: { readonly id: 'plainDateTimeNow'; readonly kind: 'generator' };
           readonly ref: {
             readonly entry: 'User';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'cuid2'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'UserBonusClaim';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'cuid2'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'UserBonusCode';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'plainDateTimeNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'plainDateTimeNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'UserBonusCode';
             readonly field: 'updatedAt';
             readonly namespace: 'public';
           };
