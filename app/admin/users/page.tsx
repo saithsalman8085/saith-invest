@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -52,6 +51,7 @@ function ActionButtons({
   onResetPassword,
   onEdit,
   onBonus,
+  onDelete,
 }: {
   user: User;
   loading: string | null;
@@ -59,6 +59,7 @@ function ActionButtons({
   onResetPassword: (user: User) => void;
   onEdit: (user: User) => void;
   onBonus: (user: User) => void;
+  onDelete: (user: User) => void;
 }) {
   if (user.role === "ADMIN") {
     return <span className="text-xs text-slate-500">Admin account protected</span>;
@@ -115,6 +116,11 @@ function ActionButtons({
       <button onClick={() => onResetPassword(user)} disabled={loading === user.id}
         className={`${buttonClass} border-blue-500/20 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20`}>
         Reset Password
+      </button>
+
+      <button onClick={() => onDelete(user)} disabled={loading === user.id}
+        className={`${buttonClass} border-red-500/30 bg-red-600/10 text-red-400 hover:bg-red-600/20`}>
+        {loading === user.id ? "Processing..." : "Delete User"}
       </button>
     </div>
   );
@@ -232,6 +238,44 @@ export default function AdminUsersPage() {
     }
   }
 
+  async function onDelete(user: User) {
+    const confirmed = window.confirm(
+      `PERMANENT ACCOUNT DELETION\\n\\nUser: ${user.fullName}\\nPublic ID: ${user.publicUserId}\\n\\nThis will anonymize and permanently block the account, and hide it from the Users list. Financial records (deposits, withdrawals, investments, earnings and transactions) will be preserved.\\n\\nThis action cannot be undone. Continue?`
+    );
+    if (!confirmed) return;
+
+    const secondConfirm = window.prompt(
+      `To confirm deletion, type DELETE for ${user.fullName}:`
+    );
+    if (secondConfirm !== "DELETE") {
+      setMessage("");
+      setError("Deletion cancelled. Confirmation text did not match.");
+      return;
+    }
+
+    try {
+      setLoading(user.id);
+      setMessage("");
+      setError("");
+
+      const response = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id, action: "DELETE_USER" }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to delete user.");
+
+      setMessage(data.message || "User account deleted and anonymized.");
+      await loadUsers();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to delete user.");
+    } finally {
+      setLoading(null);
+    }
+  }
+
   function onResetPassword(user: User) {
     setMessage("");
     setError("");
@@ -292,7 +336,7 @@ export default function AdminUsersPage() {
     setError("");
 
     const choice = window.prompt(
-      `Choose action for ${user.fullName}:\n\n1 = Send Bonus\n2 = Pay Invite Salary\n\nEnter 1 or 2:`
+      `Choose action for ${user.fullName}:\\n\\n1 = Send Bonus\\n2 = Pay Invite Salary\\n\\nEnter 1 or 2:`
     );
 
     if (choice === null) return;
@@ -323,7 +367,7 @@ export default function AdminUsersPage() {
       bonusMessage = messageInput === null ? "" : messageInput.trim();
     } else {
       if (!window.confirm(
-        `Pay the eligible Invite Salary to ${user.fullName}?\n\nThe server will check eligibility and duplicate payments.`
+        `Pay the eligible Invite Salary to ${user.fullName}?\\n\\nThe server will check eligibility and duplicate payments.`
       )) return;
     }
 
@@ -553,7 +597,7 @@ export default function AdminUsersPage() {
                         <td className="px-5 py-5 text-xs text-slate-500">{new Date(user.createdAt).toLocaleDateString()}</td>
                         <td className="px-5 py-5">
                           <ActionButtons user={user} loading={loading} onStatusChange={onStatusChange}
-                            onResetPassword={onResetPassword} onEdit={onEdit} onBonus={onBonus} />
+                            onResetPassword={onResetPassword} onEdit={onEdit} onBonus={onBonus} onDelete={onDelete} />
                         </td>
                       </tr>
                     ))}
@@ -585,7 +629,7 @@ export default function AdminUsersPage() {
 
                   <div className="mt-5">
                     <ActionButtons user={user} loading={loading} onStatusChange={onStatusChange}
-                      onResetPassword={onResetPassword} onEdit={onEdit} onBonus={onBonus} />
+                      onResetPassword={onResetPassword} onEdit={onEdit} onBonus={onBonus} onDelete={onDelete} />
                   </div>
                 </div>
               ))}

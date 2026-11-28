@@ -2,26 +2,183 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { isDisposableEmail } from "disposable-email-domains-js";
+import { randomInt, randomBytes } from "crypto";
 import { db } from "@/lib/prisma";
 import { createSession } from "@/lib/auth";
 
+const REFERRAL_CHARSET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+const BLOCKED_EMAIL_DOMAINS = new Set([
+  "caps7.com",
+]);
+
+const COMMON_EMAIL_TYPOS = new Set([
+  "gmal.com",
+  "gmil.com",
+  "gmai.com",
+  "gmali.com",
+  "gmial.com",
+  "gamil.com",
+  "gmail.con",
+  "gmail.coom",
+  "gmail.om",
+  "gmail.cm",
+  "gmail.comm",
+  "gmail.org",
+  "gmail.net",
+  "hotmal.com",
+  "hotmial.com",
+  "hotmai.com",
+  "hotmil.com",
+  "yaho.com",
+  "yahooo.com",
+  "yahoo.con",
+  "yahoo.co",
+  "outlok.com",
+  "outllok.com",
+  "outlook.con",
+  "outloo.com",
+]);
+
+const WEAK_PASSWORDS = new Set([
+  "password",
+  "password123",
+  "12345678",
+  "123456789",
+  "1234567890",
+  "qwerty123",
+  "qwertyui",
+  "admin123",
+  "welcome123",
+  "iloveyou",
+  "abc12345",
+  "11111111",
+  "00000000",
+]);
+
 function generateReferralCode() {
-  return Math.random().toString(36).substring(2, 10).toUpperCase();
+  let code = "";
+
+  for (let i = 0; i < 8; i++) {
+    code += REFERRAL_CHARSET[
+      randomInt(REFERRAL_CHARSET.length)
+    ];
+  }
+
+  return code;
 }
 
 function generatePublicUserId() {
-  return String(Math.floor(100000 + Math.random() * 900000));
+  return String(randomInt(100000, 1000000));
 }
-
-const BLOCKED_EMAIL_DOMAINS = new Set(["caps7.com"]);
 
 function isBlockedEmail(email: string) {
   const domain = email.split("@")[1]?.toLowerCase().trim();
 
-  if (!domain) return false;
-  if (BLOCKED_EMAIL_DOMAINS.has(domain)) return true;
+  if (!domain) return true;
 
-  return isDisposableEmail(email);
+  if (BLOCKED_EMAIL_DOMAINS.has(domain)) {
+    return true;
+  }
+
+  if (COMMON_EMAIL_TYPOS.has(domain)) {
+    return true;
+  }
+
+  try {
+    return isDisposableEmail(email);
+  } catch {
+    // Fail closed if disposable-email checking fails.
+    return true;
+  }
+}
+
+function normalizeName(name: string) {
+  return name
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]/gu, "");
+}
+
+function isValidName(name: string) {
+  if (name.length < 2 || name.length > 50) {
+    return false;
+  }
+
+  // Allow letters, numbers, spaces, apostrophes,
+  // dots and hyphens.
+  if (!/^[\p{L}\p{M}\p{N} .'-]+$/u.test(name)) {
+    return false;
+  }
+
+  // Must contain at least two actual characters
+  // after normalization.
+  return normalizeName(name).length >= 2;
+}
+
+function isValidEmail(email: string) {
+  if (email.length > 254) return false;
+
+  const parts = email.split("@");
+
+  if (parts.length !== 2) return false;
+
+  const local = parts[0];
+  const domain = parts[1].toLowerCase();
+
+  if (!local || local.length > 64) return false;
+
+  if (local.startsWith(".") || local.endsWith(".")) {
+    return false;
+  }
+
+  if (local.includes("..")) {
+    return false;
+  }
+
+  // Validate domain format.
+  if (
+    !/^(?=.{1,253}$)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/.test(
+      domain
+    )
+  ) {
+    return false;
+  }
+
+  if (COMMON_EMAIL_TYPOS.has(domain)) {
+    return false;
+  }
+
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+    email
+  );
+}
+
+function isValidPakistaniPhone(phone: string) {
+  return /^03\d{9}$/.test(phone);
+}
+
+function isValidPassword(password: string) {
+  if (password.length < 8) return false;
+
+  // bcrypt has a maximum input size of 72 bytes.
+  if (Buffer.byteLength(password, "utf8") > 72) {
+    return false;
+  }
+
+  if (WEAK_PASSWORDS.has(password.toLowerCase())) {
+    return false;
+  }
+
+  // Require at least 3 of these 4 character groups.
+  const checks = [
+    /[a-z]/.test(password),
+    /[A-Z]/.test(password),
+    /\d/.test(password),
+    /[^a-zA-Z0-9]/.test(password),
+  ];
+
+  return checks.filter(Boolean).length >= 3;
 }
 
 async function notifyReferralAncestors(
@@ -66,6 +223,7 @@ async function notifyReferralAncestors(
         `REFERRAL_LEVEL_${item.level}_NOTIFICATION_ERROR:`,
         error
       );
+
       break;
     }
   }
@@ -73,14 +231,56 @@ async function notifyReferralAncestors(
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    // Reject oversized registration requests.
+    const contentLength = request.headers.get("content-length");
 
-    const fullName = String(body.fullName || "").trim();
-    const contact = String(body.contact || "").trim();
-    const password = String(body.password || "");
-    const referralCode = String(body.referralCode || "")
-      .trim()
-      .toUpperCase();
+    if (
+      contentLength &&
+      Number(contentLength) > 10_000
+    ) {
+      return NextResponse.json(
+        { error: "Request is too large." },
+        { status: 413 }
+      );
+    }
+
+    let body: any;
+
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid request data." },
+        { status: 400 }
+      );
+    }
+
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return NextResponse.json(
+        { error: "Invalid request data." },
+        { status: 400 }
+      );
+    }
+
+    const fullName =
+      typeof body.fullName === "string"
+        ? body.fullName.trim()
+        : "";
+
+    const contact =
+      typeof body.contact === "string"
+        ? body.contact.trim()
+        : "";
+
+    const password =
+      typeof body.password === "string"
+        ? body.password
+        : "";
+
+    const referralCode =
+      typeof body.referralCode === "string"
+        ? body.referralCode.trim().toUpperCase()
+        : "";
 
     if (!fullName || !contact || !password) {
       return NextResponse.json(
@@ -89,31 +289,88 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: "Password must be at least 8 characters." },
-        { status: 400 }
-      );
-    }
-
-    const isEmail = contact.includes("@");
-    const email = isEmail ? contact.toLowerCase() : null;
-    const phone = isEmail ? null : contact;
-
-    if (email && isBlockedEmail(email)) {
+    // Validate name.
+    if (!isValidName(fullName)) {
       return NextResponse.json(
         {
           error:
-            "Temporary or disposable email addresses are not allowed. Please use a permanent email address.",
+            "Name must be 2-50 characters and contain only valid letters.",
         },
         { status: 400 }
       );
     }
 
+    // Validate password.
+    if (!isValidPassword(password)) {
+      return NextResponse.json(
+        {
+          error:
+            "Password must be at least 8 characters, contain at least 3 types of characters (uppercase, lowercase, numbers or symbols), and not be a common password.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (contact.length > 254) {
+      return NextResponse.json(
+        { error: "Email or phone number is too long." },
+        { status: 400 }
+      );
+    }
+
+    if (referralCode.length > 20) {
+      return NextResponse.json(
+        { error: "Invalid referral code." },
+        { status: 400 }
+      );
+    }
+
+    const isEmail = contact.includes("@");
+
+    const email = isEmail
+      ? contact.toLowerCase()
+      : null;
+
+    const phone = isEmail
+      ? null
+      : contact;
+
+    // Email format validation.
+    if (email && !isValidEmail(email)) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address." },
+        { status: 400 }
+      );
+    }
+
+    // Pakistani mobile validation.
+    if (phone && !isValidPakistaniPhone(phone)) {
+      return NextResponse.json(
+        {
+          error:
+            "Please enter a valid Pakistani mobile number (03XXXXXXXXX).",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Block disposable and suspicious email domains.
+    if (email && isBlockedEmail(email)) {
+      return NextResponse.json(
+        {
+          error:
+            "Temporary, invalid or suspicious email addresses are not allowed. Please use a valid permanent email address.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Check existing email.
     if (email) {
-      const existingEmail = await db.orm.public.User
-        .where((user) => user.email.eq(email))
-        .first();
+      const existingEmail =
+        await db.orm.public.User
+          .where((user) => user.email.eq(email))
+          .first();
 
       if (existingEmail) {
         return NextResponse.json(
@@ -123,10 +380,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Check existing phone.
     if (phone) {
-      const existingPhone = await db.orm.public.User
-        .where((user) => user.phone.eq(phone))
-        .first();
+      const existingPhone =
+        await db.orm.public.User
+          .where((user) => user.phone.eq(phone))
+          .first();
 
       if (existingPhone) {
         return NextResponse.json(
@@ -136,12 +395,39 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Prevent duplicate names ignoring spaces,
+    // punctuation and case.
+    const normalizedNewName = normalizeName(fullName);
+
+    const allUsers = await db.orm.public.User.all();
+
+    const duplicateName = allUsers.find((user: any) => {
+      return (
+        normalizeName(String(user.fullName || "")) ===
+        normalizedNewName
+      );
+    });
+
+    if (duplicateName) {
+      return NextResponse.json(
+        {
+          error:
+            "This name is already registered. Please choose a different name.",
+        },
+        { status: 409 }
+      );
+    }
+
+    // Validate referral code.
     let referredById: string | null = null;
 
     if (referralCode) {
-      const referrer = await db.orm.public.User
-        .where((user) => user.referralCode.eq(referralCode))
-        .first();
+      const referrer =
+        await db.orm.public.User
+          .where((user) =>
+            user.referralCode.eq(referralCode)
+          )
+          .first();
 
       if (!referrer) {
         return NextResponse.json(
@@ -155,26 +441,61 @@ export async function POST(request: NextRequest) {
 
     const passwordHash = await bcrypt.hash(password, 12);
 
-    let newReferralCode = generateReferralCode();
+    // Generate a unique referral code.
+    let newReferralCode = "";
+    let referralCodeCreated = false;
 
-    while (
-      await db.orm.public.User
-        .where((user) => user.referralCode.eq(newReferralCode))
-        .first()
-    ) {
+    for (let attempt = 0; attempt < 10; attempt++) {
       newReferralCode = generateReferralCode();
+
+      const existing =
+        await db.orm.public.User
+          .where((user) =>
+            user.referralCode.eq(newReferralCode)
+          )
+          .first();
+
+      if (!existing) {
+        referralCodeCreated = true;
+        break;
+      }
     }
 
-    let publicUserId = generatePublicUserId();
+    if (!referralCodeCreated) {
+      return NextResponse.json(
+        { error: "Unable to create account. Please try again." },
+        { status: 500 }
+      );
+    }
 
-    while (
-      await db.orm.public.User
-        .where((user) => user.publicUserId.eq(publicUserId))
-        .first()
-    ) {
+    // Generate unique public user ID.
+    let publicUserId = "";
+    let publicIdCreated = false;
+
+    for (let attempt = 0; attempt < 20; attempt++) {
       publicUserId = generatePublicUserId();
+
+      const existing =
+        await db.orm.public.User
+          .where((user) =>
+            user.publicUserId.eq(publicUserId)
+          )
+          .first();
+
+      if (!existing) {
+        publicIdCreated = true;
+        break;
+      }
     }
 
+    if (!publicIdCreated) {
+      return NextResponse.json(
+        { error: "Unable to create account. Please try again." },
+        { status: 500 }
+      );
+    }
+
+    // Create account.
     const user = await db.orm.public.User.create({
       fullName,
       email,
@@ -187,33 +508,40 @@ export async function POST(request: NextRequest) {
       role: "USER",
     });
 
-    // One-time $0.40 welcome bonus.
-    const existingBonus = await db.orm.public.Transaction
-      .where((transaction) =>
-        transaction.referenceId.eq(`WELCOME_BONUS:${user.id}`)
-      )
-      .first();
+    // Welcome bonus.
+    try {
+      const existingBonus =
+        await db.orm.public.Transaction
+          .where((transaction) =>
+            transaction.referenceId.eq(
+              `WELCOME_BONUS:${user.id}`
+            )
+          )
+          .first();
 
-    if (!existingBonus) {
-      await db.orm.public.Transaction.create({
-        userId: user.id,
-        type: "ACTIVE_USER_REWARD",
-        status: "COMPLETED",
-        amountUSD: "0.40",
-        balanceBefore: "0.00",
-        balanceAfter: "0.40",
-        referenceId: `WELCOME_BONUS:${user.id}`,
-        description: "Welcome bonus",
-      } as any);
+      if (!existingBonus) {
+        await db.orm.public.Transaction.create({
+          userId: user.id,
+          type: "ACTIVE_USER_REWARD",
+          status: "COMPLETED",
+          amountUSD: "0.40",
+          balanceBefore: "0.00",
+          balanceAfter: "0.40",
+          referenceId: `WELCOME_BONUS:${user.id}`,
+          description: "Welcome bonus",
+        } as any);
+      }
+    } catch (error) {
+      console.error("WELCOME_BONUS_ERROR:", error);
     }
 
-    // Notify the user's Level 1, Level 2 and Level 3 referrers.
+    // Notify referral ancestors.
     await notifyReferralAncestors(
       referredById,
       String(user.publicUserId)
     );
 
-    // Automatically create login session.
+    // Create session.
     const sessionToken = await createSession(
       user.id,
       Number(user.sessionVersion ?? 0)
@@ -232,22 +560,18 @@ export async function POST(request: NextRequest) {
     response.cookies.set("claudeinvest_session", sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "strict",
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;
   } catch (error) {
+    // Keep internal errors in server logs only.
     console.error("REGISTER_ERROR:", error);
 
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unable to create account.",
-      },
+      { error: "Unable to create account. Please try again." },
       { status: 500 }
     );
   }

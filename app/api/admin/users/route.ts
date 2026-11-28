@@ -21,7 +21,14 @@ export async function GET(request: NextRequest) {
         ?.trim()
         .toLowerCase() || "";
 
-    const users = await db.orm.public.User.all();
+    const users = (
+      await db.orm.public.User.all()
+    ).filter(
+      (user) =>
+        !String(user.referralCode || "").startsWith(
+          "DELETED_ACCOUNT_"
+        )
+    );
 
     const filteredUsers = search
       ? users.filter((user) => {
@@ -129,6 +136,70 @@ export async function PATCH(request: NextRequest) {
         },
         { status: 400 }
       );
+    }
+
+    if (
+      String(targetUser.referralCode || "").startsWith(
+        "DELETED_ACCOUNT_"
+      )
+    ) {
+      return NextResponse.json(
+        { error: "This account has already been deleted." },
+        { status: 404 }
+      );
+    }
+
+    /*
+     * DELETE / ANONYMIZE USER
+     * Financial records are preserved.
+     */
+    if (action === "DELETE_USER") {
+      const deletedReferralCode =
+        `DELETED_ACCOUNT_${userId}`;
+
+      // Unlink direct referrals from this account.
+      const allUsers = await db.orm.public.User.all();
+      const referredUsers = allUsers.filter(
+        (u) => u.referredById === userId
+      );
+
+      for (const referredUser of referredUsers) {
+        await db.orm.public.User
+          .where((u) => u.id.eq(referredUser.id))
+          .update({ referredById: null } as any);
+      }
+
+      await db.orm.public.User
+        .where((user) => user.id.eq(userId))
+        .update({
+          fullName: "Deleted Account",
+          email: null,
+          phone: null,
+          referralCode: deletedReferralCode,
+          status: "BLOCKED",
+          sessionVersion:
+            Number(targetUser.sessionVersion || 0) + 1,
+          premiumBadge: false,
+        } as any);
+
+      await db.orm.public.AuditLog.create({
+        action: "ADMIN_ADJUSTMENT",
+        adminId: admin.id,
+        targetUserId: userId,
+        description:
+          "User account anonymized and access blocked by administrator. Financial records preserved.",
+        metadata: {
+          type: "DELETE_USER",
+          financialRecordsPreserved: true,
+          deletedAt: new Date().toISOString(),
+        },
+      } as any);
+
+      return NextResponse.json({
+        success: true,
+        message:
+          "User account anonymized. Financial records have been preserved.",
+      });
     }
 
     /*
@@ -387,7 +458,8 @@ export async function PATCH(request: NextRequest) {
         amountUSD: bonusAmount,
       });
     }
-        /*
+
+    /*
      * MANUAL INVITE SALARY
      */
     if (action === "SALARY") {
